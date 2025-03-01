@@ -70,7 +70,7 @@ netease_comment: false
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
 sidebar-about-description: "May the force be with you. <br> 这里是 遠山江浸月 的个人博客,记录着我的学习和生活。"
-sidebar-avatar: blob:https://account.microsoft.com/0095cc26-41db-4506-a468-5e081745b4eb # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: https://raw.githubusercontent.com/a1024053774/a1024053774.github.io/refs/heads/master/img/Avatar.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
 featured-tags: true # whether or not using Feature-Tags
