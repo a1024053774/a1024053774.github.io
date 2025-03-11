@@ -73,7 +73,7 @@ sidebar-about-description: "May the force be with you. <br> 这里是 遠山江�
 sidebar-avatar: https://raw.githubusercontent.com/a1024053774/a1024053774.github.io/refs/heads/master/img/Avatar.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
-featured-tags: true # whether or not using Feature-Tags
+featured-tags: false # whether or not using Feature-Tags
 featured-condition-size: 1 # A tag will be featured if the size of it is more than this condition value
 
 # Progressive Web Apps
