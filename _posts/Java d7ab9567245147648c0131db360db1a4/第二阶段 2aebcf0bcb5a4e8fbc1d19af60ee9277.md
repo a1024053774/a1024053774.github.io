@@ -1,3 +1,15 @@
+---
+layout:       post
+title:        "Java-Phase01"
+subtitle: '第二阶段'
+author:       "LuckyE"
+header-style: text
+catalog:      true
+tags:
+    - Java
+---
+
+
 # 第二阶段
 
 ### 类变量(静态变量)
