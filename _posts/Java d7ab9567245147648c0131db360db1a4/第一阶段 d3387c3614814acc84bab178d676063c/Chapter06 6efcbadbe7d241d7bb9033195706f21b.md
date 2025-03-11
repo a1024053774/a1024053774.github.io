@@ -1,3 +1,14 @@
+---
+layout:       post
+title:        "Java-Phase01-Chapter06"
+subtitle: '类与对象'
+author:       "LuckyE"
+header-style: text
+catalog:      true
+tags:
+    - Java
+---
+
 # Chapter06
 
 ### 类与对象
