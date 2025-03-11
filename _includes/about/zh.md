@@ -1,4 +1,3 @@
-
 ## 自我介绍
 
 我是远山江浸月（LuckyE），目前是一名软件工程专业的大四学生。我热爱计算机科学和软件开发，对Java编程语言有系统性的学习和研究。
@@ -21,6 +20,7 @@
 
 我注重知识的系统性学习与积累，善于分类整理信息，热爱分享。
 
+![1]({{site.baseurl}}/img/in-post/TaylorSwift/1.jpeg)
 
 ![2]({{site.baseurl}}/img/in-post/TaylorSwift/2.jpeg)
 

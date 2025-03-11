@@ -1,4 +1,3 @@
-
 ## Self-Introduction
 
 I'm Yuanshan Jiang Jinyue (LuckyE), currently a senior undergraduate student majoring in Software Engineering. I'm passionate about computer science and software development, with systematic learning and research experience in the Java programming language.
@@ -21,7 +20,12 @@ Beyond programming, I'm an avid Taylor Swift fan, with *Enchanted* being my favo
 
 ### Personal Style
 
-I emphasize systematic knowledge acquisition and organization, with strong information categorization skills and a passion for knowledge sharing. 
+I emphasize systematic knowledge acquisition and organization, with strong information categorization skills and a passion for knowledge sharing.
 
+![1]({{site.baseurl}}/img/in-post/TaylorSwift/1.jpeg)
 
-<pre class="vditor-reset" placeholder="" contenteditable="true" spellcheck="false"><p data-block="0"><strong data-marker="**"><img src="https://file+.vscode-resource.vscode-cdn.net/d%3A/_DevelopmentCode/a1024053774.github.io/_includes/about/%7B%7Bsite.baseurl%7D%7D/img/in-post/TaylorSwift/1.jpeg" alt="1"/></strong></p><p data-block="0"><img src="https://file+.vscode-resource.vscode-cdn.net/d%3A/_DevelopmentCode/a1024053774.github.io/_includes/about/%7B%7Bsite.baseurl%7D%7D/img/in-post/TaylorSwift/2.jpeg" alt="2"/></p><p data-block="0"><img src="https://file+.vscode-resource.vscode-cdn.net/d%3A/_DevelopmentCode/a1024053774.github.io/_includes/about/%7B%7Bsite.baseurl%7D%7D/img/in-post/TaylorSwift/3.jpeg" alt="3"/></p><p data-block="0"><img src="https://file+.vscode-resource.vscode-cdn.net/d%3A/_DevelopmentCode/a1024053774.github.io/_includes/about/%7B%7Bsite.baseurl%7D%7D/img/in-post/TaylorSwift/4.jpeg" alt="4"/></p></pre>
+![2]({{site.baseurl}}/img/in-post/TaylorSwift/2.jpeg)
+
+![3]({{site.baseurl}}/img/in-post/TaylorSwift/3.jpeg)
+
+![4]({{site.baseurl}}/img/in-post/TaylorSwift/4.jpeg)
