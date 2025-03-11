@@ -92,8 +92,8 @@
 {% endif %}
 
 
-{% if page.title == 'Archive' %}
-<!-- jquery.tagcloud.js -->
+<!-- {% if page.title == 'Archive' %}
+
 <script>
     async('{{ "/js/jquery.tagcloud.js" | prepend: site.baseurl }}', function () {
         $.fn.tagcloud.defaults = {
@@ -104,7 +104,7 @@
     })
 </script>
 <script src='{{ "/js/archive.js " | prepend: site.baseurl }}'></script>
-{% endif %}
+{% endif %} -->
 
 <!--fastClick.js -->
 <script>
