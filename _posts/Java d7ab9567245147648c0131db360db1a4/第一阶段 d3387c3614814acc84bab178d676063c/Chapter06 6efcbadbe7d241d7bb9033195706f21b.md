@@ -1,0 +1,351 @@
+# Chapter06
+
+### 类与对象
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled.png)
+
+字符串是引用类型
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%201.png)
+
+创建对象
+
+1.先声明再创建
+
+Cat cat;
+
+cat = new Cat();
+
+2.直接创建
+
+Cat cat = new Cat();
+
+### 属性/成员变量/字段
+
+可以是基本数据类型,也可以是引用类型(对象,数组)
+
+属性的定义语法同变量
+
+访问修饰符  属性类型  属性名
+
+访问修饰符: public protected 默认 private 
+
+属性不赋值,有默认值,
+
+int 0, short 0, byte 0, long 0, float 0.0, double 0.0, char \u000, Boolean false, String null
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%202.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%203.png)
+
+### 对象分配机制
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%204.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%205.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%206.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%207.png)
+
+### 成员方法
+
+定义成员方法（简称方法）。比如人类：除了有一些属性外（年龄姓名.)，我们人类还有一些行为比如：可以说话、跑步.通过学习，还可以做算术题。这时就要用成员方法才能完成。
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%208.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%209.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2010.png)
+
+当return res后,getSum栈被销毁
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2011.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2012.png)
+
+提高了代码的复用性
+
+可以将实现的细节封装起来,然后供其他用户来调用
+
+### 方法定义
+
+public 返回数据类型 方法名 (形参列表){
+
+语句;
+
+return 返回值;}
+
+1.形参列表：表示成员方法输入cal（intn)，getSum（intnum1，intnum2)
+
+2.数据类型（返回类型）：表示成员方法输出，void表示没有返回值
+
+3.方法主体：表示为了实现某一功能代码块
+
+4.return语句不是必须的。
+
+### 方法注意事项
+
+访问修饰符(控制方法使用的范围)
+
+如果不写默认访问,[public,protected,默认,private]
+
+**返回类型**
+
+1.一个方法最多有一个返回值
+
+(若想返回多个值,可以将多个返回结果放进数组里)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2013.png)
+
+2.返回类型可以为任意类型，包含基本类型或引用类型（数组，对象）
+
+3.如果方法要求有返回数据类型，则方法体中最后的执行语句必须为return 值；而且要求返回值类型必须和return的值类型一致或兼容
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2014.png)
+
+4.如果方法是void，则方法体中可以没有return语句，或者只写 return；
+
+**形参列表**
+
+1. 可以没有参数,也可以有多个参数,中间用逗号隔开
+2. 参数类型可以为任意类型,包含基本类型或引用类型
+3. 调用带参数的方法时，一定对应着参数列表传入相同类型或兼容类型的参数！
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2015.png)
+    
+4. 方法定义时的参数称为形式参数，简称形参；
+    1. 方法调用时的传参数称为实际参数，简称实参
+    2. 实参和形参的类型要一致或兼个数、顺序必须一致！
+
+**方法体**
+
+方法不能嵌套定义  不能↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2016.png)
+
+**方法调用细节说明**
+
+1. 同一个类中的方法调用:直接调用
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2017.png)
+    
+2. 跨类需要先创建对象,再调用方法名
+
+### 方法传参机制 (parameter)参数
+
+**基本数据类型**
+
+传递的是值（值拷贝），形参的任何改变不影响实参！
+
+**引用数据类型**
+
+在传引用数据(数组,对象)时,其实传的是地址,
+
+可通过形参影响实参
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2018.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2019.png)
+
+### 方法递归调用
+
+**打印问题**
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2020.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2021.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2022.png)
+
+**阶乘问题**
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2023.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2024.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled.jpeg)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2025.png)
+
+### 方法递归调用规则
+
+1. 执行一个方法时，就创建一个新的受保护的独立空间（栈空间）
+2. 方法的局部变量是独立的不会相互影响，比如n变量
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2026.png)
+    
+3. 如果方法中使用的是引用类型变量（比如数组，对象），就会共享该引用类型的数据.
+4. 递归必须向退出递归的条件逼近否则就是无限递归，出现StackOverflowError)
+5. 当一个方法执行完毕，或者遇到return，就会返回，遵守谁调用，就将结果返回给谁，
+    
+    同时当方法执行完毕或者返回时，该方法也就执行完毕。
+    
+
+### 方法重载Overload
+
+java中允许同一个类中，多个同名方法的存在，但要求形参列表不一致！
+
+比如:System.out.println(); out是PrintStream类型
+
+重载的好处
+
+1）减轻了起名的麻烦
+
+2）减轻了记名的麻烦
+
+注意
+
+- 方法名必须得一致
+- 形参列表必须不同(形参类型或个数或顺序，至少有一样不同,形参的名字无要求)
+- 返回类型:无要求
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2027.png)
+
+### 可变参数
+
+java允许将同一个类中多个同名同功能但参数个数不同的方法，封装成一个方法。
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2028.png)
+
+注意事项
+
+1. 可变参数的实参可以为0个或任意个
+2. 可变参数的实参可以为数组
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2029.png)
+    
+3. 可变参数的本质就是数组
+4. 可变参数可以和普通类型的参数一起放在形参列表，但必须保证可变参数在最后
+5. 一个形参列表中只能出现一个可变参数
+
+### 作用域
+
+1. 在java编程中，主要的变量就是属性（成员变量）和局部变量。
+2. 局部变量一般是指在成员方法中定义的变量
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2030.png)
+    
+3. 全局变量：也就是属性，作用域为整个类体
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2031.png)
+    
+4. 全局变量可以不赋值直接使用,因为有默认值;局部变量必须赋值后才能使用，因为没有默认值
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2032.png)
+    
+
+**注意事项**
+
+- 属性和局部变量可以重名，访问时遵循就近原则。
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2033.png)
+    
+- 在同一个作用域中，比如在同一个成员方法中，两个局部变量，不能重名
+- 属性生命周期较长，伴随着对象的创建而创建，伴随着对象的销毁而销毁。
+- 局部变量，生命周期较短，伴随着它的代码块的执行而创建，伴随着代码块的结束而销毁。即在一次方法调用过程中。
+- 作用域范围不同
+- 全局变量/属性：可以被本类使用，或其他类使用（通过对象调用）局部变量：只能在本类中对应的方法中使用
+- 属性可以加修饰符(public, protected ,private),局部变量不行
+
+### 构造方法/构造器
+
+构造方法又叫构造器（constructor），是类的一种特殊的方法，它的主要作用是完成对新对象的初始化。
+
+基本语法
+
+[修饰符] 方法名(形参列表){
+
+方法体;}
+
+1. 构造器的修饰符可以默认，也可以是public protected private
+2. 构造器没有返回值
+3. 方法名和类名字必须一样
+4. 参数列表和成员方法一样的规则
+5. 构造器的调用系统完成
+
+**构造器细节**
+
+1. 一个类可以定义多个不同的构造器,即构造器重载
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2034.png)
+    
+2. 构造器是对象的初始化,并不是创建对象
+3. 在创建对象时,系统自动调用该类的构造方法
+4. 若没有定义构造器,系统会自动给类生成一个默认的无参构造器,比如Dog(){}
+5. 一旦定义了自己的构造器，默认的构造器就覆盖了，就不能再使用默认的无参构造器，除非显式的定义一下，即：Cat(){}
+
+定义了构造器之后,
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2035.png)
+
+无法这样调用方法
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2036.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2037.png)
+
+### 对象创建流程分析
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2038.png)
+
+创建对象是由new Person完成的,构造器是对属性的初始化
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2039.png)
+
+此时new的工作完成 ,p是对象的引用(对象名)↑↑↑↑↑↑↑↑↑↑
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2040.png)
+
+流程分析
+
+1. 加载Person类信息(Person.class),只会加载一次
+2. 在堆中分配空间(地址)
+3. 完成对象初始化
+    
+    3.1 默认初始化 age = 0,name = null,
+    
+    3.2 显式初始化 age = 90,name = null,
+    
+    3.3 构造器初始化 age = 20,name = 小倩.
+    
+4. 把对象在堆中的地址返回给p(p是对象名,也可以理解成对象的引用)
+
+### this关键字
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2041.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2042.png)
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2043.png)
+
+## this小结:哪个对象调用,this就代表哪个对象
+
+**this细节**
+
+1. this可以访问本类的属性、方法、构造器
+2. this可以用于区分当前类的属性和局部变量
+3. 访问成员方法的语法：：this.方法名（参数列表）；
+4. 访问构造器语法：this（参数列表);注意只能在构造器中使用(即只能在构造器中访问另外一个构造器)
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2044.png)
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2045.png)
+    
+    ![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2046.png)
+    
+5. this不能在类定义的外部使用，只能在类定义的方法中使用。
+
+### Homework
+
+![Untitled](Chapter06%206efcbadbe7d241d7bb9033195706f21b/Untitled%2047.png)
+
+匿名对象只使用一次,使用完毕即销毁
+
+**`new Test().count1();`**：这行代码创建了一个**`Test`**的匿名对象，并调用**`count1()`**方法。在**`count1()`**方法中，**`count`**的值被设置为10，然后打印**`count1=10`**。
+
+count1=10
+
+**`Test t1 = new Test();`**：这行代码创建了一个新的**`Test`**对象**`t1`**。
+count1=9 输出将是**`count1=9`**，并且之后**`count`**变为10。
+count1=10 输出将是**`count1=10`**，并且之后**`count`**变为11。
