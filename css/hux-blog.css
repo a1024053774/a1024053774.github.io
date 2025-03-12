@@ -1701,7 +1701,7 @@ img::-moz-selection {
     top: 0 !important;
     left: 0 !important;
     height: 6px !important; /* 增加高度 */
-    background-color: #0085a1 !important; /* 醒目的粉色 */
+    background-color: #0085a1 !important; 
     width: 0% !important;
     z-index: 99999 !important; /* 超高z-index */
     transition: width 0.2s ease !important;
@@ -1719,5 +1719,46 @@ img::-moz-selection {
       display: block;
       margin-left: 0;
       margin-top: 5px;
+  }
+}
+
+
+/* 返回顶部按钮 */
+.back-to-top {
+  position: fixed;
+  left: 20px;
+  bottom: 50%;
+  transform: translateY(50%);
+  z-index: 9999; /* 确保按钮在最上层 */
+  width: 80px;
+  height: 80px;
+  background-color: rgba(0, 133, 161, 0.8);
+  border-radius: 50%;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.back-to-top a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  color: #0085a1;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-to-top:hover {
+  opacity: 1;
+  transform: translateY(50%) scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 133, 161, 0.8);
+}
+
+/* 移动设备适配 */
+@media (max-width: 768px) {
+  .back-to-top {
+      left: 10px;
+      width: 35px;
+      height: 35px;
   }
 }
