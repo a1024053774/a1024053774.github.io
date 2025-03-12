@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <!-- 使用span而非div，并将所有代码放在一行 -->
+                    <!-- 阅读时间估计 -->
 <span class="meta reading-time"><i class="fa fa-clock-o" aria-hidden="true"></i> 阅读时间约 {% if page.content %}{% assign words = page.content | strip_html | size | divided_by: 300 | plus: 1 %}{{ words }}{% else %}1{% endif %} 分钟</span>
                     <h1>{{ page.title }}</h1>
                     {% comment %} always create a h2 for keeping the margin {% endcomment %}
