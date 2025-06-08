@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="history">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/_posts/history/history.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
