@@ -34,6 +34,11 @@
         <p class="comments-description">
           针对当前页面单独归档评论线程，支持响应式布局和主题同步。
         </p>
+        <div class="comments-chip-row" aria-hidden="true">
+          <span class="comments-chip">{{ comments_provider | upcase }}</span>
+          <span class="comments-chip">Responsive</span>
+          <span class="comments-chip">Theme synced</span>
+        </div>
       </div>
       <div class="comments-summary" aria-hidden="true">
         <span class="comments-summary-label">Current Thread</span>
@@ -52,6 +57,13 @@
             <span>评论加载后可直接在当前页面参与讨论</span>
           </div>
         </div>
+        <time class="comments-thread-time" {% if page.date %}datetime="{{ page.date | date_to_xmlschema }}"{% endif %}>
+          {% if page.date %}
+          {{ page.date | date: "%b %-d, %Y" }}
+          {% else %}
+          Current page
+          {% endif %}
+        </time>
       </div>
 
       <div class="comments-thread-body" data-comments-mount>
