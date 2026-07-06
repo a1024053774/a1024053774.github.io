@@ -1,7 +1,7 @@
 /* ===========================================================
  * sw.js
  * ===========================================================
- * Copyright 2016 @huxpro
+ * Offline caching and navigation fallback for LuckyE Blog
  * Licensed under Apache 2.0
  * service worker scripting
  * ========================================================== */
@@ -9,7 +9,7 @@
 // CACHE_NAMESPACE
 // CacheStorage is shared between all sites under same domain.
 // A namespace can prevent potential name conflicts and mis-deletion.
-const CACHE_NAMESPACE = 'main-'
+const CACHE_NAMESPACE = 'luckye-blog-'
 
 const CACHE = CACHE_NAMESPACE + 'precache-then-runtime';
 const PRECACHE_LIST = [
@@ -17,13 +17,16 @@ const PRECACHE_LIST = [
   "./offline.html",
   "./js/jquery.min.js",
   "./js/bootstrap.min.js",
-  "./js/hux-blog.min.js",
+  "./js/luckye-blog.min.js",
+  "./js/comments.js",
+  "./js/dark-mode.js",
   "./js/snackbar.js",
+  "./css/dark-mode.css",
   "./img/icon_wechat.png",
-  "./img/avatar-hux.jpg",
-  "./img/home-bg.jpg",
+  "./img/Avatar.png",
+  "./img/Wave.jpg",
   "./img/404-bg.jpg",
-  "./css/hux-blog.min.css",
+  "./css/luckye-blog.min.css",
   "./css/bootstrap.min.css"
   // "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css",
   // "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/fonts/fontawesome-webfont.woff2?v=4.6.3",
@@ -31,17 +34,21 @@ const PRECACHE_LIST = [
 ]
 const HOSTNAME_WHITELIST = [
   self.location.hostname,
-  "huangxuan.me",
-  "yanshuo.io",
   "cdnjs.cloudflare.com"
 ]
-const DEPRECATED_CACHES = ['precache-v1', 'runtime', 'main-precache-v1', 'main-runtime']
+const DEPRECATED_CACHES = [
+  'precache-v1',
+  'runtime',
+  'main-precache-v1',
+  'main-runtime',
+  'main-precache-then-runtime'
+]
 
 
 // The Util Function to hack URLs of intercepted requests
 const getCacheBustingUrl = (req) => {
   var now = Date.now();
-  url = new URL(req.url)
+  const url = new URL(req.url)
 
   // 1. fixed http URL
   // Just keep syncing with location.protocol
@@ -85,7 +92,7 @@ const shouldRedirect = (req) => (isNavigationReq(req) && new URL(req.url).pathna
 // `${url}/` would mis-add "/" in the end of query, so we use URL object.
 // P.P.S. Always trust url.pathname instead of the whole url string.
 const getRedirectUrl = (req) => {
-  url = new URL(req.url)
+  const url = new URL(req.url)
   url.pathname += "/"
   return url.href
 }

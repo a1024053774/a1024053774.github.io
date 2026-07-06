@@ -1,7 +1,7 @@
 {
-  "name": "Hux Blog",
-  "short_name": "Hux Blog",
-  "description": "About an engineer & designer who loves web.",
+  "name": "LuckyE Blog",
+  "short_name": "LuckyE",
+  "description": "LuckyE 的个人博客与技术笔记。",
   "icons": [{
     "src": "icons/128.png",
     "sizes": "128x128",
@@ -11,8 +11,8 @@
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "background_color": "#fff",
-  "theme_color": "#000",
+  "background_color": "#f7f5ef",
+  "theme_color": "#141413",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait"
