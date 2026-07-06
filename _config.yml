@@ -58,6 +58,26 @@ kramdown:
 disqus_username: LuckyE
 disqus: false
 
+# Comments settings
+comment_system:
+  enabled: true
+  provider: disqus
+  disqus:
+    shortname: LuckyE
+    lazy: true
+  giscus:
+    repo: "a1024053774/a1024053774.github.io"
+    repo_id: ""
+    category: "Comments"
+    category_id: ""
+    mapping: pathname
+    reactions_enabled: 1
+    emit_metadata: 0
+    input_position: top
+    lang: zh-CN
+    theme_light: light
+    theme_dark: dark_dimmed
+
 # Netease settings
 netease_comment: false
 
@@ -71,7 +91,7 @@ netease_comment: false
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
 sidebar-about-description: "The best people in life are free. <br> 这里是 遠山江浸月 的个人博客,记录着我的学习和生活。"
-sidebar-avatar: https://raw.githubusercontent.com/a1024053774/a1024053774.github.io/refs/heads/master/img/Avatar.png # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/Avatar.png
 
 # Featured Tags
 featured-tags: false # whether or not using Feature-Tags
@@ -83,4 +103,3 @@ service-worker: true
 
 # MathJax rendering for layout:page (e.g. post preview)
 page-mathjax: false
-

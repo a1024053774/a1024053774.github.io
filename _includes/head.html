@@ -34,6 +34,8 @@
 
     <title>{% if page.title %}{{ page.title }} - {{ site.SEOTitle }}{% else %}{{ site.SEOTitle }}{% endif %}</title>
 
+    {% assign asset_version = site.time | date: "%s" %}
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="{{ site.baseurl }}/pwa/manifest.json">
 
@@ -44,13 +46,13 @@
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="{{ " /css/bootstrap.min.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/bootstrap.min.css" | prepend: site.baseurl }}">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ " /css/hux-blog.min.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/luckye-blog.min.css" | prepend: site.baseurl }}?v={{ asset_version }}">
     
     <!-- Darkmode CSS -->
-    <link rel="stylesheet" href="{{ "/css/dark-mode.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/dark-mode.css" | prepend: site.baseurl }}?v={{ asset_version }}">
 
     <!-- Custom Fonts -->
     <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
@@ -74,5 +76,5 @@
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
     
         <!-- darkmode js -->
-    <script src="{{ "/js/dark-mode.js" | prepend: site.baseurl }}"></script>
+    <script src="{{ "/js/dark-mode.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 </head>

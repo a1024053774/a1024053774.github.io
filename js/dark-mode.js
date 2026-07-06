@@ -57,6 +57,12 @@
         // 应用主题函数
         function applyTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.style.colorScheme = theme;
+            document.dispatchEvent(new CustomEvent('themechange', {
+                detail: {
+                    theme: theme
+                }
+            }));
         }
         
         // 更新图标函数
