@@ -1,46 +1,148 @@
 ---
-layout: page
+layout: default
 description: "「It must be exhausting always rooting for the anti-hero」"
 ---
 
-{% for post in paginator.posts %}
-<div class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">
-            {{ post.title }}
-        </h2>
-        {% if post.subtitle %}
-        <h3 class="post-subtitle">
-            {{ post.subtitle }}
-        </h3>
-        {% endif %}
-        <div class="post-content-preview">
-            {% if post.lang == 'en' %}
-                {{ post.content | strip_html | truncate:300 }}
-            {% else %}
-                {{ post.content | strip_html | truncate:200 }}
-            {% endif %}
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-</div>
-<hr>
-{% endfor %}
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "last_modified_at_iso" | reverse %}
 
-<!-- Pager -->
-{% if paginator.total_pages > 1 %}
-<ul class="pager">
-    {% if paginator.previous_page %}
-    <li class="previous">
-        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-    </li>
-    {% endif %}
-    {% if paginator.next_page %}
-    <li class="next">
-        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
+<header class="home-landing">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1 col-md-12">
+        <div class="home-landing__inner">
+          <div class="home-landing__copy">
+            <span class="home-landing__badge">Updated notebook archive</span>
+            <h1>{{ site.title }}</h1>
+            <p>{{ page.description }}</p>
+          </div>
+          <div class="home-landing__meta">
+            <div class="home-landing__stat">
+              <strong>{{ site.visible_post_count | default: visible_posts.size }}</strong>
+              <span>公开文章</span>
+            </div>
+            <div class="home-landing__stat">
+              <strong>{{ site.tag_index | size }}</strong>
+              <span>活跃标签</span>
+            </div>
+            <div class="home-landing__stat">
+              <strong>{{ visible_posts.first.last_modified_at | date: "%Y-%m-%d" }}</strong>
+              <span>最近更新</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="home-stage" data-home-stage>
+  <div class="container">
+    <div class="home-stage__toolbar">
+      <div class="home-stage__heading">
+        <span class="home-stage__eyebrow">Post Stack</span>
+        <h2>按修改时间浏览最近内容</h2>
+        <p>滚轮、左右按钮和圆点都可以切换卡片；切到尽头后会自动循环。</p>
+      </div>
+      <div class="home-stage__actions">
+        <button type="button" class="home-stage__action" data-home-search>
+          <i class="fa fa-search" aria-hidden="true"></i>
+          Search
+        </button>
+        <a class="home-stage__action" href="{{ '/tags/' | prepend: site.baseurl }}">
+          <i class="fa fa-tags" aria-hidden="true"></i>
+          Tags
+        </a>
+        <button type="button" class="home-stage__action home-stage__action--toggle" data-home-view-toggle>
+          <i class="fa fa-bars" aria-hidden="true"></i>
+          Traditional list
+        </button>
+      </div>
+    </div>
+
+    <div class="home-stage__tag-row">
+      {% for item in site.tag_index limit: 6 %}
+      <a class="home-stage__tag-chip" href="{{ '/tags/' | prepend: site.baseurl }}#{{ item.slug }}">
+        {{ item.name }}
+        <span>{{ item.count }}</span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="home-stage__stack-view" data-home-stack-view>
+      <button type="button" class="home-stage__nav home-stage__nav--prev" data-home-prev aria-label="Previous post">
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+      </button>
+      <div class="home-stage__viewport" data-home-viewport>
+        <div class="home-stage__track">
+          {% for post in visible_posts %}
+          <a
+            class="home-card{% unless post.cover_image %} home-card--no-image{% endunless %}"
+            data-home-card
+            data-index="{{ forloop.index0 }}"
+            href="{{ post.url | prepend: site.baseurl }}">
+            <div
+              class="home-card__media"
+              {% if post.cover_image %}
+              style="background-image: url('{{ post.cover_image | prepend: site.baseurl }}');"
+              {% endif %}></div>
+            <div class="home-card__shade"></div>
+            <div class="home-card__content">
+              <div class="home-card__topline">
+                <span>{{ post.tags | first | default: "Article" }}</span>
+                <span>{{ post.last_modified_at | date: "%b %-d, %Y" }}</span>
+              </div>
+              <div class="home-card__body">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.home_excerpt }}</p>
+              </div>
+              <div class="home-card__footer">
+                <span class="home-card__tags">
+                  {% for tag in post.tags limit: 2 %}
+                  <em>{{ tag }}</em>
+                  {% endfor %}
+                </span>
+                <span class="home-card__open">
+                  <i class="fa fa-external-link" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      <button type="button" class="home-stage__nav home-stage__nav--next" data-home-next aria-label="Next post">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </button>
+      <div class="home-stage__footer">
+        <div class="home-stage__dots" data-home-dots>
+          {% for post in visible_posts %}
+          <button type="button" class="home-stage__dot" data-home-dot="{{ forloop.index0 }}" aria-label="Jump to {{ post.title }}"></button>
+          {% endfor %}
+        </div>
+        <div class="home-stage__progress" data-home-progress>1 / {{ visible_posts.size }}</div>
+      </div>
+    </div>
+
+    <div class="home-stage__list-view is-hidden" data-home-list-view>
+      {% for post in visible_posts %}
+      <article class="home-list-card">
+        <a class="home-list-card__thumb{% unless post.cover_image %} home-list-card__thumb--fallback{% endunless %}" href="{{ post.url | prepend: site.baseurl }}">
+          {% if post.cover_image %}
+          <span style="background-image: url('{{ post.cover_image | prepend: site.baseurl }}');"></span>
+          {% else %}
+          <span class="home-list-card__fallback-label">{{ post.tags | first | default: "Article" }}</span>
+          {% endif %}
+        </a>
+        <div class="home-list-card__body">
+          <div class="home-list-card__meta">
+            <span>{{ post.last_modified_at | date: "%B %-d, %Y" }}</span>
+            <span>{{ post.tags | join: " · " }}</span>
+          </div>
+          <a class="home-list-card__title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          <p>{{ post.home_excerpt }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

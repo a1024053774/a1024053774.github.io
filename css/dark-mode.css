@@ -1,4 +1,42 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap");
+@font-face {
+    font-family: "Anthropic Sans";
+    src: url("https://assets.claude.ai/Fonts/AnthropicSans-Text-Regular-Static.otf") format("opentype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Anthropic Sans";
+    src: url("https://assets.claude.ai/Fonts/AnthropicSans-Text-Medium-Static.otf") format("opentype");
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Anthropic Sans Display";
+    src: url("https://assets.claude.ai/Fonts/AnthropicSans-Display-Medium-Static.otf") format("opentype");
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Anthropic Serif";
+    src: url("https://assets.claude.ai/Fonts/AnthropicSerif-Text-Regular-Static.otf") format("opentype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Anthropic Serif Display";
+    src: url("https://assets.claude.ai/Fonts/AnthropicSerif-Display-Medium-Static.otf") format("opentype");
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+}
 
 :root,
 html[data-theme="light"] {
@@ -35,9 +73,9 @@ html[data-theme="light"] {
     --sidebar-accent-foreground: #343434;
     --sidebar-primary-foreground: #fbfbfb;
     --primary-hover: #b05730;
-    --display-font: "Outfit", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    --body-font: "Outfit", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    --serif-font: "Cormorant Garamond", "STSong", serif;
+    --display-font: "Anthropic Sans Display", "Anthropic Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --body-font: "Anthropic Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --serif-font: "Anthropic Serif", "Anthropic Serif Display", "STSong", serif;
     --page-wash:
         radial-gradient(circle at top left, rgba(201, 100, 66, 0.16), transparent 36%),
         radial-gradient(circle at top right, rgba(233, 230, 220, 0.92), transparent 34%),

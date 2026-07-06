@@ -1,6 +1,7 @@
 {% if site.comment_system and site.comment_system.enabled %}
-{% assign comments_provider = site.comment_system.provider | default: 'disqus' %}
+{% assign comments_provider = site.comment_system.provider | default: 'auto' %}
 {% assign comments_identifier = page.comments_identifier | default: page.id | default: page.url %}
+{% assign showcase_comments = site.data.comment_showcase.default %}
 <section
   class="comments-shell"
   data-comments-root
@@ -9,42 +10,60 @@
   data-page-identifier="{{ comments_identifier | escape }}"
   data-page-title="{{ page.title | default: site.title | escape }}"
   data-disqus-shortname="{{ site.comment_system.disqus.shortname | escape }}"
-  data-giscus-repo="{{ site.comment_system.giscus.repo | escape }}"
-  data-giscus-repo-id="{{ site.comment_system.giscus.repo_id | escape }}"
-  data-giscus-category="{{ site.comment_system.giscus.category | escape }}"
-  data-giscus-category-id="{{ site.comment_system.giscus.category_id | escape }}"
-  data-giscus-mapping="{{ site.comment_system.giscus.mapping | default: 'pathname' | escape }}"
-  data-giscus-reactions-enabled="{{ site.comment_system.giscus.reactions_enabled | default: 1 }}"
-  data-giscus-emit-metadata="{{ site.comment_system.giscus.emit_metadata | default: 0 }}"
-  data-giscus-input-position="{{ site.comment_system.giscus.input_position | default: 'top' | escape }}"
-  data-giscus-lang="{{ site.comment_system.giscus.lang | default: 'zh-CN' | escape }}"
-  data-giscus-theme-light="{{ site.comment_system.giscus.theme_light | default: 'light' | escape }}"
-  data-giscus-theme-dark="{{ site.comment_system.giscus.theme_dark | default: 'dark_dimmed' | escape }}">
-  <div class="comments-surface">
-    <div class="comments-intro">
-      <div class="comments-intro-mark">
-        <span class="comments-avatar comments-avatar--primary">{{ site.title | slice: 0 }}</span>
-        <span class="comments-avatar comments-avatar--secondary">
-          <i class="fa fa-comments-o" aria-hidden="true"></i>
-        </span>
-      </div>
-      <div class="comments-intro-copy">
-        <p class="comments-label">Discussion</p>
-        <h2 class="comments-title">Join the conversation</h2>
-        <p class="comments-description">
-          针对当前页面单独归档评论线程，支持响应式布局和主题同步。
-        </p>
-        <div class="comments-chip-row" aria-hidden="true">
-          <span class="comments-chip">{{ comments_provider | upcase }}</span>
-          <span class="comments-chip">Responsive</span>
-          <span class="comments-chip">Theme synced</span>
+  data-waline-server-url="{{ site.comment_system.waline.server_url | escape }}"
+  data-waline-lang="{{ site.comment_system.waline.lang | default: 'zh-CN' | escape }}"
+  data-waline-login="{{ site.comment_system.waline.login | default: 'disable' | escape }}"
+  data-waline-dark="{{ site.comment_system.waline.dark | default: 'html[data-theme=&quot;dark&quot;]' | escape }}"
+  data-waline-page-size="{{ site.comment_system.waline.page_size | default: 12 }}"
+  data-waline-meta="{{ site.comment_system.waline.meta | jsonify | escape }}"
+  data-waline-required-meta="{{ site.comment_system.waline.required_meta | jsonify | escape }}"
+  data-waline-word-limit="{{ site.comment_system.waline.word_limit | jsonify | escape }}">
+  <div class="comments-hero">
+    <span class="comments-kicker">Testimonials</span>
+    <h2 class="comments-title">What readers say</h2>
+    <p class="comments-description">
+      先看读者反馈，再直接在当前页面继续讨论。评论区会优先接入匿名昵称方案，未配置时自动回退到现有服务。
+    </p>
+  </div>
+
+  <div class="comments-wall" aria-label="Pinned comment highlights">
+    {% for item in showcase_comments limit: 6 %}
+    <article class="comments-quote-card">
+      <p class="comments-quote">{{ item.quote }}</p>
+      <div class="comments-person">
+        <span class="comments-person-avatar">{{ item.name | slice: 0 }}</span>
+        <div class="comments-person-meta">
+          <strong>{{ item.name }}</strong>
+          <span>{{ item.role }}</span>
         </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <div class="comments-compose">
+    <div class="comments-compose-head">
+      <div class="comments-compose-copy">
+        <p class="comments-label">Quick Identity</p>
+        <h3 class="comments-compose-title">Pick a preset and leave a note</h3>
+        <p class="comments-compose-description">
+          如果 Waline 已配置，选中的预设身份会自动带入昵称输入框；否则会保持当前评论服务可用。
+        </p>
       </div>
       <div class="comments-summary" aria-hidden="true">
         <span class="comments-summary-label">Current Thread</span>
         <span class="comments-summary-value">{{ page.title | default: site.title }}</span>
       </div>
     </div>
+
+    <div class="comments-identity-row" data-comments-identity-row>
+      {% for preset in site.comment_system.identity_presets %}
+      <button type="button" class="comments-identity-chip" data-comment-identity="{{ preset }}">
+        {{ preset }}
+      </button>
+      {% endfor %}
+    </div>
+    <p class="comments-identity-state" data-comments-identity-state>当前未选择预设身份</p>
 
     <div class="comments-thread-card">
       <div class="comments-thread-head">
@@ -53,17 +72,20 @@
             <i class="fa fa-commenting-o" aria-hidden="true"></i>
           </span>
           <div class="comments-thread-meta">
-            <strong>Reader Replies</strong>
-            <span>评论加载后可直接在当前页面参与讨论</span>
+            <strong>Live Discussion</strong>
+            <span>真实评论会加载在下方，移动端和主题切换会同步处理。</span>
           </div>
         </div>
-        <time class="comments-thread-time" {% if page.date %}datetime="{{ page.date | date_to_xmlschema }}"{% endif %}>
-          {% if page.date %}
-          {{ page.date | date: "%b %-d, %Y" }}
-          {% else %}
-          Current page
-          {% endif %}
-        </time>
+        <div class="comments-thread-badges">
+          <span class="comments-thread-pill" data-comments-provider-pill>{{ comments_provider | upcase }}</span>
+          <time class="comments-thread-time" {% if page.date %}datetime="{{ page.date | date_to_xmlschema }}"{% endif %}>
+            {% if page.date %}
+            {{ page.date | date: "%b %-d, %Y" }}
+            {% else %}
+            Current page
+            {% endif %}
+          </time>
+        </div>
       </div>
 
       <div class="comments-thread-body" data-comments-mount>
@@ -73,14 +95,10 @@
           <span class="comments-loading-dot"></span>
           <span class="comments-loading-text">Loading comments…</span>
         </div>
-        {% if comments_provider == 'giscus' %}
-        <div class="comments-giscus-slot" data-giscus-slot></div>
-        {% else %}
-        <div id="disqus_thread" class="comments-disqus-slot"></div>
-        <noscript>
-          Please enable JavaScript to view the comments powered by Disqus.
-        </noscript>
-        {% endif %}
+        <div class="comments-provider-note" data-comments-note></div>
+        <div id="waline" class="comments-waline-slot is-hidden" data-waline-slot></div>
+        <div id="disqus_thread" class="comments-disqus-slot is-hidden" data-disqus-slot></div>
+        <noscript>Please enable JavaScript to view and submit comments.</noscript>
       </div>
     </div>
   </div>

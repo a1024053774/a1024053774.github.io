@@ -1,0 +1,92 @@
+.code-window {
+  overflow: hidden;
+  margin: 26px 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: #171615;
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.24);
+}
+
+.code-window__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 46px;
+  padding: 0 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.code-window__traffic {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  i {
+    display: block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  i:nth-child(1) {
+    background: #ff5f57;
+  }
+
+  i:nth-child(2) {
+    background: #febc2e;
+  }
+
+  i:nth-child(3) {
+    background: #28c840;
+  }
+}
+
+.code-window__language {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.code-window > .highlight,
+.code-window .highlight {
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.code-window pre {
+  margin: 0 !important;
+  padding: 18px 20px !important;
+  background: transparent !important;
+  color: #edf2f7 !important;
+  font-size: 14px !important;
+  line-height: 1.75 !important;
+}
+
+.code-window code {
+  font-family: "SFMono-Regular", "SF Mono", "JetBrains Mono", "Fira Code", Consolas, monospace;
+}
+
+.post-container .highlighter-rouge + .highlighter-rouge,
+.post-container figure.highlight + figure.highlight {
+  margin-top: -10px;
+}
+
+@media (max-width: 767px) {
+  .code-window {
+    margin: 22px 0;
+    border-radius: 20px;
+  }
+
+  .code-window__header {
+    padding: 0 14px;
+  }
+
+  .code-window pre {
+    padding: 16px !important;
+    font-size: 13px !important;
+  }
+}

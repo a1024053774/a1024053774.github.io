@@ -1,0 +1,215 @@
+.tag-lab {
+  margin: 8px 0 26px;
+}
+
+.tag-lab__intro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 26px 28px;
+  border-radius: 28px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-panel);
+  box-shadow: var(--card-shadow);
+}
+
+.tag-lab__eyebrow {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.tag-lab__intro h2 {
+  margin: 10px 0 12px;
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  line-height: 1;
+}
+
+.tag-lab__intro p {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--muted-foreground);
+}
+
+.tag-lab__stats {
+  min-width: 140px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: var(--surface-card);
+  border: 1px solid var(--glass-border);
+
+  strong {
+    display: block;
+    color: var(--foreground);
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  span {
+    display: block;
+    margin-top: 8px;
+    color: var(--muted-foreground);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+.tag-lab__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.tag-lab__chip,
+.featured-tag-panel__list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--surface-card);
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.24s ease, border-color 0.24s ease, color 0.24s ease, background-color 0.24s ease;
+}
+
+.tag-lab__chip span,
+.featured-tag-panel__list a span,
+.featured-tag-panel__meta {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.tag-lab__chip:hover,
+.tag-lab__chip:focus,
+.tag-lab__chip.is-active,
+.featured-tag-panel__list a:hover,
+.featured-tag-panel__list a:focus {
+  color: var(--primary);
+  border-color: rgba(201, 100, 66, 0.32);
+  background: rgba(201, 100, 66, 0.1);
+  transform: translateY(-1px);
+}
+
+.tag-lab__results {
+  display: grid;
+  gap: 16px;
+}
+
+.tag-lab__card {
+  padding: 22px 24px;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  background: var(--surface-card);
+  box-shadow: 0 14px 34px rgba(46, 39, 29, 0.08);
+}
+
+.tag-lab__card.is-hidden,
+[data-tag-post].is-hidden {
+  display: none;
+}
+
+.tag-lab__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tag-lab__card-title {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--foreground) !important;
+  font-family: var(--display-font);
+  font-size: 30px;
+  line-height: 1.12;
+}
+
+.tag-lab__card p {
+  margin: 12px 0 0;
+  color: var(--muted-foreground);
+}
+
+.tag-lab__card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tag-lab__card-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--glass-pill);
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.featured-tag-panel {
+  margin-top: 22px;
+}
+
+.featured-tag-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.featured-tag-panel__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.post-heading-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.post-heading-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(17, 16, 15, 0.34);
+  color: rgba(255, 255, 255, 0.86) !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(16px);
+}
+
+@media (max-width: 767px) {
+  .tag-lab__intro,
+  .tag-lab__card {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .tag-lab__card-title {
+    font-size: 24px;
+  }
+}

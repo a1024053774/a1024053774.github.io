@@ -1,0 +1,58 @@
+---
+layout: page
+title: "Tags"
+description: "按主题筛选公开文章"
+header-img: "img/home-bg-geek.jpg"
+header-mask: 0.25
+---
+
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "last_modified_at_iso" | reverse %}
+
+<section class="tag-lab" data-tag-lab>
+  <div class="tag-lab__intro">
+    <div>
+      <span class="tag-lab__eyebrow">Tag Explorer</span>
+      <h2>修复后的标签页会直接过滤公开文章</h2>
+      <p>点击标签即可切换结果；如果没有选择，会默认显示最近更新的全部文章。</p>
+    </div>
+    <div class="tag-lab__stats">
+      <strong>{{ site.visible_post_count | default: visible_posts.size }}</strong>
+      <span>Posts</span>
+    </div>
+  </div>
+
+  <div class="tag-lab__filters" data-tag-filters>
+    <button type="button" class="tag-lab__chip is-active" data-tag-filter="">
+      全部文章
+      <span>{{ site.visible_post_count | default: visible_posts.size }}</span>
+    </button>
+    {% for item in site.tag_index %}
+    <button
+      type="button"
+      id="{{ item.slug }}"
+      class="tag-lab__chip"
+      data-tag-filter="{{ item.name }}">
+      {{ item.name }}
+      <span>{{ item.count }}</span>
+    </button>
+    {% endfor %}
+  </div>
+
+  <div class="tag-lab__results" data-tag-results>
+    {% for post in visible_posts %}
+    <article class="tag-lab__card" data-tag-post data-tags="{{ post.tags | join: '||' | escape }}">
+      <div class="tag-lab__card-meta">
+        <span>{{ post.last_modified_at | date: "%Y-%m-%d" }}</span>
+        <span>{{ post.tags | first | default: "Article" }}</span>
+      </div>
+      <a class="tag-lab__card-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+      <p>{{ post.home_excerpt }}</p>
+      <div class="tag-lab__card-tags">
+        {% for tag in post.tags %}
+        <span>{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>

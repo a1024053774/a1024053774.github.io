@@ -51,7 +51,7 @@ kramdown:
     span:
       line_numbers: false
     block:
-      line_numbers: true
+      line_numbers: false
       start_line: 1
 
 # Disqus settings
@@ -61,10 +61,23 @@ disqus: false
 # Comments settings
 comment_system:
   enabled: true
-  provider: disqus
+  provider: auto
   disqus:
     shortname: LuckyE
     lazy: true
+  waline:
+    server_url: ""
+    lang: zh-CN
+    meta:
+      - nick
+    required_meta:
+      - nick
+    login: disable
+    page_size: 12
+    word_limit:
+      - 1
+      - 1200
+    dark: html[data-theme="dark"]
   giscus:
     repo: "a1024053774/a1024053774.github.io"
     repo_id: ""
@@ -77,6 +90,10 @@ comment_system:
     lang: zh-CN
     theme_light: light
     theme_dark: dark_dimmed
+  identity_presets:
+    - 算法读者
+    - 工程笔记党
+    - 深夜学习者
 
 # Netease settings
 netease_comment: false
@@ -94,7 +111,7 @@ sidebar-about-description: "The best people in life are free. <br> 这里是 遠
 sidebar-avatar: /img/Avatar.png
 
 # Featured Tags
-featured-tags: false # whether or not using Feature-Tags
+featured-tags: true # whether or not using Feature-Tags
 featured-condition-size: 1 # A tag will be featured if the size of it is more than this condition value
 
 # Progressive Web Apps

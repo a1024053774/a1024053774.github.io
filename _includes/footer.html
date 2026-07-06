@@ -30,6 +30,9 @@
 {% if site.comment_system and site.comment_system.enabled %}
 <script src="{{ "/js/comments.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 {% endif %}
+<script src="{{ "/js/code-blocks.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
+<script src="{{ "/js/home-carousel.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
+<script src="{{ "/js/tags.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 
 <!-- Simple Jekyll Search -->
 <script src="{{ "/js/simple-jekyll-search.min.js" | prepend: site.baseurl }}"></script>

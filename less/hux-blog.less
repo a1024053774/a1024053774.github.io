@@ -4,8 +4,11 @@
 @import "side-catalog.less";
 @import "snackbar.less";
 @import "highlight.less";
+@import "code-chrome.less";
 @import "search.less";
 @import "comments.less";
+@import "home-stage.less";
+@import "tag-lab.less";
 
 // Global Components
 
@@ -280,6 +283,40 @@ samp {
 
 // materialize, mobile only
 @media only screen and (max-width: 767px) {
+  .navbar-custom .container-fluid {
+    position: relative;
+    padding-right: 15px;
+  }
+
+  .navbar-header.page-scroll {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100vw - 30px);
+    box-sizing: border-box;
+  }
+
+  .navbar-custom .navbar-brand {
+    display: block;
+    float: none;
+    order: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: calc(100vw - 92px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 15px;
+  }
+
+  .navbar-default .navbar-toggle {
+    float: none;
+    order: 2;
+    position: static;
+    flex: 0 0 auto;
+    margin: 2px 0 0 auto;
+  }
+
   /**
    * Layout
    * Since V1.6 we use absolute positioning to prevent to expand container-fluid
@@ -301,6 +338,11 @@ samp {
    * HuxBlog-Navbar using genuine Material Design Animation
    */
   #huxblog_navbar {
+    position: absolute;
+    top: 56px;
+    right: 12px;
+    width: 0;
+    overflow: visible;
     /**
      * Sharable code and 'out' function
      */

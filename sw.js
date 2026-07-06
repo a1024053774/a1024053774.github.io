@@ -10,8 +10,8 @@
 // CacheStorage is shared between all sites under same domain.
 // A namespace can prevent potential name conflicts and mis-deletion.
 const CACHE_NAMESPACE = 'luckye-blog-'
-
-const CACHE = CACHE_NAMESPACE + 'precache-then-runtime';
+const CACHE_VERSION = 'v2';
+const CACHE = `${CACHE_NAMESPACE}${CACHE_VERSION}`;
 const PRECACHE_LIST = [
   "./",
   "./offline.html",
@@ -19,8 +19,11 @@ const PRECACHE_LIST = [
   "./js/bootstrap.min.js",
   "./js/luckye-blog.min.js",
   "./js/comments.js",
+  "./js/code-blocks.js",
   "./js/dark-mode.js",
+  "./js/home-carousel.js",
   "./js/snackbar.js",
+  "./js/tags.js",
   "./css/dark-mode.css",
   "./img/icon_wechat.png",
   "./img/Avatar.png",
@@ -43,6 +46,7 @@ const DEPRECATED_CACHES = [
   'main-runtime',
   'main-precache-then-runtime'
 ]
+const isCacheManagedBySite = (cacheName) => cacheName.indexOf(CACHE_NAMESPACE) === 0
 
 
 // The Util Function to hack URLs of intercepted requests
@@ -125,13 +129,16 @@ self.addEventListener('install', e => {
  */
 self.addEventListener('activate', event => {
   // delete old deprecated caches.
-  caches.keys().then(cacheNames => Promise.all(
+  const cleanup = caches.keys().then(cacheNames => Promise.all(
     cacheNames
-      .filter(cacheName => DEPRECATED_CACHES.includes(cacheName))
+      .filter(cacheName => (
+        DEPRECATED_CACHES.includes(cacheName) ||
+        (isCacheManagedBySite(cacheName) && cacheName !== CACHE)
+      ))
       .map(cacheName => caches.delete(cacheName))
   ))
   console.log('service worker activated.')
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(Promise.all([cleanup, self.clients.claim()]));
 });
 
 
@@ -189,6 +196,29 @@ self.addEventListener('fetch', event => {
       return;
     }
 
+    if (isNavigationReq(event.request)) {
+      const cached = caches.match(event.request);
+      const fetched = fetch(getCacheBustingUrl(event.request), { cache: "no-store" });
+      const fetchedCopy = fetched.then(resp => resp.clone());
+
+      event.respondWith(
+        fetched
+          .then(resp => resp.ok ? resp : cached)
+          .catch(_ => cached)
+          .then(resp => resp || caches.match('offline.html'))
+      );
+
+      event.waitUntil(
+        Promise.all([fetchedCopy, caches.open(CACHE)])
+          .then(([response, cache]) => response.ok && cache.put(event.request, response))
+          .catch(_ => {/* eat any errors */})
+      );
+
+      console.log(`fetch ${event.request.url}`)
+      event.waitUntil(revalidateContent(cached, fetchedCopy))
+      return;
+    }
+
     // Stale-while-revalidate for possiblily dynamic content
     // similar to HTTP's stale-while-revalidate: https://www.mnot.net/blog/2007/12/12/stale
     // Upgrade from Jake's to Surma's: https://gist.github.com/surma/eb441223daaedf880801ad80006389f1
@@ -214,13 +244,6 @@ self.addEventListener('fetch', event => {
         .catch(_ => {/* eat any errors */ })
     );
 
-    // If one request is a HTML naviagtion, checking update!
-    if (isNavigationReq(event.request)) {
-      // you need "preserve logs" to see this log
-      // cuz it happened before navigating
-      console.log(`fetch ${event.request.url}`)
-      event.waitUntil(revalidateContent(cached, fetchedCopy))
-    }
   }
 });
 
