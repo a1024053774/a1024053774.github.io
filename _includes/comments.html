@@ -1,0 +1,88 @@
+{% if site.comment_system and site.comment_system.enabled %}
+{% assign comments_provider = site.comment_system.provider | default: 'disqus' %}
+{% assign comments_identifier = page.comments_identifier | default: page.id | default: page.url %}
+<section
+  class="comments-shell"
+  data-comments-root
+  data-provider="{{ comments_provider }}"
+  data-page-url="{{ page.url | absolute_url | escape }}"
+  data-page-identifier="{{ comments_identifier | escape }}"
+  data-page-title="{{ page.title | default: site.title | escape }}"
+  data-disqus-shortname="{{ site.comment_system.disqus.shortname | escape }}"
+  data-giscus-repo="{{ site.comment_system.giscus.repo | escape }}"
+  data-giscus-repo-id="{{ site.comment_system.giscus.repo_id | escape }}"
+  data-giscus-category="{{ site.comment_system.giscus.category | escape }}"
+  data-giscus-category-id="{{ site.comment_system.giscus.category_id | escape }}"
+  data-giscus-mapping="{{ site.comment_system.giscus.mapping | default: 'pathname' | escape }}"
+  data-giscus-reactions-enabled="{{ site.comment_system.giscus.reactions_enabled | default: 1 }}"
+  data-giscus-emit-metadata="{{ site.comment_system.giscus.emit_metadata | default: 0 }}"
+  data-giscus-input-position="{{ site.comment_system.giscus.input_position | default: 'top' | escape }}"
+  data-giscus-lang="{{ site.comment_system.giscus.lang | default: 'zh-CN' | escape }}"
+  data-giscus-theme-light="{{ site.comment_system.giscus.theme_light | default: 'light' | escape }}"
+  data-giscus-theme-dark="{{ site.comment_system.giscus.theme_dark | default: 'dark_dimmed' | escape }}">
+  <div class="comments-surface">
+    <div class="comments-intro">
+      <div class="comments-intro-mark">
+        <span class="comments-avatar comments-avatar--primary">{{ site.title | slice: 0 }}</span>
+        <span class="comments-avatar comments-avatar--secondary">
+          <i class="fa fa-comments-o" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="comments-intro-copy">
+        <p class="comments-label">Discussion</p>
+        <h2 class="comments-title">Join the conversation</h2>
+        <p class="comments-description">
+          针对当前页面单独归档评论线程，支持响应式布局和主题同步。
+        </p>
+        <div class="comments-chip-row" aria-hidden="true">
+          <span class="comments-chip">{{ comments_provider | upcase }}</span>
+          <span class="comments-chip">Responsive</span>
+          <span class="comments-chip">Theme synced</span>
+        </div>
+      </div>
+      <div class="comments-summary" aria-hidden="true">
+        <span class="comments-summary-label">Current Thread</span>
+        <span class="comments-summary-value">{{ page.title | default: site.title }}</span>
+      </div>
+    </div>
+
+    <div class="comments-thread-card">
+      <div class="comments-thread-head">
+        <div class="comments-thread-author">
+          <span class="comments-thread-avatar">
+            <i class="fa fa-commenting-o" aria-hidden="true"></i>
+          </span>
+          <div class="comments-thread-meta">
+            <strong>Reader Replies</strong>
+            <span>评论加载后可直接在当前页面参与讨论</span>
+          </div>
+        </div>
+        <time class="comments-thread-time" {% if page.date %}datetime="{{ page.date | date_to_xmlschema }}"{% endif %}>
+          {% if page.date %}
+          {{ page.date | date: "%b %-d, %Y" }}
+          {% else %}
+          Current page
+          {% endif %}
+        </time>
+      </div>
+
+      <div class="comments-thread-body" data-comments-mount>
+        <div class="comments-loading" data-comments-loading>
+          <span class="comments-loading-dot"></span>
+          <span class="comments-loading-dot"></span>
+          <span class="comments-loading-dot"></span>
+          <span class="comments-loading-text">Loading comments…</span>
+        </div>
+        {% if comments_provider == 'giscus' %}
+        <div class="comments-giscus-slot" data-giscus-slot></div>
+        {% else %}
+        <div id="disqus_thread" class="comments-disqus-slot"></div>
+        <noscript>
+          Please enable JavaScript to view the comments powered by Disqus.
+        </noscript>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

@@ -1,12 +1,15 @@
 module.exports = function(grunt) {
 
+    var themeSourceName = 'hux-blog';
+    var assetName = 'luckye-blog';
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             main: {
-                src: 'js/<%= pkg.name %>.js',
-                dest: 'js/<%= pkg.name %>.min.js'
+                src: 'js/' + themeSourceName + '.js',
+                dest: 'js/' + assetName + '.min.js'
             }
         },
         less: {
@@ -15,7 +18,7 @@ module.exports = function(grunt) {
                     paths: ["css"]
                 },
                 files: {
-                    "css/<%= pkg.name %>.css": "less/<%= pkg.name %>.less"
+                    ["css/" + assetName + ".css"]: "less/" + themeSourceName + ".less"
                 }
             },
             minified: {
@@ -24,7 +27,7 @@ module.exports = function(grunt) {
                     cleancss: true
                 },
                 files: {
-                    "css/<%= pkg.name %>.min.css": "less/<%= pkg.name %>.less"
+                    ["css/" + assetName + ".min.css"]: "less/" + themeSourceName + ".less"
                 }
             }
         },
@@ -39,13 +42,13 @@ module.exports = function(grunt) {
                     banner: '<%= banner %>'
                 },
                 files: {
-                    src: ['css/<%= pkg.name %>.css', 'css/<%= pkg.name %>.min.css', 'js/<%= pkg.name %>.min.js']
+                    src: ['css/' + assetName + '.css', 'css/' + assetName + '.min.css', 'js/' + assetName + '.min.js']
                 }
             }
         },
         watch: {
             scripts: {
-                files: ['js/<%= pkg.name %>.js'],
+                files: ['js/' + themeSourceName + '.js'],
                 tasks: ['uglify'],
                 options: {
                     spawn: false,

@@ -21,23 +21,23 @@
                 <div class="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="{{ site.baseurl }}/">Home</a>
+                            <a class="nav-pill" href="{{ site.baseurl }}/">Home</a>
                         </li>
                         {% for page in site.pages %}
                         {% if page.title and page.hide-in-nav != true %}
                         <li>
-                            <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                            <a class="nav-pill" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
                         </li>
                         {% endif %}
                         {% endfor %}
                         <!-- 添加深色模式切换按钮 -->
                         <li class="darkmode-toggle">
-                            <a href="javascript:void(0)" id="darkmode-toggle" title="切换深色/浅色模式">
+                            <a class="nav-pill nav-pill--icon" href="javascript:void(0)" id="darkmode-toggle" title="切换深色/浅色模式" aria-label="切换深色或浅色模式">
                                 <i class="fa fa-moon-o" id="darkmode-icon"></i>
                             </a>
                         </li>
                         <li class="search-icon">
-                            <a href="javascript:void(0)">
+                            <a class="nav-pill nav-pill--icon" href="javascript:void(0)" aria-label="打开搜索">
                                 <i class="fa fa-search"></i>
                             </a>
                         </li>

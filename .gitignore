@@ -9,5 +9,9 @@ node_modules
 *.sh
 .DS_Store
 .jekyll-cache
+.bundle/
+vendor/
+pnpm-lock.yaml
+!Gemfile.lock
 */.DS_Store
 */*/.DS_Store
