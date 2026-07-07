@@ -49,10 +49,6 @@ function resolveProvider(config) {
     if (config.walineServerUrl) {
       return "waline";
     }
-
-    if (config.disqusShortname) {
-      return "disqus";
-    }
   }
 
   return "none";
@@ -336,14 +332,15 @@ async function mountComments(root) {
     }
   }
 
-  if (resolvedProvider === "disqus" || getPageConfig(root).disqusShortname) {
+  if (resolvedProvider === "disqus") {
     mountDisqus(root);
     return;
   }
 
   setLoadingState(root, false);
-  setProviderPill(root, "OFFLINE");
-  setProviderNote(root, "评论结构已经就绪，但当前站点还没有可写评论后端。", "warning");
+  setSlotVisibility(root, "none");
+  setProviderPill(root, "SETUP");
+  setProviderNote(root, "当前还不能公共留言：GitHub Pages 是静态站，需先配置 Waline serverURL。配置后选择预设身份，再输入内容即可发布。", "warning");
 }
 
 function observeAndMount(root) {

@@ -27,7 +27,7 @@
   overflow: auto;
   height: 100%;
   padding-bottom: 40px;
-  width: 195px;
+  width: 250px;
   .catalog-body {
     position: relative;
     list-style: none;
@@ -41,7 +41,7 @@
       list-style: none;
       a {
         padding-left: 10px;
-        max-width: 180px;
+        max-width: 232px;
         display: inline-block;
         vertical-align: middle;
         height: 30px;
@@ -50,6 +50,7 @@
         text-decoration: none;
         white-space: nowrap;
         text-overflow: ellipsis;
+        color: rgba(76, 70, 61, 0.78) !important;
       }
     }
     .h1_nav,
@@ -67,24 +68,28 @@
       margin-left: 12px;
       font-size: 12px;
       a {
-        max-width: 170px;
+        max-width: 220px;
       }
     }
     .h5_nav .h6_nav {
       margin-left: 18px;
       font-size: 12px;
       a {
-        max-width: 170px;
+        max-width: 210px;
       }
     }
     .active {
       a {
-        color: #0085a1 !important;
+        color: var(--primary) !important;
       }
       border-radius: 4px;
-      background-color: #f5f5f5;
+      background-color: rgba(201, 100, 66, 0.1);
     }
   }
+}
+
+html[data-theme="dark"] .side-catalog .catalog-body li a {
+  color: rgba(239, 233, 219, 0.74) !important;
 }
 
 @media (max-width: 1200px) {

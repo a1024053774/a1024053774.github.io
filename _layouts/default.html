@@ -4,7 +4,7 @@
 {% include head.html %}
 
 <!-- hack iOS CSS :active style -->
-<body ontouchstart="">
+<body class="{% if page.title %}page-{{ page.title | append: '' | slugify }}{% endif %}" ontouchstart="">
 
     <!-- 阅读进度条 -->
     <div class="reading-progress-bar" id="reading-progress-bar"></div>

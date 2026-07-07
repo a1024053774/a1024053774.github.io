@@ -42,6 +42,16 @@
     var activeIndex = 0;
     var isListView = false;
     var wheelLocked = false;
+    var pointerInsideStack = false;
+
+    function setPageScrollLocked(locked) {
+      document.documentElement.classList.toggle("home-stack-scroll-lock", locked);
+      document.body.classList.toggle("home-stack-scroll-lock", locked);
+    }
+
+    function shouldLockPageScroll() {
+      return pointerInsideStack && !isListView;
+    }
 
     function render() {
       var compact = window.innerWidth < 768;
@@ -86,6 +96,7 @@
       listView.classList.toggle("is-hidden", !isListView);
       stage.classList.toggle("is-list-mode", isListView);
       updateToggleButton(toggleButton, isListView);
+      setPageScrollLocked(shouldLockPageScroll());
     }
 
     previousButton && previousButton.addEventListener("click", function () {
@@ -119,17 +130,32 @@
         return;
       }
 
+      event.preventDefault();
+
       if (Math.abs(event.deltaY) < 12 || wheelLocked) {
         return;
       }
 
-      event.preventDefault();
       wheelLocked = true;
       setActive(activeIndex + (event.deltaY > 0 ? 1 : -1));
       window.setTimeout(function () {
         wheelLocked = false;
       }, 320);
     }, { passive: false });
+
+    stackView && stackView.addEventListener("mouseenter", function () {
+      pointerInsideStack = true;
+      setPageScrollLocked(shouldLockPageScroll());
+    });
+
+    stackView && stackView.addEventListener("mouseleave", function () {
+      pointerInsideStack = false;
+      setPageScrollLocked(false);
+    });
+
+    window.addEventListener("pagehide", function () {
+      setPageScrollLocked(false);
+    });
 
     stackView && stackView.addEventListener("keydown", function (event) {
       if (event.key === "ArrowLeft") {

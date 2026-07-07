@@ -285,7 +285,7 @@
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
 
-    SimpleJekyllSearch({
+    var searchController = SimpleJekyllSearch({
         searchInput: document.getElementById('search-input'),
         resultsContainer: document.getElementById('search-results'),
         json: '/search.json',
@@ -311,25 +311,40 @@
         var $searchOpen = $('.search-icon');
         var $searchClose = $('.search-icon-close');
         var $searchInput = $('#search-input');
-        var $body = $('body');
+        var $searchResults = $('#search-results');
+
+        function refreshSearchResults() {
+            var query = $searchInput.val();
+
+            if (!query) {
+                $searchResults.empty();
+                return;
+            }
+
+            searchController.search(query);
+        }
 
         $searchOpen.on('click', function (e) {
             e.preventDefault();
-            $searchPage.toggleClass('search-active');
-            var prevClasses = $body.attr('class') || '';
-            setTimeout(function () {
-                $body.addClass('no-scroll');
-            }, 400)
+            $searchPage.addClass('search-active');
 
             if ($searchPage.hasClass('search-active')) {
-                $searchClose.on('click', function (e) {
-                    e.preventDefault();
-                    $searchPage.removeClass('search-active');
-                    $body.attr('class', prevClasses);  // from closure 
-                });
                 $searchInput.focus();
             }
         });
+
+        $searchClose.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.removeClass('search-active');
+        });
+
+        $searchPage.on('click', function (e) {
+            if (e.target === this) {
+                $searchPage.removeClass('search-active');
+            }
+        });
+
+        $searchInput.on('input change', refreshSearchResults);
     });
 </script>
 
