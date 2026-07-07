@@ -5,16 +5,31 @@
 
 @media (min-width: 1200px) {
   .page-about .postlist-container {
-    width: 63%;
+    width: 66%;
+    margin-left: 0;
+    padding-right: 4%;
   }
   .page-about .sidebar-container {
-    width: 31%;
-    margin-left: 4%;
+    width: 30%;
+    margin-left: 3%;
+    padding-right: 15px;
   }
   .post-container,
   .sidebar-container {
     padding-right: 5%;
   }
+}
+.page-about .sidebar-container .featured-tag-panel {
+  margin-bottom: 28px;
+}
+.page-about .sidebar-container > section.visible-md.visible-lg {
+  margin-top: 0;
+}
+.page-about .sidebar-container > section.visible-md.visible-lg > hr {
+  display: none;
+}
+.page-about .sidebar-container .short-about {
+  margin-top: 0;
 }
 @media (min-width: 768px) {
   .post-container {
