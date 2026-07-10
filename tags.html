@@ -84,6 +84,7 @@ header-mask: 0.25
       data-excerpt="{{ post.home_excerpt | escape }}"
       data-url="{{ post.url | prepend: site.baseurl }}"
       data-date="{{ post.last_modified_at | date: '%Y-%m-%d' }}"
+      data-published="{{ post.date | date: '%Y-%m-%d' }}"
       {% if post.cover_image %}data-cover="{{ post.cover_image | prepend: site.baseurl }}"{% endif %}>
       <div class="tag-lab__card-meta">
         <span>{{ post.last_modified_at | date: "%Y-%m-%d" }}</span>

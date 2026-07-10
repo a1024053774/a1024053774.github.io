@@ -103,6 +103,15 @@
         }
       });
 
+      matchedPosts.sort(function (a, b) {
+        var modifiedOrder = (b.getAttribute("data-date") || "").localeCompare(a.getAttribute("data-date") || "");
+        if (modifiedOrder !== 0) {
+          return modifiedOrder;
+        }
+
+        return (b.getAttribute("data-published") || "").localeCompare(a.getAttribute("data-published") || "");
+      });
+
       updateFeatured(tag, matchedPosts);
 
       if (summary) {

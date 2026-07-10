@@ -23,11 +23,24 @@ module SiteMetadataGenerator
       source_path = File.join(site.source, doc.relative_path)
       return unless File.exist?(source_path)
 
-      modified_at = File.mtime(source_path).utc
+      modified_at = git_modified_at(site, doc) || File.mtime(source_path).utc
       doc.data["last_modified_at"] ||= modified_at
       doc.data["last_modified_at_iso"] ||= modified_at.iso8601
       doc.data["cover_image"] ||= extract_cover_image(doc)
       doc.data["home_excerpt"] ||= extract_excerpt(doc)
+    end
+
+    def git_modified_at(site, doc)
+      output = IO.popen(
+        ["git", "-C", site.source, "log", "-1", "--format=%cI", "--", doc.relative_path.to_s],
+        err: File::NULL,
+        &:read
+      ).to_s.strip
+      return nil if output.empty?
+
+      Time.iso8601(output).utc
+    rescue ArgumentError, Errno::ENOENT
+      nil
     end
 
     def extract_cover_image(doc)
