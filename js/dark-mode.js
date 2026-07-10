@@ -30,6 +30,7 @@
 
     function updateDarkModeIcon(theme) {
         var darkModeIcon = document.getElementById('darkmode-icon');
+        var darkModeToggle = document.getElementById('darkmode-toggle');
 
         if (!darkModeIcon) {
             return;
@@ -37,6 +38,12 @@
 
         darkModeIcon.classList.remove('fa-moon-o', 'fa-sun-o');
         darkModeIcon.classList.add(theme === 'dark' ? 'fa-sun-o' : 'fa-moon-o');
+
+        if (darkModeToggle) {
+            var label = theme === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+            darkModeToggle.setAttribute('aria-label', label);
+            darkModeToggle.setAttribute('title', label);
+        }
     }
 
     applyTheme(resolveTheme(), false);
@@ -58,6 +65,11 @@
 
                 applyTheme(newTheme, true);
                 updateDarkModeIcon(newTheme);
+
+                var mobileNav = document.getElementById('huxblog_navbar');
+                if (mobileNav && mobileNav.className.indexOf('in') >= 0 && window.__HuxNav__) {
+                    window.__HuxNav__.close();
+                }
             });
         }
 

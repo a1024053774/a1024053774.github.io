@@ -11,7 +11,7 @@ description: "「It must be exhausting always rooting for the anti-hero」"
       <div class="col-lg-10 col-lg-offset-1 col-md-12">
         <div class="home-landing__inner">
           <div class="home-landing__copy">
-            <span class="home-landing__badge">Updated notebook archive</span>
+            <span class="home-landing__badge">个人技术笔记 · 持续更新</span>
             <h1>{{ site.title }}</h1>
             <p>{{ page.description }}</p>
           </div>
@@ -39,22 +39,22 @@ description: "「It must be exhausting always rooting for the anti-hero」"
   <div class="container">
     <div class="home-stage__toolbar">
       <div class="home-stage__heading">
-        <span class="home-stage__eyebrow">Post Stack</span>
-        <h2>按修改时间浏览最近内容</h2>
-        <p>滚轮、左右按钮和圆点都可以切换卡片；切到尽头后会自动循环。</p>
+        <span class="home-stage__eyebrow">Latest notes</span>
+        <h2>最近更新的学习笔记</h2>
+        <p>使用方向键、左右按钮或横向滚动切换，按更新时间从新到旧排列。</p>
       </div>
       <div class="home-stage__actions">
         <button type="button" class="home-stage__action" data-home-search>
           <i class="fa fa-search" aria-hidden="true"></i>
-          Search
+          搜索
         </button>
         <a class="home-stage__action" href="{{ '/tags/' | prepend: site.baseurl }}">
           <i class="fa fa-tags" aria-hidden="true"></i>
-          Tags
+          标签
         </a>
-        <button type="button" class="home-stage__action home-stage__action--toggle" data-home-view-toggle>
+        <button type="button" class="home-stage__action home-stage__action--toggle" data-home-view-toggle aria-pressed="false">
           <i class="fa fa-bars" aria-hidden="true"></i>
-          Traditional list
+          列表视图
         </button>
       </div>
     </div>
@@ -68,7 +68,7 @@ description: "「It must be exhausting always rooting for the anti-hero」"
       {% endfor %}
     </div>
 
-    <div class="home-stage__stack-view" data-home-stack-view>
+    <div class="home-stage__stack-view" data-home-stack-view tabindex="0" aria-label="最近文章卡片，可使用左右方向键切换">
       <button type="button" class="home-stage__nav home-stage__nav--prev" data-home-prev aria-label="Previous post">
         <i class="fa fa-angle-left" aria-hidden="true"></i>
       </button>
@@ -119,7 +119,7 @@ description: "「It must be exhausting always rooting for the anti-hero」"
           <button type="button" class="home-stage__dot" data-home-dot="{{ forloop.index0 }}" aria-label="Jump to {{ post.title }}"></button>
           {% endfor %}
         </div>
-        <div class="home-stage__progress" data-home-progress>1 / {{ visible_posts.size }}</div>
+        <div class="home-stage__progress" data-home-progress aria-live="polite">1 / {{ visible_posts.size }}</div>
       </div>
     </div>
 

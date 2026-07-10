@@ -290,7 +290,7 @@
         resultsContainer: document.getElementById('search-results'),
         json: '/search.json',
         searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
-        noResultsText: 'No results',
+        noResultsText: '没有匹配的文章',
         limit: 50,
         fuzzy: false,
         // a hack to get escaped subtitle unescaped. for some reason, 
@@ -341,6 +341,17 @@
         $searchPage.on('click', function (e) {
             if (e.target === this) {
                 $searchPage.removeClass('search-active');
+            }
+        });
+
+        $searchPage.find('form').on('submit', function (e) {
+            e.preventDefault();
+        });
+
+        $(document).on('keydown', function (e) {
+            if (e.key === 'Escape' && $searchPage.hasClass('search-active')) {
+                $searchPage.removeClass('search-active');
+                $searchOpen.find('a').focus();
             }
         });
 

@@ -11,9 +11,9 @@ header-mask: 0.25
 <section class="tag-lab" data-tag-lab>
   <div class="tag-lab__intro">
     <div>
-      <span class="tag-lab__eyebrow">Tag Explorer</span>
-      <h2>修复后的标签页会直接过滤公开文章</h2>
-      <p>点击标签即可切换结果；如果没有选择，会默认显示最近更新的全部文章。</p>
+      <span class="tag-lab__eyebrow">Browse by topic</span>
+      <h2>按主题，找到相关笔记</h2>
+      <p>选择一个标签快速筛选；未选择时，按更新时间展示全部公开文章。</p>
     </div>
     <div class="tag-lab__stats">
       <strong>{{ site.visible_post_count | default: visible_posts.size }}</strong>
@@ -37,6 +37,8 @@ header-mask: 0.25
     </button>
     {% endfor %}
   </div>
+
+  <p class="tag-lab__summary" data-tag-summary aria-live="polite"></p>
 
   <div class="tag-lab__results" data-tag-results>
     {% for post in visible_posts %}
