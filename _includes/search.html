@@ -1,18 +1,20 @@
 <!-- Search -->
-<div class="search-page">
-  <div class="search-icon-close-container">
+<div class="search-page" role="dialog" aria-modal="false" aria-labelledby="search-panel-title" aria-hidden="true">
+  <div class="search-main">
+    <div class="search-panel-head">
+      <div>
+        <span class="search-panel-kicker">Quick find</span>
+        <strong id="search-panel-title">站内搜索</strong>
+      </div>
     <button type="button" class="search-icon-close" aria-label="关闭搜索">
-      <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        <i class="fa fa-times" aria-hidden="true"></i>
     </button>
   </div>
-  <div class="search-main container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <form role="search">
-          <input type="search" id="search-input" placeholder="搜索标题或标签…" autocomplete="off">
-        </form>
-        <div id="search-results" class="mini-post-list"></div>
-      </div>
-    </div>
+    <form role="search">
+      <label class="sr-only" for="search-input">搜索标题或标签</label>
+      <i class="fa fa-search" aria-hidden="true"></i>
+      <input type="search" id="search-input" placeholder="搜索标题或标签…" autocomplete="off">
+    </form>
+    <div id="search-results" class="mini-post-list" aria-live="polite"></div>
   </div>
 </div>

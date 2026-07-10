@@ -41,7 +41,7 @@ description: "「It must be exhausting always rooting for the anti-hero」"
       <div class="home-stage__heading">
         <span class="home-stage__eyebrow">Latest notes</span>
         <h2>最近更新的学习笔记</h2>
-        <p>使用方向键、左右按钮或横向滚动切换，按更新时间从新到旧排列。</p>
+        <p>把鼠标停在卡片上滚动，像时间转盘一样逐篇选择；也支持方向键和右侧按钮。</p>
       </div>
       <div class="home-stage__actions">
         <button type="button" class="home-stage__action" data-home-search>
@@ -68,9 +68,9 @@ description: "「It must be exhausting always rooting for the anti-hero」"
       {% endfor %}
     </div>
 
-    <div class="home-stage__stack-view" data-home-stack-view tabindex="0" aria-label="最近文章卡片，可使用左右方向键切换">
+    <div class="home-stage__stack-view" data-home-stack-view tabindex="0" aria-label="最近文章滚轮，可使用鼠标滚轮或上下方向键切换">
       <button type="button" class="home-stage__nav home-stage__nav--prev" data-home-prev aria-label="Previous post">
-        <i class="fa fa-angle-left" aria-hidden="true"></i>
+        <i class="fa fa-angle-up" aria-hidden="true"></i>
       </button>
       <div class="home-stage__viewport" data-home-viewport>
         <div class="home-stage__track">
@@ -111,7 +111,7 @@ description: "「It must be exhausting always rooting for the anti-hero」"
         </div>
       </div>
       <button type="button" class="home-stage__nav home-stage__nav--next" data-home-next aria-label="Next post">
-        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <i class="fa fa-angle-down" aria-hidden="true"></i>
       </button>
       <div class="home-stage__footer">
         <div class="home-stage__dots" data-home-dots>

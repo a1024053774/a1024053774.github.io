@@ -38,11 +38,53 @@ header-mask: 0.25
     {% endfor %}
   </div>
 
+  <section class="tag-lab__featured is-hidden" data-tag-featured aria-live="polite">
+    <div class="tag-lab__featured-copy">
+      <span class="tag-lab__featured-eyebrow">Selected topic</span>
+      <h3>
+        深入阅读<br>
+        <span data-tag-feature-name></span>
+      </h3>
+      <p data-tag-feature-description></p>
+      <a class="tag-lab__featured-action" data-tag-feature-action href="#">
+        从最新一篇开始
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="tag-lab__deck" aria-label="该主题的精选文章">
+      <a class="tag-lab__deck-card tag-lab__deck-card--back" data-tag-deck-back href="#">
+        <span class="tag-lab__deck-media" data-tag-deck-media></span>
+        <span class="tag-lab__deck-shade"></span>
+        <span class="tag-lab__deck-content">
+          <span class="tag-lab__deck-meta" data-tag-deck-meta></span>
+          <strong data-tag-deck-title></strong>
+        </span>
+      </a>
+      <a class="tag-lab__deck-card tag-lab__deck-card--front" data-tag-deck-front href="#">
+        <span class="tag-lab__deck-media" data-tag-deck-media></span>
+        <span class="tag-lab__deck-shade"></span>
+        <span class="tag-lab__deck-content">
+          <span class="tag-lab__deck-meta" data-tag-deck-meta></span>
+          <strong data-tag-deck-title></strong>
+        </span>
+      </a>
+    </div>
+  </section>
+
   <p class="tag-lab__summary" data-tag-summary aria-live="polite"></p>
 
   <div class="tag-lab__results" data-tag-results>
     {% for post in visible_posts %}
-    <article class="tag-lab__card" data-tag-post data-tags="{{ post.tags | join: '||' | escape }}">
+    <article
+      class="tag-lab__card"
+      data-tag-post
+      data-tags="{{ post.tags | join: '||' | escape }}"
+      data-title="{{ post.title | escape }}"
+      data-excerpt="{{ post.home_excerpt | escape }}"
+      data-url="{{ post.url | prepend: site.baseurl }}"
+      data-date="{{ post.last_modified_at | date: '%Y-%m-%d' }}"
+      {% if post.cover_image %}data-cover="{{ post.cover_image | prepend: site.baseurl }}"{% endif %}>
       <div class="tag-lab__card-meta">
         <span>{{ post.last_modified_at | date: "%Y-%m-%d" }}</span>
         <span>{{ post.tags | first | default: "Article" }}</span>

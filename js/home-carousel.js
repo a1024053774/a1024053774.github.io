@@ -30,6 +30,7 @@
     var dots = Array.prototype.slice.call(stage.querySelectorAll("[data-home-dot]"));
     var progress = stage.querySelector("[data-home-progress]");
     var stackView = stage.querySelector("[data-home-stack-view]");
+    var viewport = stage.querySelector("[data-home-viewport]");
     var listView = stage.querySelector("[data-home-list-view]");
     var toggleButton = stage.querySelector("[data-home-view-toggle]");
     var searchButton = stage.querySelector("[data-home-search]");
@@ -43,29 +44,33 @@
     var activeIndex = 0;
     var isListView = false;
     var wheelLocked = false;
+    var wheelAccumulator = 0;
+    var touchStartY = null;
 
     function render() {
       var compact = window.innerWidth < 768;
-      var translateBase = compact ? 130 : 260;
-      var rotateBase = compact ? 8 : 13;
-      var scaleBase = compact ? 0.1 : 0.12;
+      var translateBase = compact ? 205 : 260;
+      var rotateBase = compact ? 11 : 15;
+      var scaleBase = compact ? 0.08 : 0.09;
 
       cards.forEach(function (card, index) {
         var offset = signedOffset(index, activeIndex, cards.length);
         var depth = Math.abs(offset);
         var isVisible = depth <= 2;
         var scale = depth === 0 ? 1 : Math.max(0.66, 1 - depth * scaleBase);
-        var translateX = offset * translateBase;
-        var translateY = depth * 28;
-        var rotate = offset * -rotateBase;
+        var translateY = offset * translateBase;
+        var rotateX = offset * -rotateBase;
 
         card.classList.toggle("is-active", depth === 0);
         card.classList.toggle("is-hidden", !isVisible);
-        card.style.opacity = !isVisible ? "0" : depth === 0 ? "1" : depth === 1 ? "0.62" : "0.24";
+        card.classList.toggle("is-before", offset < 0);
+        card.classList.toggle("is-after", offset > 0);
+        card.style.opacity = !isVisible ? "0" : depth === 0 ? "1" : depth === 1 ? "0.46" : "0.16";
         card.style.visibility = isVisible ? "visible" : "hidden";
         card.style.pointerEvents = depth <= 1 ? "auto" : "none";
         card.style.zIndex = String(cards.length - depth);
-        card.style.transform = "translate3d(calc(-50% + " + translateX + "px), " + translateY + "px, 0) scale(" + scale + ") rotate(" + rotate + "deg)";
+        card.style.filter = depth === 0 ? "none" : "blur(" + depth + "px) saturate(" + (1 - depth * 0.12) + ")";
+        card.style.transform = "translate3d(-50%, calc(-50% + " + translateY + "px), 0) scale(" + scale + ") rotateX(" + rotateX + "deg)";
         card.setAttribute("aria-hidden", String(!isVisible));
         card.tabIndex = isVisible ? 0 : -1;
       });
@@ -120,36 +125,55 @@
       });
     });
 
-    stackView && stackView.addEventListener("wheel", function (event) {
+    viewport && viewport.addEventListener("wheel", function (event) {
       if (isListView) {
         return;
       }
 
-      var delta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
-        ? event.deltaX
-        : event.shiftKey
-          ? event.deltaY
-          : 0;
+      var delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
 
-      if (Math.abs(delta) < 12 || wheelLocked) {
+      if (Math.abs(delta) < 4) {
         return;
       }
 
       event.preventDefault();
+      wheelAccumulator += delta;
+
+      if (wheelLocked || Math.abs(wheelAccumulator) < 24) {
+        return;
+      }
+
       wheelLocked = true;
-      setActive(activeIndex + (delta > 0 ? 1 : -1));
+      setActive(activeIndex + (wheelAccumulator > 0 ? 1 : -1));
+      wheelAccumulator = 0;
       window.setTimeout(function () {
         wheelLocked = false;
-      }, 320);
+      }, 220);
     }, { passive: false });
 
+    viewport && viewport.addEventListener("touchstart", function (event) {
+      touchStartY = event.touches.length ? event.touches[0].clientY : null;
+    }, { passive: true });
+
+    viewport && viewport.addEventListener("touchend", function (event) {
+      if (touchStartY === null || !event.changedTouches.length) {
+        return;
+      }
+
+      var deltaY = touchStartY - event.changedTouches[0].clientY;
+      touchStartY = null;
+      if (Math.abs(deltaY) >= 36) {
+        setActive(activeIndex + (deltaY > 0 ? 1 : -1));
+      }
+    }, { passive: true });
+
     stackView && stackView.addEventListener("keydown", function (event) {
-      if (event.key === "ArrowLeft") {
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
         event.preventDefault();
         setActive(activeIndex - 1);
       }
 
-      if (event.key === "ArrowRight") {
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
         event.preventDefault();
         setActive(activeIndex + 1);
       }
@@ -160,15 +184,15 @@
     });
 
     searchButton && searchButton.addEventListener("click", function () {
-      var trigger = document.querySelector(".search-icon a");
-      if (trigger) {
-        trigger.click();
-      }
+      document.dispatchEvent(new CustomEvent("site-search-open", {
+        detail: { anchor: searchButton }
+      }));
     });
 
     window.addEventListener("resize", render);
 
     render();
+    stage.classList.add("is-initialized");
     updateToggleButton(toggleButton, isListView);
     toggleView(false);
   }

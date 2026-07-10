@@ -312,6 +312,7 @@
         var $searchClose = $('.search-icon-close');
         var $searchInput = $('#search-input');
         var $searchResults = $('#search-results');
+        var lastSearchTrigger = null;
 
         function refreshSearchResults() {
             var query = $searchInput.val();
@@ -324,23 +325,75 @@
             searchController.search(query);
         }
 
+        function positionSearchPanel(anchor) {
+            if (!anchor || window.innerWidth < 768) {
+                return;
+            }
+
+            var rect = anchor.getBoundingClientRect();
+            var activeHomeCard = anchor.closest('[data-home-stage]') && document.querySelector('[data-home-card].is-active');
+            var panelWidth = Math.min(420, window.innerWidth - 32);
+            var panelHeight = Math.min(560, window.innerHeight - 32);
+            var left;
+            var top;
+
+            if (activeHomeCard) {
+                var cardRect = activeHomeCard.getBoundingClientRect();
+                left = cardRect.right - 140 + 24;
+                top = cardRect.top;
+            } else {
+                left = rect.left;
+                top = rect.top - 16;
+            }
+
+            left = Math.max(16, Math.min(left, window.innerWidth - panelWidth - 16));
+            top = Math.max(16, Math.min(top, window.innerHeight - panelHeight - 16));
+
+            $searchPage[0].style.setProperty('--search-panel-left', left + 'px');
+            $searchPage[0].style.setProperty('--search-panel-top', top + 'px');
+        }
+
+        function openSearch(anchor) {
+            lastSearchTrigger = anchor || lastSearchTrigger;
+            positionSearchPanel(lastSearchTrigger);
+            $searchPage.addClass('search-active').attr('aria-hidden', 'false');
+            document.body.classList.add('search-panel-open');
+            window.requestAnimationFrame(function () {
+                $searchInput.focus();
+            });
+        }
+
+        function closeSearch(restoreFocus) {
+            $searchPage.removeClass('search-active').attr('aria-hidden', 'true');
+            document.body.classList.remove('search-panel-open');
+            if (restoreFocus !== false && lastSearchTrigger) {
+                window.setTimeout(function () {
+                    lastSearchTrigger.focus();
+                }, 0);
+            }
+        }
+
         $searchOpen.on('click', function (e) {
             e.preventDefault();
-            $searchPage.addClass('search-active');
-
-            if ($searchPage.hasClass('search-active')) {
-                $searchInput.focus();
-            }
+            openSearch(this.querySelector('a') || this);
         });
 
         $searchClose.on('click', function (e) {
             e.preventDefault();
-            $searchPage.removeClass('search-active');
+            closeSearch(true);
         });
 
-        $searchPage.on('click', function (e) {
-            if (e.target === this) {
-                $searchPage.removeClass('search-active');
+        document.addEventListener('site-search-open', function (e) {
+            openSearch(e.detail && e.detail.anchor);
+        });
+
+        $(document).on('mousedown.searchPanel', function (e) {
+            if (!$searchPage.hasClass('search-active')) {
+                return;
+            }
+
+            if (!$searchPage[0].contains(e.target) && !$(e.target).closest('.search-icon, [data-home-search]').length) {
+                closeSearch(true);
             }
         });
 
@@ -350,8 +403,13 @@
 
         $(document).on('keydown', function (e) {
             if (e.key === 'Escape' && $searchPage.hasClass('search-active')) {
-                $searchPage.removeClass('search-active');
-                $searchOpen.find('a').focus();
+                closeSearch(true);
+            }
+        });
+
+        $(window).on('resize', function () {
+            if ($searchPage.hasClass('search-active')) {
+                positionSearchPanel(lastSearchTrigger);
             }
         });
 
