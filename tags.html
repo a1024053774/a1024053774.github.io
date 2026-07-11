@@ -6,7 +6,7 @@ header-img: "img/home-bg-geek.jpg"
 header-mask: 0.25
 ---
 
-{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "last_modified_at_iso" | reverse %}
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "home_sort_key" | reverse %}
 
 <section class="tag-lab" data-tag-lab>
   <div class="tag-lab__intro">

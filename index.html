@@ -3,7 +3,7 @@ layout: default
 description: "「It must be exhausting always rooting for the anti-hero」"
 ---
 
-{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "last_modified_at_iso" | reverse %}
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "home_sort_key" | reverse %}
 
 <header class="home-landing">
   <div class="container">
