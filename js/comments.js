@@ -56,10 +56,10 @@ function resolveProvider(config) {
 
 function resolveWalinePath(config) {
   try {
-    var pathname = new URL(config.pageUrl).pathname.replace(/\/$/, "");
+    var pathname = new URL(config.pageUrl).pathname.replace(/\/{2,}/g, "/").replace(/\/$/, "");
     return pathname || "/";
   } catch (error) {
-    var fallback = window.location.pathname.replace(/\/$/, "");
+    var fallback = window.location.pathname.replace(/\/{2,}/g, "/").replace(/\/$/, "");
     return fallback || "/";
   }
 }
