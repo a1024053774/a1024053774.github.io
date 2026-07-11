@@ -12,13 +12,13 @@
 
 ![博客首页概览](docs/screenshots/home-overview.jpg)
 
-文章可通过卡片堆叠、滚轮、左右按钮或分页圆点切换，也能恢复为传统列表视图。
+文章使用纵向时间滚轮浏览：中央卡片保持清晰，上下相邻卡片形成景深；支持鼠标滚轮、触控滑动、上下方向键、右侧按钮和分页圆点，也能恢复为传统列表视图。
 
-![首页卡片堆叠](docs/screenshots/home-card-stack.jpg)
+![首页文章时间滚轮](docs/screenshots/home-card-stack.jpg)
 
 ### 标签浏览
 
-标签页只索引公开文章，支持按主题即时过滤，并显示每个标签对应的文章数量。
+标签页只索引公开文章，支持按主题即时过滤，并显示每个标签对应的文章数量。选中标签后会展示精选 Hero、该主题下最新文章和真实封面卡片，下方仍保留完整文章列表。
 
 ![标签浏览页](docs/screenshots/tag-explorer.jpg)
 
@@ -28,20 +28,20 @@
 
 ![文章阅读页](docs/screenshots/post-reading.jpg)
 
-评论区新增读者反馈墙、快捷身份和评论服务状态提示；配置 Waline 后可直接开放公共留言。
+评论区包含精选读者反馈、快捷身份和独立的 Waline 编辑器与最新评论区域；访客只需填写昵称即可在 About 或文章页留言。
 
 ![读者反馈与评论区](docs/screenshots/reader-comments.jpg)
 
 ## 最近更新
 
-本轮更新对应 2026-07-06 至 2026-07-07 的站点重构：
+本轮更新对应 2026-07-06 至 2026-07-11 的站点重构：
 
 - 全站改为支持明暗主题的 Liquid Glass 视觉体系，统一导航、按钮、卡片、搜索层、侧栏和评论区。
-- 首页新增文章统计、最近更新排序、精选标签、循环卡片堆叠以及卡片/列表视图切换。
-- 新增独立标签探索页；标签索引、文章摘要和更新时间由构建插件统一生成，并自动排除隐藏文章。
-- 改进站内搜索的打开、关闭、结果滚动和移动端布局。
+- 首页新增文章统计、确定性最近更新排序、精选标签、纵向时间滚轮以及卡片/列表视图切换。
+- 新增独立标签探索页；选中标签后展示精选 Hero、真实文章封面和完整结果列表，单篇主题会自动回退为单卡展示。
+- 站内搜索改为卡片右侧悬浮面板；移动端使用底部面板，并支持点击外部、关闭按钮和 `Esc` 关闭后归还焦点。
 - 重做文章阅读体验，包括阅读时间、代码块语言标识与复制操作、MathJax 兼容、阅读进度和固定目录。
-- 评论系统改为统一的 Waline / Disqus 适配入口，并提供快捷身份、状态说明和静态读者反馈展示。
+- Waline 评论服务已接入生产环境，About 与各文章使用规范化路径隔离评论，并提供快捷身份、状态说明和静态读者反馈展示。
 - 调整 Service Worker 缓存与资源版本，修复 GitHub Pages 部署后的旧资源、交互脚本和搜索层问题。
 - 修复 About 页面侧栏在桌面布局中掉到正文下方的问题，并补齐移动端响应式细节。
 
@@ -51,7 +51,7 @@
 
 | 参考素材 | 作者 | 本项目中的应用 |
 | --- | --- | --- |
-| [CardStack](https://21st.dev/community/components/ruixen.ui/card-stack) | Ruixen UI | 首页文章卡片的堆叠、循环切换和分页状态 |
+| [CardStack](https://21st.dev/community/components/ruixen.ui/card-stack) | Ruixen UI | 首页文章卡片的循环切换与分页状态基础，现已改为纵向时间滚轮 |
 | [Testimonials Columns](https://21st.dev/community/components/efferd/testimonials-columns-1/default) | Efferd | 评论区的读者反馈标题、卡片分栏和响应式排列 |
 | [LiquidGlass](https://21st.dev/community/components/manfromexistence/liquid-glass) | Man From Existence | 导航、操作按钮、内容面板及明暗主题的玻璃质感 |
 
@@ -101,7 +101,16 @@ docs/        README 截图等仓库文档资源
 
 ## 评论配置
 
-评论系统配置位于 `_config.yml` 的 `comment_system`。当前 `provider: auto` 会在配置了 `comment_system.waline.server_url` 时启用 Waline，否则显示待配置状态；如需使用 Disqus，应将 `provider` 改为 `disqus` 并填写对应 shortname。要开放免社交账号的公共留言，需要为 Waline 填入已部署的服务地址。
+评论系统配置位于 `_config.yml` 的 `comment_system`。当前使用 `provider: waline`，生产服务地址为 `https://walinecomment-cyan-one.vercel.app`；数据库连接信息只保存在 Vercel 环境变量中，不应写入本仓库。
+
+Waline 部署需要满足以下条件：
+
+1. Vercel 项目已配置 PostgreSQL / Neon 数据库环境变量。
+2. Production Domain 可公开访问，Vercel Authentication 的 `Require Log In` 必须关闭。
+3. `_config.yml` 中的 `comment_system.waline.server_url` 指向该 Production Domain。
+4. 修改评论配置后重新构建并部署 GitHub Pages；如浏览器仍加载旧配置，请执行硬刷新或清理 Service Worker 缓存。
+
+评论线程使用规范化页面路径作为键，例如 About 为 `/about`，文章为其永久链接路径，因此不同页面的评论不会互相串联。若需要回退到 Disqus，可将 `provider` 改为 `disqus` 并填写对应 shortname。
 
 ## 部署
 
