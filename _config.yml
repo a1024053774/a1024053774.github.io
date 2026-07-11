@@ -61,12 +61,12 @@ disqus: false
 # Comments settings
 comment_system:
   enabled: true
-  provider: auto
+  provider: waline
   disqus:
     shortname: LuckyE
     lazy: true
   waline:
-    server_url: ""
+    server_url: "https://walinecomment-cyan-one.vercel.app"
     lang: zh-CN
     meta:
       - nick
