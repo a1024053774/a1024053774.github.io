@@ -1,6 +1,7 @@
 const COMMENT_IDENTITY_KEY = "luckye-comment-identity";
 const WALINE_STYLESHEET = "https://unpkg.com/@waline/client@v3/dist/waline.css";
 const WALINE_MODULE = "https://unpkg.com/@waline/client@v3/dist/waline.js";
+const PLAYCAPTCHA_SUBMIT_SELECTOR = ".wl-btn.primary";
 
 function getTheme() {
   return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
@@ -131,6 +132,87 @@ function ensureWalineStyles() {
   document.head.appendChild(link);
 }
 
+function ensurePlayCaptchaStyles(root) {
+  if (document.querySelector("link[data-playcaptcha-style]")) {
+    return;
+  }
+
+  var link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = root.getAttribute("data-playcaptcha-style") || "/css/playcaptcha-gate.css";
+  link.setAttribute("data-playcaptcha-style", "true");
+  document.head.appendChild(link);
+}
+
+async function showPlayCaptcha(root, submitButton) {
+  if (root.__playCaptchaOpen) {
+    return;
+  }
+
+  root.__playCaptchaOpen = true;
+  ensurePlayCaptchaStyles(root);
+
+  var gate = document.createElement("div");
+  gate.className = "playcaptcha-gate";
+  gate.setAttribute("role", "dialog");
+  gate.setAttribute("aria-modal", "true");
+  gate.setAttribute("aria-label", "发表评论前的人机验证");
+  gate.innerHTML = '<div class="playcaptcha-gate-dialog"><button class="playcaptcha-gate-close" type="button" aria-label="关闭验证">&times;</button><div data-playcaptcha-mount></div></div>';
+  document.body.appendChild(gate);
+
+  var cleanupCaptcha = function () {};
+  var closeGate = function () {
+    cleanupCaptcha();
+    gate.remove();
+    root.__playCaptchaOpen = false;
+    submitButton.focus();
+  };
+
+  gate.querySelector(".playcaptcha-gate-close").addEventListener("click", closeGate);
+  gate.addEventListener("click", function (event) {
+    if (event.target === gate) {
+      closeGate();
+    }
+  });
+
+  try {
+    await import(root.getAttribute("data-playcaptcha-module") || "/js/playcaptcha-gate.js");
+    cleanupCaptcha = window.mountPlayCaptcha(gate.querySelector("[data-playcaptcha-mount]"), {
+      onVerify: function () {
+        closeGate();
+        root.__playCaptchaBypass = true;
+        submitButton.click();
+      }
+    });
+  } catch (error) {
+    closeGate();
+    setProviderNote(root, "验证小游戏加载失败，请刷新页面后再试。", "warning");
+  }
+}
+
+function initPlayCaptchaGate(root, slot) {
+  if (root.__playCaptchaReady) {
+    return;
+  }
+
+  root.__playCaptchaReady = true;
+  slot.addEventListener("click", function (event) {
+    var submitButton = event.target.closest(PLAYCAPTCHA_SUBMIT_SELECTOR);
+    if (!submitButton) {
+      return;
+    }
+
+    if (root.__playCaptchaBypass) {
+      root.__playCaptchaBypass = false;
+      return;
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    showPlayCaptcha(root, submitButton);
+  }, true);
+}
+
 async function getWalineInit() {
   if (!window.__luckyeWalineInit) {
     var walineModule = await import(WALINE_MODULE);
@@ -255,6 +337,7 @@ async function mountWaline(root) {
     });
 
     root.__walineMounted = true;
+    initPlayCaptchaGate(root, slot);
   }
 
   setLoadingState(root, false);
@@ -381,7 +464,11 @@ function initComments() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", initComments);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initComments);
+} else {
+  initComments();
+}
 document.addEventListener("themechange", function () {
   var roots = document.querySelectorAll("[data-comments-root]");
   Array.prototype.forEach.call(roots, syncWalineIdentity);

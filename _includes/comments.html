@@ -17,7 +17,9 @@
   data-waline-page-size="{{ site.comment_system.waline.page_size | default: 12 }}"
   data-waline-meta="{{ site.comment_system.waline.meta | jsonify | escape }}"
   data-waline-required-meta="{{ site.comment_system.waline.required_meta | jsonify | escape }}"
-  data-waline-word-limit="{{ site.comment_system.waline.word_limit | jsonify | escape }}">
+  data-waline-word-limit="{{ site.comment_system.waline.word_limit | jsonify | escape }}"
+  data-playcaptcha-module="{{ '/js/playcaptcha-gate.js' | prepend: site.baseurl }}"
+  data-playcaptcha-style="{{ '/css/playcaptcha-gate.css' | prepend: site.baseurl }}">
   <div class="comments-hero">
     <span class="comments-kicker">Testimonials</span>
     <h2 class="comments-title">What readers say</h2>

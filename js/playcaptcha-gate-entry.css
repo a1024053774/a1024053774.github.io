@@ -1,0 +1,57 @@
+.playcaptcha-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.playcaptcha-gate[hidden] {
+  display: none;
+}
+
+.playcaptcha-gate-dialog {
+  position: relative;
+  width: min(100%, 460px);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  border-radius: 24px;
+  background: var(--clawcap-bg, #fff);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+.playcaptcha-gate-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  color: var(--clawcap-ink, #1c1c1e);
+  background: rgba(127, 127, 127, 0.16);
+  font: 24px/1 sans-serif;
+  cursor: pointer;
+}
+
+html[data-theme="dark"] .playcaptcha-gate-dialog {
+  --clawcap-bg: #17191d;
+  --clawcap-ink: #f5f5f7;
+  --clawcap-muted: #a1a1aa;
+  --clawcap-accent: #f5f5f7;
+}
+
+@media (max-width: 520px) {
+  .playcaptcha-gate {
+    padding: 8px;
+  }
+
+  .playcaptcha-gate-dialog {
+    max-height: calc(100vh - 16px);
+    border-radius: 18px;
+  }
+}
