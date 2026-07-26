@@ -9,10 +9,16 @@
         "url": "https://github.com/a1024053774/a1024053774.github.io.git"
     },
     "bugs": "https://github.com/a1024053774/a1024053774.github.io/issues",
+    "overrides": {
+        "js-yaml": "^3.15.0",
+        "websocket-driver": "^0.7.5",
+        "minimatch": "^3.1.5",
+        "lodash": "^4.18.1"
+    },
     "devDependencies": {
         "esbuild": "^0.25.12",
         "grunt": ">=1.3.0",
-        "grunt-banner": "~0.2.3",
+        "grunt-banner": "^0.6.0",
         "grunt-contrib-less": "^2.0.0",
         "grunt-contrib-uglify": "^4.0.1",
         "grunt-contrib-watch": "^1.1.0",
