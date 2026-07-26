@@ -24,7 +24,7 @@ module.exports = function(grunt) {
             minified: {
                 options: {
                     paths: ["css"],
-                    cleancss: true
+                    compress: true
                 },
                 files: {
                     ["css/" + assetName + ".min.css"]: "less/" + themeSourceName + ".less"

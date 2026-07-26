@@ -47,8 +47,12 @@
     var wheelAccumulator = 0;
     var touchStartY = null;
 
+    var lastRenderWidth = window.innerWidth;
+
     function render() {
-      var compact = window.innerWidth < 768;
+      lastRenderWidth = window.innerWidth;
+
+      var compact = lastRenderWidth < 768;
       var translateBase = compact ? 205 : 260;
       var rotateBase = compact ? 11 : 15;
       var scaleBase = compact ? 0.08 : 0.09;
@@ -61,15 +65,14 @@
         var translateY = offset * translateBase;
         var rotateX = offset * -rotateBase;
 
+        // 状态样式（透明度/模糊/层级/可点性）全部由离散 class 交给 CSS，
+        // JS 只写连续变化的 transform，减少内联样式抖动
         card.classList.toggle("is-active", depth === 0);
         card.classList.toggle("is-hidden", !isVisible);
         card.classList.toggle("is-before", offset < 0);
         card.classList.toggle("is-after", offset > 0);
-        card.style.opacity = !isVisible ? "0" : depth === 0 ? "1" : depth === 1 ? "0.46" : "0.16";
-        card.style.visibility = isVisible ? "visible" : "hidden";
-        card.style.pointerEvents = depth <= 1 ? "auto" : "none";
-        card.style.zIndex = String(cards.length - depth);
-        card.style.filter = depth === 0 ? "none" : "blur(" + depth + "px) saturate(" + (1 - depth * 0.12) + ")";
+        card.classList.toggle("is-depth-1", depth === 1);
+        card.classList.toggle("is-depth-2", depth === 2);
         card.style.transform = "translate3d(-50%, calc(-50% + " + translateY + "px), 0) scale(" + scale + ") rotateX(" + rotateX + "deg)";
         card.setAttribute("aria-hidden", String(!isVisible));
         card.tabIndex = isVisible ? 0 : -1;
@@ -189,7 +192,21 @@
       }));
     });
 
-    window.addEventListener("resize", render);
+    // rAF 节流 + 仅宽度变化时重渲染：移动端地址栏收起只改变高度，不必全量重排
+    var resizeTicking = false;
+    window.addEventListener("resize", function () {
+      if (resizeTicking) {
+        return;
+      }
+
+      resizeTicking = true;
+      window.requestAnimationFrame(function () {
+        resizeTicking = false;
+        if (window.innerWidth !== lastRenderWidth) {
+          render();
+        }
+      });
+    });
 
     render();
     stage.classList.add("is-initialized");

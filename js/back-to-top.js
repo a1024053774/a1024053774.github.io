@@ -1,26 +1,39 @@
-// 返回顶部按钮功能
-(function() {
+// 返回顶部按钮：rAF 节流，只在跨越阈值时写样式
+(function () {
+    'use strict';
+
     var backTop = document.getElementById('back-top');
-    
+
     if (!backTop) return;
-    
-    // 点击返回顶部
-    backTop.addEventListener('click', function(e) {
+
+    backTop.addEventListener('click', function (e) {
         e.preventDefault();
-        
-        // 平滑滚动到顶部
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     });
-    
-    // 根据滚动位置调整按钮透明度
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backTop.style.opacity = "1.0";
-        } else {
-            backTop.style.opacity = "0.4";  // 靠近顶部时更透明
+
+    var THRESHOLD = 300;
+    var isNearTop = null;
+    var ticking = false;
+
+    backTop.style.transition = 'opacity 0.3s ease';
+
+    function update() {
+        ticking = false;
+        var nearTop = window.pageYOffset <= THRESHOLD;
+        if (nearTop === isNearTop) return;
+        isNearTop = nearTop;
+        backTop.style.opacity = nearTop ? '0.4' : '1';
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(update);
         }
-    });
+    }, { passive: true });
+
+    update();
 })();

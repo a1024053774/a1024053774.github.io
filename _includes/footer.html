@@ -110,15 +110,6 @@
 <script src='{{ "/js/archive.js" | prepend: site.baseurl }}'></script>
 {% endif %} -->
 
-<!--fastClick.js -->
-<script>
-    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
-        var $nav = document.querySelector("nav");
-        if ($nav) FastClick.attach($nav);
-    })
-</script>
-
-
 <!-- Google Analytics -->
 {% if site.ga_track_id %}
 <script>
@@ -407,10 +398,18 @@
             }
         });
 
+        var searchResizeRaf = null;
         $(window).on('resize', function () {
-            if ($searchPage.hasClass('search-active')) {
-                positionSearchPanel(lastSearchTrigger);
+            if (!$searchPage.hasClass('search-active') || searchResizeRaf) {
+                return;
             }
+
+            searchResizeRaf = window.requestAnimationFrame(function () {
+                searchResizeRaf = null;
+                if ($searchPage.hasClass('search-active')) {
+                    positionSearchPanel(lastSearchTrigger);
+                }
+            });
         });
 
         $searchInput.on('input change', refreshSearchResults);
@@ -418,7 +417,7 @@
 </script>
 
 <!-- 阅读进度条 -->
-<script src="{{ site.baseurl }}/js/reading-progress.js"></script>
+<script src="{{ site.baseurl }}/js/reading-progress.js?v={{ asset_version }}" defer></script>
 
 <!-- 在其他script标签之后，</body>标签之前 -->
-<script src="{{ '/js/back-to-top.js' | prepend: site.baseurl }}"></script>
+<script src="{{ '/js/back-to-top.js' | prepend: site.baseurl }}?v={{ asset_version }}" defer></script>

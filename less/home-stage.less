@@ -298,11 +298,12 @@
   background: #1b1a19;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transform: translate3d(-50%, -50%, 0);
   transform-origin: center center;
-  transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, filter 0.34s ease;
+  // filter 不参与过渡：模糊半径逐帧动画开销极高，靠 opacity 过渡掩盖切换
+  transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
   box-shadow: 0 22px 56px rgba(0, 0, 0, 0.34);
-  will-change: transform, opacity, filter;
 }
 
 .home-card:first-child {
@@ -310,8 +311,37 @@
   visibility: visible;
 }
 
+// 深度状态由 JS 打 class，样式集中在这里；
+// will-change 只给可见卡片（≤5 张），避免为整叠卡片常驻合成层
+.home-card.is-active,
+.home-card.is-depth-1,
+.home-card.is-depth-2 {
+  visibility: visible;
+  will-change: transform, opacity;
+}
+
+.home-card.is-active {
+  z-index: 5;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.home-card.is-depth-1 {
+  z-index: 4;
+  opacity: 0.46;
+  pointer-events: auto;
+  filter: blur(1px) saturate(0.88);
+}
+
+.home-card.is-depth-2 {
+  z-index: 3;
+  opacity: 0.16;
+  filter: blur(2px) saturate(0.76);
+}
+
 .home-card.is-hidden {
   opacity: 0;
+  visibility: hidden;
 }
 
 .home-card__media,

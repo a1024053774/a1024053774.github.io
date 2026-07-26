@@ -46,39 +46,48 @@ jQuery(document).ready(function($) {
     var MQL = 1170;
 
     //primary navigation slide-in effect
-    if ($(window).width() > MQL) {
-        var headerHeight = $('.navbar-custom').height(),
-            bannerHeight  = $('.intro-header .container').height();     
-        $(window).on('scroll', {
-                previousTop: 0
-            },
-            function() {
-                var currentTop = $(window).scrollTop(),
-                    $catalog = $('.side-catalog');
+    if (window.innerWidth <= MQL) return;
 
-                //check if user is scrolling up by mouse or keyborad
-                if (currentTop < this.previousTop) {
-                    //if scrolling up...
-                    if (currentTop > 0 && $('.navbar-custom').hasClass('is-fixed')) {
-                        $('.navbar-custom').addClass('is-visible');
-                    } else {
-                        $('.navbar-custom').removeClass('is-visible is-fixed');
-                    }
-                } else {
-                    //if scrolling down...
-                    $('.navbar-custom').removeClass('is-visible');
-                    if (currentTop > headerHeight && !$('.navbar-custom').hasClass('is-fixed')) $('.navbar-custom').addClass('is-fixed');
-                }
-                this.previousTop = currentTop;
+    var navbar = document.querySelector('.navbar-custom');
+    if (!navbar) return;
 
+    var catalog = document.querySelector('.side-catalog');
+    var banner = document.querySelector('.intro-header .container');
+    var headerHeight = navbar.offsetHeight;
+    var catalogThreshold = (banner ? banner.offsetHeight : 0) + 41;
 
-                //adjust the appearance of side-catalog
-                $catalog.show()
-                if (currentTop > (bannerHeight + 41)) {
-                    $catalog.addClass('fixed')
-                } else {
-                    $catalog.removeClass('fixed')
-                }
-            });
+    var previousTop = 0;
+    var ticking = false;
+
+    function onScroll() {
+        ticking = false;
+        var currentTop = window.pageYOffset;
+
+        //check if user is scrolling up by mouse or keyboard
+        if (currentTop < previousTop) {
+            //if scrolling up...
+            if (currentTop > 0 && navbar.classList.contains('is-fixed')) {
+                navbar.classList.add('is-visible');
+            } else {
+                navbar.classList.remove('is-visible', 'is-fixed');
+            }
+        } else if (currentTop > previousTop) {
+            //if scrolling down...
+            navbar.classList.remove('is-visible');
+            if (currentTop > headerHeight) navbar.classList.add('is-fixed');
+        }
+        previousTop = currentTop;
+
+        //adjust the appearance of side-catalog
+        if (catalog) catalog.classList.toggle('fixed', currentTop > catalogThreshold);
     }
+
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(onScroll);
+        }
+    }, { passive: true });
+
+    onScroll();
 });
