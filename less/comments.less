@@ -57,7 +57,8 @@
 
 .comments-wall__track {
   display: flex;
-  gap: 20px;
+  // 间距用每张卡片的 margin-right 而不是 gap：两遍内容各带 6 个间距，
+  // 平移 -50% 恰好是一整遍，循环衔接处不会跳 10px
   width: max-content;
   padding: 8px 0 28px;
   animation: comments-marquee 70s linear infinite;
@@ -74,7 +75,7 @@
   justify-content: space-between;
   gap: 18px;
   width: 340px;
-  margin: 0;
+  margin: 0 20px 0 0;
   padding: 26px 28px;
   border: 1px solid var(--line);
   border-radius: 20px;
