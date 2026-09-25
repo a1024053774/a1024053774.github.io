@@ -5,7 +5,8 @@ module SiteMetadataGenerator
     safe true
     priority :lowest
 
-    IMAGE_PATTERN = %r{!\[[^\]]*\]\(([^)\s]+)}.freeze
+    # 允许路径以带空格的 "{{ site.baseurl }}" 开头，否则封面会被截成 "{{"
+    IMAGE_PATTERN = %r{!\[[^\]]*\]\(((?:\{\{\s*site\.baseurl\s*\}\})?[^)\s]+)}.freeze
     HTML_IMAGE_PATTERN = %r{<img[^>]+src=["']([^"']+)["']}.freeze
     EXCERPT_PATTERN = %r{<\/?[^>]*>}.freeze
 

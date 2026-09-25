@@ -18,10 +18,9 @@
         style.top = '0';
         style.left = '0';
         style.width = '100%';
-        style.height = '6px';
-        style.backgroundColor = '#0085a1';
+        style.height = '3px';
+        style.backgroundColor = 'var(--zhu, #b93a24)';
         style.zIndex = '99999';
-        style.boxShadow = '0 0 8px rgba(0, 133, 161, 0.8)';
         style.transformOrigin = 'left center';
         style.transform = 'scaleX(0)';
         style.pointerEvents = 'none';

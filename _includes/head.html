@@ -55,6 +55,9 @@
     <link rel="stylesheet" href="{{ "/css/dark-mode.css" | prepend: site.baseurl }}?v={{ asset_version }}">
 
     <!-- Custom Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
         type="text/css">
@@ -71,6 +74,9 @@
     <!-- <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
     
+    <!-- 滚动显现：仅在支持时启用，避免内容被永久隐藏 -->
+    <script>if ('IntersectionObserver' in window) document.documentElement.classList.add('has-reveal');</script>
+
         <!-- darkmode js -->
     <script src="{{ "/js/dark-mode.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 </head>

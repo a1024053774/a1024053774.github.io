@@ -15,7 +15,7 @@
     }
 
     button.innerHTML = isListView
-      ? '<i class="fa fa-clone" aria-hidden="true"></i> 卡片视图'
+      ? '<i class="fa fa-clone" aria-hidden="true"></i> 表冠视图'
       : '<i class="fa fa-bars" aria-hidden="true"></i> 列表视图';
     button.setAttribute("aria-pressed", String(isListView));
   }
@@ -29,6 +29,8 @@
     var cards = Array.prototype.slice.call(stage.querySelectorAll("[data-home-card]"));
     var dots = Array.prototype.slice.call(stage.querySelectorAll("[data-home-dot]"));
     var progress = stage.querySelector("[data-home-progress]");
+    var progressCurrent = stage.querySelector("[data-home-progress-current]");
+    var crown = stage.querySelector("[data-home-crown]");
     var stackView = stage.querySelector("[data-home-stack-view]");
     var viewport = stage.querySelector("[data-home-viewport]");
     var listView = stage.querySelector("[data-home-list-view]");
@@ -46,6 +48,8 @@
     var wheelLocked = false;
     var wheelAccumulator = 0;
     var touchStartY = null;
+    // 表冠累计转过的格数：只增不回绕，循环到头时旋钮继续同向转，不会倒转一圈
+    var crownTurns = 0;
 
     var lastRenderWidth = window.innerWidth;
 
@@ -53,15 +57,16 @@
       lastRenderWidth = window.innerWidth;
 
       var compact = lastRenderWidth < 768;
-      var translateBase = compact ? 205 : 260;
-      var rotateBase = compact ? 11 : 15;
+      var translateBase = compact ? 150 : 205;
+      var rotateBase = compact ? 11 : 16;
       var scaleBase = compact ? 0.08 : 0.09;
+      var depthBase = compact ? 40 : 70;
 
       cards.forEach(function (card, index) {
         var offset = signedOffset(index, activeIndex, cards.length);
         var depth = Math.abs(offset);
         var isVisible = depth <= 2;
-        var scale = depth === 0 ? 1 : Math.max(0.66, 1 - depth * scaleBase);
+        var scale = depth === 0 ? 1 : Math.max(0.7, 1 - depth * scaleBase);
         var translateY = offset * translateBase;
         var rotateX = offset * -rotateBase;
 
@@ -73,7 +78,7 @@
         card.classList.toggle("is-after", offset > 0);
         card.classList.toggle("is-depth-1", depth === 1);
         card.classList.toggle("is-depth-2", depth === 2);
-        card.style.transform = "translate3d(-50%, calc(-50% + " + translateY + "px), 0) scale(" + scale + ") rotateX(" + rotateX + "deg)";
+        card.style.transform = "translate3d(-50%, calc(-50% + " + translateY + "px), " + (-depth * depthBase) + "px) rotateX(" + rotateX + "deg) scale(" + scale + ")";
         card.setAttribute("aria-hidden", String(!isVisible));
         card.tabIndex = isVisible ? 0 : -1;
       });
@@ -87,10 +92,20 @@
       if (progress) {
         progress.textContent = (activeIndex + 1) + " / " + cards.length;
       }
+
+      if (progressCurrent) {
+        progressCurrent.textContent = (activeIndex < 9 ? "0" : "") + (activeIndex + 1);
+      }
+
+      if (crown) {
+        crown.style.setProperty("--crown-offset", (-crownTurns * 18) + "px");
+      }
     }
 
     function setActive(index) {
-      activeIndex = wrapIndex(index, cards.length);
+      var next = wrapIndex(index, cards.length);
+      crownTurns += signedOffset(next, activeIndex, cards.length);
+      activeIndex = next;
       render();
     }
 
@@ -128,7 +143,12 @@
       });
     });
 
-    viewport && viewport.addEventListener("wheel", function (event) {
+    crown && crown.addEventListener("click", function () {
+      setActive(activeIndex + 1);
+    });
+
+    // 滚轮挂在整个滚轮区（卡片 + 表冠），在旋钮上滚动同样生效
+    stackView && stackView.addEventListener("wheel", function (event) {
       if (isListView) {
         return;
       }

@@ -10,7 +10,7 @@
 // CacheStorage is shared between all sites under same domain.
 // A namespace can prevent potential name conflicts and mis-deletion.
 const CACHE_NAMESPACE = 'luckye-blog-'
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE = `${CACHE_NAMESPACE}${CACHE_VERSION}`;
 const PRECACHE_LIST = [
   "./",
@@ -22,6 +22,7 @@ const PRECACHE_LIST = [
   "./js/code-blocks.js",
   "./js/dark-mode.js",
   "./js/home-carousel.js",
+  "./js/motion-reveal.js",
   "./js/snackbar.js",
   "./js/tags.js",
   "./css/dark-mode.css",
