@@ -21,39 +21,44 @@
   data-playcaptcha-module="{{ '/js/playcaptcha-gate.js' | prepend: site.baseurl }}"
   data-playcaptcha-style="{{ '/css/playcaptcha-gate.css' | prepend: site.baseurl }}">
   <div class="comments-hero">
-    <span class="comments-kicker">Testimonials</span>
-    <h2 class="comments-title">What readers say</h2>
+    <span class="comments-kicker">Readers · 读者来信</span>
+    <h2 class="comments-title">读者怎么说</h2>
     <p class="comments-description">
-      先看读者反馈，再直接在当前页面继续讨论。公共留言需要 Waline 服务端；配置后访客只填昵称即可发布。
+      先看读者反馈，再直接在当前页面继续讨论。不用绑定社交账号，填个昵称、抓一只娃娃就能留言。
     </p>
   </div>
 
+  {% comment %}读者来信做成缓慢横向滚动的一排卡片：内容渲染两遍，track 平移 -50% 实现无缝循环，悬停暂停{% endcomment %}
   <div class="comments-wall" aria-label="Pinned comment highlights">
-    {% for item in showcase_comments limit: 6 %}
-    <article class="comments-quote-card">
-      <p class="comments-quote">{{ item.quote }}</p>
-      <div class="comments-person">
-        <span class="comments-person-avatar">{{ item.name | slice: 0 }}</span>
-        <div class="comments-person-meta">
-          <strong>{{ item.name }}</strong>
-          <span>{{ item.role }}</span>
-        </div>
-      </div>
-    </article>
-    {% endfor %}
+    <div class="comments-wall__track">
+      {% for pass in (1..2) %}
+      {% for item in showcase_comments limit: 6 %}
+      <figure class="comments-quote-card"{% if pass == 2 %} aria-hidden="true"{% endif %}>
+        <blockquote class="comments-quote">{{ item.quote }}</blockquote>
+        <figcaption class="comments-person">
+          <span class="comments-person-avatar">{{ item.name | slice: 0 }}</span>
+          <span class="comments-person-meta">
+            <strong>{{ item.name }}</strong>
+            <span>{{ item.role }}</span>
+          </span>
+        </figcaption>
+      </figure>
+      {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 
   <div class="comments-compose">
     <div class="comments-compose-head">
       <div class="comments-compose-copy">
-        <p class="comments-label">Quick Identity</p>
-        <h3 class="comments-compose-title">Pick a preset and leave a note</h3>
+        <p class="comments-label">快捷身份</p>
+        <h3 class="comments-compose-title">留下你的想法</h3>
         <p class="comments-compose-description">
-          留言方式：先选择一个预设身份，再在下方输入评论。当前若显示“需要配置 Waline”，说明站点还缺少可写评论后端。
+          选一个预设身份，或者直接填昵称；写完点发布，抓到指定的娃娃就能提交。若显示“需要配置 Waline”，说明站点还缺少可写评论后端。
         </p>
       </div>
       <div class="comments-summary" aria-hidden="true">
-        <span class="comments-summary-label">Current Thread</span>
+        <span class="comments-summary-label">当前讨论</span>
         <span class="comments-summary-value">{{ page.title | default: site.title }}</span>
       </div>
     </div>
@@ -74,7 +79,7 @@
             <i class="fa fa-commenting-o" aria-hidden="true"></i>
           </span>
           <div class="comments-thread-meta">
-            <strong>Live Discussion</strong>
+            <strong>最新评论</strong>
             <span>Waline 配置完成后，真实评论会加载在下方，移动端和主题切换会同步处理。</span>
           </div>
         </div>

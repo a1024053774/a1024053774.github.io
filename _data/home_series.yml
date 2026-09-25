@@ -1,0 +1,10 @@
+# 首页「专栏」区：按标签聚合，文章数取自 site.tag_index（只统计公开文章）
+- tag: Java
+  title: Java 从零开始
+  description: Phase01 八个章节 + Phase02：从转义字符、类与对象，到房屋出租系统实战。
+- tag: 强化学习
+  title: 强化学习：从策略梯度到 RLHF
+  description: 经典文献、HuggingFace 课程、王树森笔记，到 PPO / GRPO 的完整数学推导。
+- tag: Python
+  title: Python 数据三件套
+  description: NumPy 数组、Pandas DataFrame 与 Matplotlib 常见图表的基础笔记。

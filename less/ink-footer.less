@@ -1,0 +1,77 @@
+// 页脚 · 墨色底
+footer.ink-footer {
+  margin-top: 40px;
+  padding: 80px 0 40px;
+  background: var(--stage);
+  color: var(--stage-muted);
+}
+
+.ink-footer__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px 48px;
+}
+
+.ink-footer__motto {
+  margin: 0;
+  color: var(--stage-text);
+  font-family: var(--latin-font);
+  font-size: clamp(4.4rem, 6vw, 7.2rem);
+  font-style: italic;
+  line-height: 1;
+}
+
+.ink-footer__sns {
+  .list-inline {
+    margin: 0;
+  }
+
+  a {
+    color: var(--stage-text);
+    transition: color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  }
+
+  a:hover,
+  a:focus {
+    color: var(--zhu);
+  }
+
+  .fa-circle {
+    color: var(--stage-2);
+  }
+}
+
+footer.ink-footer .ink-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--stage-line);
+  color: var(--stage-muted);
+  font-family: var(--mono-font);
+  font-size: 13px;
+  text-align: left;
+
+  a {
+    color: var(--stage-text);
+  }
+
+  a:hover {
+    color: var(--zhu);
+  }
+}
+
+@media (max-width: 767px) {
+  footer.ink-footer {
+    padding: 56px 0 32px;
+  }
+
+  footer.ink-footer .ink-footer__bottom {
+    margin-top: 36px;
+    flex-direction: column;
+  }
+}

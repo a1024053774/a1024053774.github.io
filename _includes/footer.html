@@ -1,20 +1,16 @@
 <!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <!-- SNS Link -->
-                {% include sns-links.html center=true %}
-
-                <p class="copyright text-muted">
-                    Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}
-                    <br>
-                    Built with <a href="https://jekyllrb.com/">Jekyll</a> and independently maintained by LuckyE
-                </p>
-            </div>
+<footer class="ink-footer">
+    <div class="ink-container ink-footer__top">
+        <p class="ink-footer__motto">May the force<br>be with you.</p>
+        <div class="ink-footer__sns">
+            <!-- SNS Link -->
+            {% include sns-links.html %}
         </div>
     </div>
-    
+    <div class="ink-container ink-footer__bottom copyright">
+        <span>Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}</span>
+        <span>Built with <a href="https://jekyllrb.com/">Jekyll</a> · independently maintained by LuckyE</span>
+    </div>
 </footer>
 
 <!-- jQuery -->
@@ -32,6 +28,7 @@
 {% endif %}
 <script src="{{ "/js/code-blocks.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 <script src="{{ "/js/home-carousel.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
+<script src="{{ "/js/motion-reveal.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 <script src="{{ "/js/tags.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 
 <!-- Simple Jekyll Search -->

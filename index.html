@@ -1,47 +1,125 @@
 ---
 layout: default
 description: "「It must be exhausting always rooting for the anti-hero」"
+quote: "It must be exhausting always rooting for the anti-hero."
+intro: "记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时代的软件工程与安全实践。"
 ---
 
 {% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "home_sort_key" | reverse %}
+{% assign featured = visible_posts.first %}
+{% assign total_posts = site.visible_post_count | default: visible_posts.size %}
 
 <header class="home-landing">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-10 col-lg-offset-1 col-md-12">
-        <div class="home-landing__inner">
-          <div class="home-landing__copy">
-            <span class="home-landing__badge">个人技术笔记 · 持续更新</span>
-            <h1>{{ site.title }}</h1>
-            <p>{{ page.description }}</p>
-          </div>
-          <div class="home-landing__meta">
-            <div class="home-landing__stat">
-              <strong>{{ site.visible_post_count | default: visible_posts.size }}</strong>
-              <span>公开文章</span>
-            </div>
-            <div class="home-landing__stat">
-              <strong>{{ site.tag_index | size }}</strong>
-              <span>活跃标签</span>
-            </div>
-            <div class="home-landing__stat">
-              <strong>{{ visible_posts.first.last_modified_at | date: "%Y-%m-%d" }}</strong>
-              <span>最近更新</span>
-            </div>
-          </div>
-        </div>
+  <div class="ink-container home-landing__inner">
+    <div class="home-landing__copy">
+      <span class="home-landing__eyebrow motion-rise" style="--i: 1">LUCKYE · 个人技术笔记 · 始于 2023</span>
+      <h1 class="home-landing__title motion-rise" style="--i: 2" aria-label="{{ site.title }}">遠山<br>江浸月</h1>
+      <p class="home-landing__quote motion-rise" style="--i: 3">“{{ page.quote }}”</p>
+      <p class="home-landing__intro motion-rise" style="--i: 4">{{ page.intro }}</p>
+      <div class="home-landing__actions motion-rise" style="--i: 5">
+        <a class="ink-btn ink-btn--primary" href="#latest"><span>开始阅读</span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+        <a class="ink-btn ink-btn--ghost" href="#series"><span>按专栏浏览</span></a>
       </div>
+      <dl class="home-landing__meta motion-rise" style="--i: 6">
+        <div class="home-landing__stat">
+          <dt>公开文章</dt>
+          <dd>{{ total_posts }}</dd>
+        </div>
+        <div class="home-landing__stat">
+          <dt>活跃标签</dt>
+          <dd>{{ site.tag_index | size }}</dd>
+        </div>
+        <div class="home-landing__stat">
+          <dt>最近更新</dt>
+          <dd>{{ featured.last_modified_at | date: "%Y.%m.%d" }}</dd>
+        </div>
+      </dl>
     </div>
+
+    <div class="home-landing__art" aria-hidden="true">
+      <svg viewBox="0 0 560 560" fill="none" focusable="false">
+        <g class="landscape-moon"><circle class="landscape-moon__disc" cx="372" cy="168" r="80"></circle></g>
+        <path class="landscape-ridge" style="--i: 0; stroke-opacity: .22" pathLength="1" d="M0 318 C 60 290, 110 236, 172 258 S 262 186, 322 228 S 432 282, 482 240 S 540 220, 560 236" stroke-width="1.5"></path>
+        <path class="landscape-ridge" style="--i: 1; stroke-opacity: .5" pathLength="1" d="M0 372 C 50 344, 92 312, 152 328 S 232 282, 292 314 S 382 356, 442 324 S 520 304, 560 324" stroke-width="1.6"></path>
+        <path class="landscape-ridge" style="--i: 2" pathLength="1" d="M0 414 C 70 396, 122 364, 192 384 S 302 352, 362 380 S 470 418, 560 396" stroke-width="2"></path>
+        <path class="landscape-ridge" style="--i: 3; stroke-opacity: .7" pathLength="1" d="M0 444 H 560" stroke-width="1"></path>
+        <path class="landscape-river" style="stroke-opacity: .28" d="M20 470 H 300"></path>
+        <path class="landscape-river" style="stroke-opacity: .22; animation-duration: 9s" d="M60 492 H 290"></path>
+        <path class="landscape-river" style="stroke-opacity: .16; animation-duration: 11s" d="M10 514 H 250"></path>
+        <path class="landscape-river" style="stroke-opacity: .22; animation-duration: 8s" d="M440 482 H 560"></path>
+        <path class="landscape-river" style="stroke-opacity: .16; animation-duration: 10s" d="M456 520 H 552"></path>
+        <path class="landscape-glint" style="--i: 0" d="M318 462 H 426" stroke-width="3"></path>
+        <path class="landscape-glint" style="--i: 1" d="M334 478 H 410" stroke-width="3"></path>
+        <path class="landscape-glint" style="--i: 2" d="M344 494 H 400" stroke-width="2.6"></path>
+        <path class="landscape-glint" style="--i: 3" d="M352 510 H 392" stroke-width="2.2"></path>
+        <path class="landscape-glint" style="--i: 4" d="M360 526 H 384" stroke-width="1.8"></path>
+      </svg>
+    </div>
+  </div>
+  <div class="ink-container home-landing__hint motion-rise" style="--i: 8" aria-hidden="true">
+    <span class="home-landing__hint-line"><span></span></span>
+    <span>向下滚动</span>
   </div>
 </header>
 
-<section class="home-stage" data-home-stage>
-  <div class="container">
+{% if featured %}
+<section class="home-featured" data-reveal>
+  <div class="ink-container">
+    <div class="home-section-head">
+      <h2>最新长文</h2>
+      <span class="home-section-head__meta">FEATURED · {{ featured.date | date: "%Y.%m.%d" }}</span>
+    </div>
+    <a class="home-featured__card" href="{{ featured.url | prepend: site.baseurl }}">
+      <div class="home-featured__media{% unless featured.cover_image %} home-featured__media--fallback{% endunless %}">
+        {% if featured.cover_image %}
+        <img src="{{ featured.cover_image | prepend: site.baseurl }}" alt="" loading="lazy" decoding="async">
+        {% else %}
+        <span>{{ featured.tags | first | default: "Article" }}</span>
+        {% endif %}
+      </div>
+      <div class="home-featured__body">
+        <div class="home-featured__tags">
+          {% for tag in featured.tags limit: 3 %}<span>{{ tag }}</span>{% endfor %}
+        </div>
+        <h3>{{ featured.title }}</h3>
+        <p>{{ featured.subtitle | default: featured.home_excerpt }}</p>
+        <span class="home-featured__more">阅读全文 <i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
+      </div>
+    </a>
+  </div>
+</section>
+{% endif %}
+
+<section class="home-series" id="series" data-reveal>
+  <div class="ink-container">
+    <div class="home-section-head">
+      <h2>专栏</h2>
+      <a class="ink-link" href="{{ '/tags/' | prepend: site.baseurl }}">全部标签</a>
+    </div>
+    <div class="home-series__grid">
+      {% for series in site.data.home_series %}
+      {% assign series_tag = site.tag_index | where: "name", series.tag | first %}
+      <a class="home-series__item" href="{{ '/tags/' | prepend: site.baseurl }}#{{ series_tag.slug | default: series.tag }}">
+        <span class="home-series__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+        <h3>{{ series.title }}</h3>
+        <p>{{ series.description }}</p>
+        <span class="home-series__foot">
+          <span>{{ series_tag.count | default: 0 }} 篇</span>
+          <span class="home-series__go">进入专栏 <i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="home-stage" id="latest" data-home-stage>
+  <div class="ink-container">
     <div class="home-stage__toolbar">
       <div class="home-stage__heading">
         <span class="home-stage__eyebrow">Latest notes</span>
-        <h2>最近更新的学习笔记</h2>
-        <p>把鼠标停在卡片上滚动，像时间转盘一样逐篇选择；也支持方向键和右侧按钮。</p>
+        <h2>最近更新</h2>
+        <p>像手表的数码表冠：滚一格，换一篇。也支持方向键、触控滑动和右侧按钮。</p>
       </div>
       <div class="home-stage__actions">
         <button type="button" class="home-stage__action" data-home-search>
@@ -68,10 +146,7 @@ description: "「It must be exhausting always rooting for the anti-hero」"
       {% endfor %}
     </div>
 
-    <div class="home-stage__stack-view" data-home-stack-view tabindex="0" aria-label="最近文章滚轮，可使用鼠标滚轮或上下方向键切换">
-      <button type="button" class="home-stage__nav home-stage__nav--prev" data-home-prev aria-label="Previous post">
-        <i class="fa fa-angle-up" aria-hidden="true"></i>
-      </button>
+    <div class="home-stage__stack-view" data-home-stack-view tabindex="0" aria-label="最近文章表冠滚轮，可使用鼠标滚轮或上下方向键切换">
       <div class="home-stage__viewport" data-home-viewport>
         <div class="home-stage__track">
           {% for post in visible_posts %}
@@ -84,12 +159,14 @@ description: "「It must be exhausting always rooting for the anti-hero」"
               class="home-card__media"
               {% if post.cover_image %}
               style="background-image: url('{{ post.cover_image | prepend: site.baseurl }}');"
-              {% endif %}></div>
+              {% endif %}>
+              {% unless post.cover_image %}<span class="home-card__fallback">{{ post.tags | first | default: "Article" }}</span>{% endunless %}
+            </div>
             <div class="home-card__shade"></div>
             <div class="home-card__content">
               <div class="home-card__topline">
                 <span>{{ post.tags | first | default: "Article" }}</span>
-                <span>{{ post.last_modified_at | date: "%b %-d, %Y" }}</span>
+                <span>{{ post.last_modified_at | date: "%Y.%m.%d" }}</span>
               </div>
               <div class="home-card__body">
                 <h3>{{ post.title }}</h3>
@@ -101,47 +178,49 @@ description: "「It must be exhausting always rooting for the anti-hero」"
                   <em>{{ tag }}</em>
                   {% endfor %}
                 </span>
-                <span class="home-card__open">
-                  <i class="fa fa-external-link" aria-hidden="true"></i>
-                </span>
+                <span class="home-card__open">阅读 <i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
               </div>
             </div>
           </a>
           {% endfor %}
         </div>
       </div>
-      <button type="button" class="home-stage__nav home-stage__nav--next" data-home-next aria-label="Next post">
-        <i class="fa fa-angle-down" aria-hidden="true"></i>
-      </button>
-      <div class="home-stage__footer">
-        <div class="home-stage__dots" data-home-dots>
-          {% for post in visible_posts %}
-          <button type="button" class="home-stage__dot" data-home-dot="{{ forloop.index0 }}" aria-label="Jump to {{ post.title }}"></button>
-          {% endfor %}
+
+      <div class="home-crown">
+        <div class="home-crown__count" aria-hidden="true">
+          <strong data-home-progress-current>01</strong>
+          <span>/ {% if visible_posts.size < 10 %}0{% endif %}{{ visible_posts.size }}</span>
         </div>
-        <div class="home-stage__progress" data-home-progress aria-live="polite">1 / {{ visible_posts.size }}</div>
+        <button type="button" class="home-crown__btn" data-home-prev aria-label="上一篇">
+          <i class="fa fa-angle-up" aria-hidden="true"></i>
+        </button>
+        <div class="home-crown__dial">
+          <div class="home-stage__dots" data-home-dots>
+            {% for post in visible_posts %}
+            <button type="button" class="home-stage__dot" data-home-dot="{{ forloop.index0 }}" aria-label="跳到：{{ post.title }}"></button>
+            {% endfor %}
+          </div>
+          <button type="button" class="home-crown__knob" data-home-crown aria-label="转动表冠，切换到下一篇"></button>
+        </div>
+        <button type="button" class="home-crown__btn" data-home-next aria-label="下一篇">
+          <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </button>
+        <span class="home-crown__hint" aria-hidden="true">滚轮 · ↑ ↓</span>
+        <span class="sr-only" data-home-progress aria-live="polite">1 / {{ visible_posts.size }}</span>
       </div>
     </div>
 
     <div class="home-stage__list-view is-hidden" data-home-list-view>
       {% for post in visible_posts %}
-      <article class="home-list-card">
-        <a class="home-list-card__thumb{% unless post.cover_image %} home-list-card__thumb--fallback{% endunless %}" href="{{ post.url | prepend: site.baseurl }}">
-          {% if post.cover_image %}
-          <span style="background-image: url('{{ post.cover_image | prepend: site.baseurl }}');"></span>
-          {% else %}
-          <span class="home-list-card__fallback-label">{{ post.tags | first | default: "Article" }}</span>
-          {% endif %}
-        </a>
-        <div class="home-list-card__body">
-          <div class="home-list-card__meta">
-            <span>{{ post.last_modified_at | date: "%B %-d, %Y" }}</span>
-            <span>{{ post.tags | join: " · " }}</span>
-          </div>
-          <a class="home-list-card__title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-          <p>{{ post.home_excerpt }}</p>
-        </div>
-      </article>
+      <a class="home-row" href="{{ post.url | prepend: site.baseurl }}" style="--i: {% if forloop.index0 < 8 %}{{ forloop.index0 }}{% else %}8{% endif %}">
+        <span class="home-row__date">{{ post.last_modified_at | date: "%Y.%m.%d" }}</span>
+        <span class="home-row__text">
+          <span class="home-row__title">{{ post.title }}</span>
+          <span class="home-row__sub">{{ post.home_excerpt }}</span>
+        </span>
+        <span class="home-row__tag">{{ post.tags | first | default: "Article" }}</span>
+        <span class="home-row__arrow" aria-hidden="true"><i class="fa fa-long-arrow-right"></i></span>
+      </a>
       {% endfor %}
     </div>
   </div>
