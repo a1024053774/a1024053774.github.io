@@ -215,7 +215,9 @@
     // get nodes
     var $zh = document.querySelector(".zh");
     var $en = document.querySelector(".en");
-    var $select = document.querySelector("select");
+    // 文章页用下拉框，About 页用 [data-lang-link] 分段按钮，两种都可能不存在
+    var $select = document.querySelector("select.sel-lang");
+    var $langLinks = document.querySelectorAll("[data-lang-link]");
 
     // Changes at v1.8.1: include lang flag as a url query. This interop well with catalog hash anchors.
     function getLang() { return new URLSearchParams(document.location.search).get("lang") }
@@ -231,21 +233,27 @@
         var lang = getLang()
         // en
         if (lang == "en") {
-            $select.selectedIndex = 1;
+            if ($select) $select.selectedIndex = 1;
             $en.style.display = "block";
             $en.classList.add("active");
             $zh.style.display = "none";
             $zh.classList.remove("active");
             // default to zh-cn
         } else {
-            $select.selectedIndex = 0;
+            if ($select) $select.selectedIndex = 0;
             $zh.style.display = "block";
             $zh.classList.add("active");
             $en.style.display = "none";
             $en.classList.remove("active");
         }
+        var current = lang == "en" ? "en" : "zh";
+        for (var i = 0; i < $langLinks.length; i++) {
+            var link = $langLinks[i];
+            if (link.getAttribute("data-lang-link") === current) link.setAttribute("aria-current", "true");
+            else link.removeAttribute("aria-current");
+        }
         // interop with catalog 
-        generateCatalog(".catalog-body");
+        if (typeof generateCatalog === "function") generateCatalog(".catalog-body");
     }
 
     // handle select change

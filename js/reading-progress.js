@@ -1,41 +1,57 @@
-// 阅读进度条：transform + rAF，避免每帧触发布局
+// 阅读进度：顶部像素条 + 文章侧栏的像素刻度表（仿终端限额条）
+// clip-path 按 4px 一格对齐裁切，填充图案不被拉伸，也不触发 layout
 (function () {
     'use strict';
 
+    var CELL = 4; // 与 CSS 中棋盘格周期一致
+
     function init() {
-        var oldBar = document.getElementById('reading-progress-bar');
-        if (oldBar) {
-            oldBar.parentNode.removeChild(oldBar);
+        var docEl = document.documentElement;
+        var topBar = document.getElementById('reading-progress-bar');
+        if (!topBar) {
+            topBar = document.createElement('div');
+            topBar.id = 'reading-progress-bar';
+            topBar.className = 'reading-progress-bar';
+            document.body.insertBefore(topBar, document.body.firstChild);
         }
 
-        var progressBar = document.createElement('div');
-        progressBar.id = 'reading-progress-bar';
-        progressBar.className = 'reading-progress-bar';
+        var meter = document.querySelector('[data-reading-meter]');
+        var track = meter && meter.querySelector('.ink-meter__track');
+        var fill = meter && meter.querySelector('.ink-meter__fill');
+        var value = meter && meter.querySelector('.ink-meter__value');
+        if (meter) document.body.classList.add('has-reading-meter');
 
-        // 用 scaleX 代替 width：动画只走合成器，不触发 layout/paint
-        var style = progressBar.style;
-        style.position = 'fixed';
-        style.top = '0';
-        style.left = '0';
-        style.width = '100%';
-        style.height = '3px';
-        style.backgroundColor = 'var(--zhu, #b93a24)';
-        style.zIndex = '99999';
-        style.transformOrigin = 'left center';
-        style.transform = 'scaleX(0)';
-        style.pointerEvents = 'none';
-
-        document.body.insertBefore(progressBar, document.body.firstChild);
-
-        var docEl = document.documentElement;
         var ticking = false;
+        var lastPct = -1;
+
+        function ratio() {
+            var height = docEl.scrollHeight - docEl.clientHeight;
+            var scrolled = window.pageYOffset || docEl.scrollTop;
+            var r = height > 0 ? scrolled / height : 0;
+            return Math.min(Math.max(r, 0), 1);
+        }
+
+        // 把比例吸附到整格，返回 clip-path 右侧应裁掉的百分比
+        function snappedClip(el, r) {
+            var width = el.clientWidth;
+            var cells = Math.max(1, Math.floor(width / CELL));
+            var shown = Math.round(r * cells) / cells;
+            return ((1 - shown) * 100).toFixed(3) + '%';
+        }
 
         function update() {
             ticking = false;
-            var height = docEl.scrollHeight - docEl.clientHeight;
-            var winScroll = window.pageYOffset || docEl.scrollTop;
-            var ratio = height > 0 ? winScroll / height : 0;
-            style.transform = 'scaleX(' + Math.min(Math.max(ratio, 0), 1) + ')';
+            var r = ratio();
+            topBar.style.clipPath = 'inset(0 ' + snappedClip(topBar, r) + ' 0 0)';
+
+            if (!meter) return;
+            fill.style.clipPath = 'inset(0 ' + snappedClip(track, r) + ' 0 0)';
+            var pct = Math.round(r * 100);
+            if (pct !== lastPct) {
+                lastPct = pct;
+                value.textContent = pct + '%';
+                track.setAttribute('aria-valuenow', pct);
+            }
         }
 
         function requestUpdate() {
@@ -45,8 +61,19 @@
             }
         }
 
+        // 点击刻度条直接跳到对应位置
+        if (track) {
+            track.addEventListener('click', function (e) {
+                var rect = track.getBoundingClientRect();
+                var r = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+                window.scrollTo({ top: r * (docEl.scrollHeight - docEl.clientHeight), behavior: 'smooth' });
+            });
+        }
+
         window.addEventListener('scroll', requestUpdate, { passive: true });
         window.addEventListener('resize', requestUpdate, { passive: true });
+        // 图片、评论等晚到的内容会改变文档高度
+        window.addEventListener('load', requestUpdate);
         update();
     }
 

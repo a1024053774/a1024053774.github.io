@@ -1,0 +1,79 @@
+// Reading Meter
+// 仿终端限额条：填充是朱砂棋盘格（▓），未读部分是墨点抖动（░）
+// 颜色 token 定义在 css/dark-mode.css，随明暗主题切换
+
+.meter-fill-pattern() {
+  background-color: var(--meter-fill);
+  background-image: conic-gradient(var(--meter-fill-shade) 25%, transparent 0 50%, var(--meter-fill-shade) 0 75%, transparent 0);
+  background-size: 4px 4px;
+}
+
+// 顶部像素条：所有页面都有，文章页大屏时让位给侧栏刻度表
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 99999;
+  pointer-events: none;
+  clip-path: inset(0 100% 0 0);
+  .meter-fill-pattern();
+}
+
+@media (min-width: 1200px) {
+  body.has-reading-meter .reading-progress-bar {
+    display: none;
+  }
+}
+
+.ink-meter {
+  position: sticky;
+  bottom: -24px;
+  margin: 18px -4px -24px;
+  padding: 16px 4px 22px;
+  border-top: 1px dashed var(--glass-border-strong);
+  background: var(--meter-surface);
+  font-family: var(--mono-font);
+}
+
+.ink-meter__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ink-meter__track {
+  position: relative;
+  flex: 1;
+  height: 16px;
+  cursor: pointer;
+  background-image: conic-gradient(var(--meter-dot) 25%, transparent 0 50%, var(--meter-dot) 0 75%, transparent 0);
+  background-size: 2px 2px;
+}
+
+.ink-meter__fill {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 100% 0 0);
+  .meter-fill-pattern();
+}
+
+.ink-meter__value {
+  min-width: 4ch;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--foreground);
+}
+
+.ink-meter__hint {
+  margin: 12px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--muted-foreground);
+
+  span {
+    color: var(--foreground);
+  }
+}

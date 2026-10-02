@@ -1,0 +1,121 @@
+# About 页面文案：中英两份，结构一致，about.html 按同一模板渲染
+# 改自我介绍只需要改这里
+zh:
+  lang_label: 中文
+  eyebrow: About · 关于我
+  title_html: 你好，<br>我是遠山江浸月
+  role: 软件工程 · 大四
+  motto: The best people in life are free.
+  lede: 我是远山江浸月（LuckyE），热爱计算机科学和软件开发，对 Java 有系统性的学习与研究。这个博客记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时代的软件工程与安全实践。
+  cta_read: 读读文章
+  cta_mail: 写信给我
+  card:
+    - label: 主力语言
+      value: Java
+    - label: 最近在写
+      value: 强化学习 · AI 工程
+    - label: 写作始于
+      value: "2023"
+  now_playing: 正在循环
+  stats:
+    posts: 公开文章
+    tags: 活跃标签
+    since: 写作始于
+    album: 最爱专辑
+  skills_title: 技术专长
+  skills_meta: Skills · 三件事
+  skills:
+    - name: 编程语言
+      tag: Java
+      body: 精通 Java 基础与面向对象编程，从基本语法一路到多态、继承、封装、抽象类等高级特性。
+      chips: [Java, OOP, 多态, 继承]
+    - name: 数据库技术
+      body: 熟悉 SQL 与数据库系统理论，包括关系模型设计、查询优化和数据库安全。
+      chips: [SQL, 关系模型, 查询优化]
+      posts: [数据库系统概论, 数据库优化文档]
+    - name: 软件开发
+      body: 参与过仓储管理系统的开发，主要负责审批功能与数据库优化模块。
+      chips: [项目实战, 审批流, 索引优化]
+      posts: [仓储管理系统审批功能文档]
+  related: 相关文章
+  tag_more: 全部 Java 笔记
+  learn_title: 怎么学
+  learn_meta: Method · 学习与风格
+  learn_quote: 把知识点条理化整理，再放进真实项目里验证。
+  learn:
+    - title: 学习特点
+      body: 学习风格系统化且注重实践。喜欢把知识点条理化整理，并通过实际项目应用所学；笔记里能看到对技术细节的关注和对原理的追问。
+    - title: 个人风格
+      body: 注重知识的系统性学习与积累，善于分类整理信息，也热爱分享——这个博客就是这样长出来的。
+  writing_title: 最近在写
+  writing_meta: Latest · 三篇
+  life_title: 写代码之外
+  life_meta: Off-screen · Swiftie
+  life_body: 我是 Taylor Swift 的忠实粉丝。除了编程，也喜欢通过博客分享知识、记录学习心得。
+  life_facts:
+    - label: 最喜欢的歌
+      value: Enchanted
+    - label: 最爱的专辑
+      value: "1989"
+  contact_title: 保持联系
+  contact_body: 有问题、想法或者只是想打个招呼，都欢迎来信，或者直接在下面留言。
+
+en:
+  lang_label: EN
+  eyebrow: About · Me
+  title_html: Hi, I'm<br>LuckyE.
+  role: SE · Senior
+  motto: The best people in life are free.
+  lede: I'm Yuanshan Jiang Jinyue (LuckyE), a software engineering student who loves computer science and building software, with a systematic grounding in Java. This blog covers Java, Python, databases, reinforcement learning and RLHF, and software engineering and security in the age of AI.
+  cta_read: Read the blog
+  cta_mail: Say hello
+  card:
+    - label: Main language
+      value: Java
+    - label: Writing about
+      value: RL · AI engineering
+    - label: Writing since
+      value: "2023"
+  now_playing: On repeat
+  stats:
+    posts: Posts
+    tags: Active tags
+    since: Writing since
+    album: Favorite album
+  skills_title: What I work with
+  skills_meta: Skills · Three things
+  skills:
+    - name: Programming
+      tag: Java
+      body: Proficient in Java fundamentals and object-oriented programming, from basic syntax to polymorphism, inheritance, encapsulation and abstract classes.
+      chips: [Java, OOP, Polymorphism, Inheritance]
+    - name: Databases
+      body: Familiar with SQL and database theory, including relational model design, query optimization and database security.
+      chips: [SQL, Relational model, Query tuning]
+      posts: [数据库系统概论, 数据库优化文档]
+    - name: Software development
+      body: Hands-on experience building a warehouse management system, focused on the approval workflow and database optimization modules.
+      chips: [Real project, Approval flow, Indexing]
+      posts: [仓储管理系统审批功能文档]
+  related: Related posts
+  tag_more: All Java notes
+  learn_title: How I learn
+  learn_meta: Method · Learning & style
+  learn_quote: Organize what you learn into a structure, then prove it in a real project.
+  learn:
+    - title: Learning
+      body: Systematic and practice-oriented. I like turning knowledge into structured notes and applying it in real projects; my notes show an eye for detail and a habit of asking why.
+    - title: Style
+      body: I value building knowledge systematically, I'm good at sorting and organizing information, and I love sharing what I learn. This blog grew out of that.
+  writing_title: Currently writing
+  writing_meta: Latest · Three posts
+  life_title: Away from the keyboard
+  life_meta: Off-screen · Swiftie
+  life_body: I'm an avid Taylor Swift fan. Beyond programming, I enjoy sharing knowledge and keeping notes on what I learn through this blog.
+  life_facts:
+    - label: Favorite song
+      value: Enchanted
+    - label: Favorite album
+      value: "1989"
+  contact_title: Get in touch
+  contact_body: Questions, ideas, or just saying hi are all welcome. Send an email or leave a comment below.
