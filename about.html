@@ -1,24 +1,207 @@
 ---
-layout: page
+layout: default
 title: "About"
 description: "「The best people in life are free.」"
-header-img: "img/forklore.jpg"
-header-mask: 0.3
 multilingual: true
 comments: true
 comments_identifier: "LuckyE//about/"
 ---
 
-{% include multilingual-sel.html %}
+{% comment %}文案在 _data/about.yml，中英两份共用下面这一套模板{% endcomment %}
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "home_sort_key" | reverse %}
+{% assign total_posts = site.visible_post_count | default: visible_posts.size %}
+{% assign langs = "zh,en" | split: "," %}
+{% assign gallery = "1:tall,2:wide,3:tall,4:wide" | split: "," %}
 
-<!-- Chinese Version -->
-<div class="zh post-container">
-    {% capture about_zh %}{% include about/zh.md %}{% endcapture %}
-    {{ about_zh | markdownify }}
+{% for code in langs %}
+{% assign t = site.data.about[code] %}
+<div class="{{ code }} about-lang" lang="{% if code == 'zh' %}zh-CN{% else %}en{% endif %}">
+
+  <!-- Hero：名字 + 名片 -->
+  <header class="about-hero">
+    <div class="ink-container about-hero__inner">
+      <div class="about-hero__copy">
+        <div class="about-hero__top motion-rise" style="--i: 1">
+          <span class="about-eyebrow">{{ t.eyebrow }}</span>
+          <nav class="about-lang-switch" aria-label="Language">
+            {% for other in langs %}
+            <a href="?lang={{ other }}" data-lang-link="{{ other }}"{% if other == code %} aria-current="true"{% endif %}>{{ site.data.about[other].lang_label }}</a>
+            {% endfor %}
+          </nav>
+        </div>
+        <h1 class="about-hero__title motion-rise" style="--i: 2">{{ t.title_html }}</h1>
+        <p class="about-hero__motto motion-rise" style="--i: 3">“{{ t.motto }}”</p>
+        <p class="about-hero__lede motion-rise" style="--i: 4">{{ t.lede }}</p>
+        <div class="about-hero__actions motion-rise" style="--i: 5">
+          <a class="ink-btn ink-btn--primary" href="{{ '/' | prepend: site.baseurl }}#latest"><span>{{ t.cta_read }}</span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+          <a class="ink-btn ink-btn--ghost" href="mailto:{{ site.email }}"><span>{{ t.cta_mail }}</span></a>
+        </div>
+      </div>
+
+      <aside class="about-card motion-rise" style="--i: 4">
+        <div class="about-card__head">
+          <div class="about-card__portrait">
+            <img src="{{ site.sidebar-avatar | prepend: site.baseurl }}" alt="LuckyE avatar" width="512" height="512">
+          </div>
+          <div class="about-card__name">
+            <strong>遠山江浸月</strong>
+            <span>LuckyE</span>
+            <span>{{ t.role }}</span>
+          </div>
+          <span class="about-card__seal" aria-hidden="true">遠</span>
+        </div>
+        <dl class="about-card__list">
+          {% for row in t.card %}
+          <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
+          {% endfor %}
+        </dl>
+        <div class="about-card__now">
+          <div class="about-card__now-text">
+            <span class="about-card__now-label">{{ t.now_playing }}</span>
+            <span class="about-card__now-track">Enchanted — Taylor Swift</span>
+          </div>
+          <span class="about-card__now-bar" aria-hidden="true"><span></span></span>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <!-- 数字 -->
+  <section class="about-stats" data-reveal>
+    <div class="ink-container">
+      <dl class="about-stats__grid">
+        <div><dt>{{ t.stats.posts }}</dt><dd>{{ total_posts }}</dd></div>
+        <div><dt>{{ t.stats.tags }}</dt><dd>{{ site.tag_index | size }}</dd></div>
+        <div><dt>{{ t.stats.since }}</dt><dd>2023</dd></div>
+        <div><dt>{{ t.stats.album }}</dt><dd>1989</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 技术专长 -->
+  <section class="about-section" data-reveal>
+    <div class="ink-container">
+      <div class="home-section-head">
+        <h2>{{ t.skills_title }}</h2>
+        <span class="home-section-head__meta">{{ t.skills_meta }}</span>
+      </div>
+      <div class="about-skills">
+        {% for s in t.skills %}
+        <article class="about-skill">
+          <span class="about-skill__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <h3>{{ s.name }}</h3>
+          <p>{{ s.body }}</p>
+          <ul class="about-skill__chips">
+            {% for c in s.chips %}<li>{{ c }}</li>{% endfor %}
+          </ul>
+          <div class="about-skill__links">
+            {% if s.tag %}
+            {% assign skill_tag = site.tag_index | where: "name", s.tag | first %}
+            <a class="about-skill__link" href="{{ '/tags/' | prepend: site.baseurl }}#{{ skill_tag.slug | default: s.tag }}">
+              <span>{{ t.tag_more }}</span><em>{{ skill_tag.count | default: 0 }}</em><i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+            {% for slug in s.posts %}
+            {% assign related = site.posts | where: "slug", slug | first %}
+            {% if related %}
+            <a class="about-skill__link" href="{{ related.url | prepend: site.baseurl }}">
+              <span>{{ related.title }}</span><i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- 怎么学 -->
+  <section class="about-section about-learn" data-reveal>
+    <div class="ink-container about-learn__inner">
+      <div>
+        <span class="home-section-head__meta">{{ t.learn_meta }}</span>
+        <blockquote class="about-learn__quote">{{ t.learn_quote }}</blockquote>
+      </div>
+      <div class="about-learn__notes">
+        {% for item in t.learn %}
+        <div class="about-learn__note">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.body }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- 最近在写：取首页同一排序的前三篇 -->
+  <section class="about-section" data-reveal>
+    <div class="ink-container">
+      <div class="home-section-head">
+        <h2>{{ t.writing_title }}</h2>
+        <span class="home-section-head__meta">{{ t.writing_meta }}</span>
+      </div>
+      <ol class="about-writing">
+        {% for post in visible_posts limit: 3 %}
+        <li>
+          <a href="{{ post.url | prepend: site.baseurl }}">
+            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time>
+            <span class="about-writing__title">{{ post.title }}</span>
+            <span class="about-writing__tags">{% for tag in post.tags limit: 2 %}<span>{{ tag }}</span>{% endfor %}</span>
+            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+          </a>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 写代码之外 -->
+  <section class="about-section about-life" data-reveal>
+    <div class="ink-container about-life__inner">
+      <div class="about-life__copy">
+        <div class="home-section-head">
+          <h2>{{ t.life_title }}</h2>
+        </div>
+        <span class="home-section-head__meta">{{ t.life_meta }}</span>
+        <p>{{ t.life_body }}</p>
+        <dl class="about-life__facts">
+          {% for fact in t.life_facts %}
+          <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div>
+          {% endfor %}
+        </dl>
+      </div>
+      <div class="about-gallery">
+        {% for item in gallery %}
+        {% assign parts = item | split: ":" %}
+        <a class="about-gallery__item about-gallery__item--{{ parts[1] }}" href="{{ '/img/in-post/TaylorSwift/' | prepend: site.baseurl }}{{ parts[0] }}.jpeg" target="_blank" rel="noopener">
+          <img src="{{ '/img/in-post/TaylorSwift/thumb/' | prepend: site.baseurl }}{{ parts[0] }}.jpg" alt="Taylor Swift {{ parts[0] }}" loading="lazy" decoding="async">
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系 -->
+  <section class="about-section about-contact" data-reveal>
+    <div class="ink-container">
+      <span class="home-section-head__meta">{{ t.contact_title }}</span>
+      <a class="about-contact__mail" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <p>{{ t.contact_body }}</p>
+      <ul class="about-contact__links">
+        {% if site.github_username %}
+        <li><a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener"><i class="fa fa-github" aria-hidden="true"></i><span>GitHub</span></a></li>
+        {% endif %}
+        {% if site.twitter_username %}
+        <li><a href="https://twitter.com/{{ site.twitter_username }}" target="_blank" rel="noopener"><i class="fa fa-twitter" aria-hidden="true"></i><span>X / Twitter</span></a></li>
+        {% endif %}
+        <li><a href="{{ '/tags/' | prepend: site.baseurl }}"><i class="fa fa-tags" aria-hidden="true"></i><span>Tags</span></a></li>
+      </ul>
+    </div>
+  </section>
 </div>
+{% endfor %}
 
-<!-- English Version -->
-<div class="en post-container">
-    {% capture about_en %}{% include about/en.md %}{% endcapture %}
-    {{ about_en | markdownify }}
+<div class="ink-container about-comments">
+  {% include comments.html %}
 </div>
