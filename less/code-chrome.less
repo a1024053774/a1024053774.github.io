@@ -66,10 +66,12 @@
   line-height: 1.75 !important;
 }
 
+// dark-mode.css 后加载，其中 .post-container code 会把字色改成墨色；
+// 代码窗口在两种主题下都是深底，所以这里强制继承 pre 的浅色
 .code-window code {
   font-family: "SFMono-Regular", "SF Mono", "JetBrains Mono", "Fira Code", Consolas, monospace;
   background: transparent !important;
-  color: inherit;
+  color: inherit !important;
 }
 
 .code-window pre code,
