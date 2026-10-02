@@ -6,14 +6,14 @@ zh:
   title_html: 你好，<br>我是遠山江浸月
   role: USST · 硕士在读
   motto: The best people in life are free.
-  lede: 我是远山江浸月（LuckyE），目前在上海理工大学（USST）读硕士。热爱计算机科学和软件开发，对 Java 有系统性的学习与研究。这个博客记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时代的软件工程与安全实践。
+  lede: 我是远山江浸月（LuckyE），目前在上海理工大学（USST）读硕士，研究方向是强化学习。热爱计算机科学和软件开发，对 Java 有系统性的学习与研究。这个博客记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时代的软件工程与安全实践。
   cta_read: 读读文章
   cta_mail: 写信给我
   card:
+    - label: 研究方向
+      value: 强化学习
     - label: 主力语言
       value: Java
-    - label: 最近在写
-      value: 强化学习 · AI 工程
     - label: 写作始于
       value: "2023"
   now_playing: 正在循环
@@ -66,14 +66,14 @@ en:
   title_html: Hi, I'm<br>LuckyE.
   role: USST · Master's student
   motto: The best people in life are free.
-  lede: I'm Yuanshan Jiang Jinyue (LuckyE), a master's student at the University of Shanghai for Science and Technology (USST). I love computer science and building software, with a systematic grounding in Java. This blog covers Java, Python, databases, reinforcement learning and RLHF, and software engineering and security in the age of AI.
+  lede: I'm Yuanshan Jiang Jinyue (LuckyE), a master's student at the University of Shanghai for Science and Technology (USST), researching reinforcement learning. I love computer science and building software, with a systematic grounding in Java. This blog covers Java, Python, databases, reinforcement learning and RLHF, and software engineering and security in the age of AI.
   cta_read: Read the blog
   cta_mail: Say hello
   card:
+    - label: Research
+      value: Reinforcement learning
     - label: Main language
       value: Java
-    - label: Writing about
-      value: RL · AI engineering
     - label: Writing since
       value: "2023"
   now_playing: On repeat

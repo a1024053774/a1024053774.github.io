@@ -664,7 +664,7 @@ pre.highlight {
 .code-window code {
   font-family: "SFMono-Regular", "SF Mono", "JetBrains Mono", "Fira Code", Consolas, monospace;
   background: transparent !important;
-  color: inherit;
+  color: inherit !important;
 }
 .code-window pre code,
 .code-window .highlight,
