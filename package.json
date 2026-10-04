@@ -10,7 +10,7 @@
     },
     "bugs": "https://github.com/a1024053774/a1024053774.github.io/issues",
     "overrides": {
-        "js-yaml": "^3.15.0",
+        "js-yaml": "^3.15.2",
         "websocket-driver": "^0.7.5",
         "minimatch": "^3.1.5",
         "lodash": "^4.18.1"
