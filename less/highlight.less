@@ -17,8 +17,10 @@ pre.highlight {
   font-style: italic;
 }
 .highlight .err {
-  color: #960050;
-  background-color: #1e0010;
+  // Rouge 会把词法器不认识的字符（中文、全角标点、≤ × 等符号）标成 err，
+  // 原主题的暗红底会让它们变成一块块看不清的色块，这里按普通文字显示
+  color: inherit;
+  background-color: transparent;
 }
 .language-coq .highlight .err {
   // Hux: a temp workaround to fix for Coq math symbol
