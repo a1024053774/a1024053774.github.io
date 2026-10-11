@@ -187,13 +187,6 @@ a2a 的做法是：编排后台启动 agent 会话时，用 Git 的 `GIT_CONFIG_
 
 所以这篇文章只是设计稿。a2a 的仓库目前是私有的，项目定位是开源，做完以后会公开。届时我会在这里补上真实产品、一次完整闭环的运行记录，以及这些设计哪些站住了、哪些被推翻了。
 
-## 参考与致谢
-
-- 立行：[将军赶路不追小兔：多 Agent 调度体系的架构与实践](https://zj1123581321.com/posts/260809-multi-agent-scheduling-architecture/)。本文第二节的借鉴都来自这篇，具体做法以原文为准。
-- [Synara](https://github.com/Emanuele-web04/synara)：工作台的前端组件与样式来源（MIT）。
-- [Herdr](https://github.com/herdrdev/herdr)：a2a 第一阶段运行所在的终端工作区。
-- [xterm.js](https://github.com/xtermjs/xterm.js)、[node-pty](https://github.com/microsoft/node-pty)：终端渲染与托管。
-
 <!-- Mermaid 维护说明（不显示在文章正文）：
 先编辑 img/in-post/2026-10-11-a2a-design/ 中对应的 .mmd。
 在博客仓库根目录使用 Mermaid CLI 12.0.0 重新生成两张 SVG：
