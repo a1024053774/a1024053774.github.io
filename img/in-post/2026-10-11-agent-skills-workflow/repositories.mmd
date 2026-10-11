@@ -1,0 +1,10 @@
+flowchart TB
+    accTitle: 一份来源，索引与安装各司其职
+    accDescr: 八个独立仓库保存十个 Skill 的正文与历史。索引仓库只保存元数据、安装坐标和检查脚本。本地同步脚本从源码检出目录创建到 hub 的链接，再按配置处理工具目录。
+    S["8 个来源仓库 · 10 个 Skill<br/>SKILL.md、参考资料、脚本与历史"] --> L["本地源码检出目录<br/>~/Documents/SKILLS/各仓库"]
+    I["agent-skills-index<br/>用途、安装坐标、核对提交"] -.->|指向来源| S
+    I -->|skills.json| Y["sync_skills.py<br/>先查看计划，再按需 apply"]
+    L -->|提供源码路径| Y
+    Y --> H["~/.agents/skills<br/>符号链接指向源码"]
+    H --> A["按配置直接读取 hub 的工具"]
+    H --> B["按配置建立镜像链接的工具目录"]
