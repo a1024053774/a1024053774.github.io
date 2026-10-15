@@ -1,7 +1,7 @@
 ---
 layout:       post
 title:        "我的 Agent Skills 工作流：决策、证据、项目记忆与交付"
-subtitle:     "10 个索引收录的 Skill、1 个外部 Skill，以及它们各自应该出场和停下的位置"
+subtitle:     "9 个索引收录的 Skill、1 个外部 Skill，以及它们各自应该出场和停下的位置"
 date:         2026-10-11 08:00:00 -0400
 author:       "LuckyE"
 header-style: text
@@ -14,9 +14,9 @@ tags:
 
 一个 Agent 能写代码，还需要知道当前的问题有没有说清、关键假设有没有验证、测试究竟证明了什么，以及下一次会话该从哪里接着做。这套 Skill 围绕这些具体问题分工：让决策有记录，让实现有证据，让交付物能被核对。
 
-截至 2026 年 10 月 11 日，我维护的 [Agent Skills Index](https://github.com/a1024053774/agent-skills-index) 收录了 **10 个 Skill，来自 8 个独立仓库**。索引保存入口、用途、安装命令和核对过的提交；每个 Skill 的规则、脚本与参考资料仍留在来源仓库里。另有一个来自他人仓库、尚未收入索引的 `asd-ste100`，放在写作部分单独说明。
+截至 2026 年 10 月 15 日，我维护的 [Agent Skills Index](https://github.com/a1024053774/agent-skills-index) 收录了 **9 个 Skill，来自 7 个独立仓库**。索引保存入口、用途、安装命令和核对过的提交；每个 Skill 的规则、脚本与参考资料仍留在来源仓库里。另有一个来自他人仓库、尚未收入索引的 `asd-ste100`，放在写作部分单独说明。
 
-下面按一次任务的先后顺序介绍：动手之前、实现时、完成时，最后是交付物。文中的版本指文末列出的 Git 提交，不代表统一的发布版本，也不意味着每个任务都要把十个 Skill 跑一遍。
+下面按一次任务的先后顺序介绍：动手之前、实现时、完成时，最后是交付物。文中的版本指文末列出的 Git 提交，不代表统一的发布版本，也不意味着每个任务都要把九个 Skill 跑一遍。
 
 ## 总览：按问题找 Skill
 
@@ -30,7 +30,7 @@ tags:
 | 完成时 | 改动有没有绕开根因 | `design-integrity-review` |
 | | 验收能否独立证明所声称的行为 | `behavioral-acceptance-review` |
 | 交付物 | 文字怎么写才准确、不被误读 | `document-writing`、`asd-ste100` |
-| | 界面怎么保持同一个视觉系统 | `frontend-less-ai-tone`、`same-visual-family` |
+| | 界面怎么从方向做到可上线 | `frontend-production` |
 
 
 ![从决策与事实到授权实现，再按改动类型选择完成审查]({{ site.baseurl }}/img/in-post/2026-10-11-agent-skills-workflow/workflow.svg)
@@ -130,17 +130,15 @@ CONTEXT.md                # 项目术语表
 
 ## 四、交付物：文字与界面
 
-写作和前端的四个 Skill 处理不同的问题，可以按产物单独使用。
+写作和前端的三个 Skill 处理不同的问题，可以按产物单独使用。
 
 **[`document-writing`](https://github.com/a1024053774/document-writing-skill)** 覆盖起草、润色、翻译和编码保护。自然表达必须服从语义保真：“小样本下可能有效”不能被润色成“已经证明有效”；数量、否定、例外和不确定程度都要留下。保存文件后还要回读，检查实际文字、BOM 和换行方式。
 
 **[`asd-ste100`](https://github.com/danyuchn/asd-ste100-skill)** 的读者是模型或程序：工具描述、系统提示词、子 Agent 指令，以及供机器解析的错误和状态字符串。它按 ASD-STE100（简化技术英语）的结构规则改写英文：主动语态、一句一个指令、限制句长、不用分号和短语动词，并保留“可能”这类不确定程度。它只覆盖英文，也不内置 ASD 的核准词典，所以词汇规则只能作为方向，不能当作合规证明；仓库附有 `scripts/ste-lint.py` 检查脚本。给人读的 README、邮件和报告不在默认范围，除非用户明确点名 STE。它是第三方 Skill，我只在本机安装使用，没有收入索引。
 
-**[`frontend-less-ai-tone`](https://github.com/a1024053774/frontend-less-ai-tone-skill)** 负责前端的内容和视觉方向。先明确读者、主行动和一个视觉记忆点，再写结构与样式。事实来自已有材料，不能靠虚构客户、评价和数字填满页面。在不允许自由编写 CSS 的生成器中，则遵循项目已有约束。
+**[`frontend-production`](https://github.com/a1024053774/frontend-production-skill/tree/main/frontend-production)** 把前端做到能上线、也审到能上线：先根据读者、主行动和真实内容确定文案与视觉方向，再按需要处理多来源区块的同族、动效、手机端和逐页工程审查。它支持 `build`、`quick`、`full`、`implement` 四种模式；审查默认只读，问题按 P0—P3 分级，并把未验证的范围写清楚。它要求沿用项目已有的品牌、token、组件库和约定，事实缺口不能用虚构数字、客户或评价填补。
 
-**[`same-visual-family`](https://github.com/a1024053774/same-visual-family-skill)** 负责已经选定方向之后的组合一致性。引入外部组件时，保留有用的结构，把仍然生效的字体、颜色、圆角和阴影调整到当前视觉系统。如果没有成文规范，就先从已有界面提取背景、文字、强调色、边线、字体栈和圆角的具体值。
-
-前一个 Skill 决定“这个产品应该怎么说、怎么看起来”，后一个决定“这些模块能不能放在同一页”。组件来自同一个库，并不能自动保证一致；来自不同的库，也不必一概否决。
+索引中的 `frontend-production` 已把原先分开的内容/视觉方向与同族工作收在一个入口，原来的两个来源仓库已归档，并补上动效、手机端和工程审查。组件来自同一个库，也不能自动证明页面已经一致或可以上线；每个结论仍需要与它相称的证据。
 
 ## 五、放进一次具体任务里
 
@@ -151,7 +149,7 @@ CONTEXT.md                # 项目术语表
 3. **验证关键事实。** 用带跨页段落、表格和扫描图片的样本，检查解析能力以及引用定位能否保留。结果不足以支持方向时，先解决未知项。
 4. **获得实现授权后打通薄路径。** 已有项目地图负责记录任务。先完成一种格式从上传到显示引用的完整路径，再增加格式和边界场景。
 5. **保存能拒绝错误行为的证据。** 预期引用来自人工核对的样本位置，测试要能发现错页、错段和固定返回同一引用的实现。
-6. **按候选改动验收。** 涉及生成结果及引用正确性时，使用行为验收审查；说明文档交给写作规则，界面按需要使用两个前端 Skill。
+6. **按候选改动验收。** 涉及生成结果及引用正确性时，使用行为验收审查；说明文档交给写作规则，界面按需要使用 `frontend-production`。
 
 在这个例子中，项目地图贯穿多次会话，其他 Skill 在对应问题出现时进入。任务大小决定需要多少环节；结束条件由要交付的行为和证据决定。
 
@@ -186,13 +184,13 @@ python3 scripts/sync_skills.py
 python3 scripts/check_skill_budget.py
 ```
 
-它检查 `SKILL.md` 的字节预算、frontmatter、相对链接、锚点和未从入口链接的参考文件。2026 年 10 月 11 日，本次整理中的 10 个 Skill 全部通过了这些静态检查。这只说明目录和文件满足这些检查项，不能代替 Skill 的实际行为验证。
+它检查 `SKILL.md` 的字节预算、frontmatter、相对链接、锚点和未从入口链接的参考文件。2026 年 10 月 15 日，本次整理中的 9 个 Skill 全部通过了这些静态检查。这只说明目录和文件满足这些检查项，不能代替 Skill 的实际行为验证。
 
 这也解释了为什么核心规则放在 `SKILL.md` 前部，阶段性细节放进 `references/`：进入任务时先能看见不能违反的边界，到具体阶段再读取所需说明。预算需要服务使用方式；例如 `grilling` 每轮都要用到的问题类型和提问规则保留在入口，因此索引给它单独设置了 11264 字节预算。
 
 ### 本文核对的版本
 
-以下 8 个本地来源仓库的 `HEAD`，在 2026 年 10 月 11 日核对时均与 GitHub `main` 一致。`_archive` 中的历史副本未纳入索引。提交链接固定本文所依据的内容；之后的更新以来源仓库为准。
+以下 7 个本地来源仓库的 `HEAD`，在 2026 年 10 月 15 日核对时均与 GitHub `main` 一致。`_archive` 中的历史副本未纳入索引。提交链接固定本文所依据的内容；之后的更新以来源仓库为准。
 
 | 来源仓库 | 本文依据的提交 | 包含的 Skill |
 | --- | --- | --- |
@@ -202,8 +200,7 @@ python3 scripts/check_skill_budget.py
 | project-map-skill | [`c16779a`](https://github.com/a1024053774/project-map-skill/tree/c16779a296f43a91b20da2cabbe70223a7569f9a) | project-map |
 | architecture-flow-map-skill | [`8b3a0c5`](https://github.com/a1024053774/architecture-flow-map-skill/tree/8b3a0c5df60ee762461b39613614741b2f715f4b) | architecture-flow-map |
 | document-writing-skill | [`5fc4ea0`](https://github.com/a1024053774/document-writing-skill/tree/5fc4ea0cacfb9d1dd331a772ee0b34120799ec48) | document-writing |
-| frontend-less-ai-tone-skill | [`e0b98b4`](https://github.com/a1024053774/frontend-less-ai-tone-skill/tree/e0b98b47242ba81e63bc1dfdceb6db502087b4ac) | frontend-less-ai-tone |
-| same-visual-family-skill | [`5f36ff1`](https://github.com/a1024053774/same-visual-family-skill/tree/5f36ff1b07f612272ac6cf10960652be861d320a) | same-visual-family |
+| frontend-production-skill | [`b291300`](https://github.com/a1024053774/frontend-production-skill/tree/b2913002abd3767c1e9272201568695e58232e48) | frontend-production |
 
 外部 Skill `asd-ste100` 不在上表和索引之内。我本机的副本基于上游 [`7d4a135`](https://github.com/danyuchn/asd-ste100-skill/commit/7d4a135a199a5d7447c4886bcd7ffe742a627bc9)，另有一处未提交的本地修改：把 `SKILL.md` 的触发描述收窄到“用户点名 STE，或文本供机器解析”。上游 `HEAD` 此后已经更新到 `32511c6`，我没有对照这两个版本之间的差异，所以文中对它的描述以本地副本为准。
 
