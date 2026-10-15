@@ -27,6 +27,9 @@
 <script src="{{ "/js/comments.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 {% endif %}
 <script src="{{ "/js/code-blocks.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
+{% if page.notion_discussions %}
+<script src="{{ "/js/notion-discussions.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
+{% endif %}
 <script src="{{ "/js/home-carousel.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 <script src="{{ "/js/motion-reveal.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 <script src="{{ "/js/tags.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>

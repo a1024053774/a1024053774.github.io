@@ -1,0 +1,202 @@
+{
+  "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393",
+  "snapshot_at": "2026-10-15T14:29:42.180Z",
+  "last_edited_at": "2026-10-15T14:29:02.179Z",
+  "discussion_count": 11,
+  "discussions": [
+    {
+      "anchor": "notion-discussion-01",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/7cb3527c-4272-4e72-9929-95cd61cf8813/3fafaa7a-dad8-80cd-9df0-001c43eed7d9",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad880cd9df0001c43eed7d9&pvs=42#7cb3527c42724e72992995cd61cf8813",
+      "text_context": "有多少属于“人类先验”",
+      "resolved": false,
+      "comment_count": 2,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8016-beae-001d6136b535",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T10:21:46.669Z",
+          "by_you": true,
+          "html": "“人类先验”特指人类工程师将自己对特定业务流程、求解逻辑和安全规范的理解，硬编码进系统中的规则与约束。"
+        },
+        {
+          "id": "3fafaa7a-dad8-80ac-b055-001d833dcb12",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T10:30:11.266Z",
+          "by_you": true,
+          "html": "• 硬编码工作流：人工编排的 DAG、固定调用顺序（如“必须先检索知识库，再调用计算器，最后调用总结工具”）。<br>• 格式与验证校验：用正则表达式、Pydantic Schema 死锁输入输出，强制模型按照人类预想的接口通信。<br>• 启发式 Prompt 与反思机制：在 Harness 中预埋固定句式（“请一步一步思考”、“检查你的答案是否符合某规范”）。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-02",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/68ad389e-8353-4d1c-995a-4ba1d9f2ca69/3fafaa7a-dad8-8074-bebe-001c8d37417a",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad88074bebe001c8d37417a&pvs=42#68ad389e83534d1c995a4ba1d9f2ca69",
+      "text_context": "2026 年以来，生...下文末尾而不破坏前缀",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8069-a429-001dc523610b",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T10:48:25.638Z",
+          "by_you": true,
+          "html": "Claude Code 全面落地 MCP Tool Search / 惰性加载（2026 年 1 月）在工程落地端，Anthropic 针对其开发工具 Claude Code 正式推送了 MCP Tool Search（Lazy Loading）：<br>• 自动阈值触发：当检测到挂载的 MCP 工具描述超过 10,000 Token（或占上下文窗口 10% 以上）时，系统自动切入惰性加载模式，不再全量注入。<br>• 85%\\~95% Token 瘦身：原本冷启动需要消耗 5 万～10 万 Token 的庞大 MCP 环境，初始 Token 占用被压制到 500 Token 左右。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-03",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/68ad389e-8353-4d1c-995a-4ba1d9f2ca69/3fafaa7a-dad8-8023-af6a-001cdb030500",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad88023af6a001cdb030500&pvs=42#68ad389e83534d1c995a4ba1d9f2ca69",
+      "text_context": "不破坏前缀",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8008-9d3d-001df8e7805a",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T10:50:44.290Z",
+          "by_you": true,
+          "html": "Prompt Caching（提示词前缀缓存）。<br><br>前缀缓存的约束（Prefix-Match）：大模型服务商的上下文缓存机制严格要求前缀完全一致。如果将动态加载、频繁变动的工具 Schema 放置在上下文前端（如插入在系统提示词或静态工具区），任何一个工具的加载或卸载都会导致后续所有 Token 的缓存键（Cache Key）失效，造成 100% 的重新计算，极大拉高推理延迟和 Token 成本。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-04",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/1c962396-900d-49d3-81b2-fb4a60c6787a/3fafaa7a-dad8-8021-9575-001c890dc4bd",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad880219575001c890dc4bd&pvs=42#1c962396900d49d381b2fb4a60c6787a",
+      "text_context": "传统方式中，模型调用...一样有很多格式限制。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8014-a66b-001d93099cb0",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T11:08:28.356Z",
+          "by_you": true,
+          "html": "<br>  客户端必须提供完整的 JSON Schema，显式声明输入字段类型：<br><br>`{  \"type\": \"function\",  \"function\": {    \"name\": \"python_interpreter\",    \"description\": \"执行 Python 脚本并返回标准输出\",    \"parameters\": {      \"type\": \"object\",      \"properties\": {        \"code\": {          \"type\": \"string\",          \"description\": \"待执行的完整 Python 代码\"        }      },      \"required\": [\"code\"]    }  }}<br><br>`模型返回的 Tool Call Payload大模型为了保证输出是合法 JSON，必须对代码内部的所有换行、双引号、反斜杠做严格转义：<br><br>`{  \"id\": \"call_abc123\",  \"type\": \"function\",  \"function\": {    \"name\": \"python_interpreter\",    \"arguments\": \"{\\\"code\\\": \\\"import re\\\\n\\\\ntext = \\\\\\\"Latency: 24ms, Cost: $0.05\\\\\\\"\\\\npattern = r'\\\\\\\\d+\\\\\\\\.\\\\\\\\d+|\\\\\\\\d+'\\\\nmatches = re.findall(pattern, text)\\\\nprint(f\\\\\\\"Extracted numbers: {matches}\\\\\\\")\\\"}\"  }}<br>`<br><span underline=\"true\">**核心痛点**</span>：`arguments` 是一个双重序列化的字符串。为了逃逸代码中的 `\"` 和 `\\d`，模型必须生成 `\\\\\\\"` 和 `\\\\\\\\d`。一旦生成数百行长代码，极易因某处转义缺失引发 `json.decoder.JSONDecodeError`，并且额外消耗了大量无意义的转义 Token。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-05",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/1c962396-900d-49d3-81b2-fb4a60c6787a/3fafaa7a-dad8-8057-aa0a-001cd8cd3e00",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad88057aa0a001cd8cd3e00&pvs=42#1c962396900d49d381b2fb4a60c6787a",
+      "text_context": "自由格式工具调用（在...SON 转义的麻烦。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8015-9da5-001d24777cd6",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T11:10:58.903Z",
+          "by_you": true,
+          "html": "自由格式调用直接抛弃了外部 JSON 字段 Schema 限制，允许模型将一段裸文本（Raw Text）作为输入直接投递给目标工具。工具声明（Tool Definition）在声明工具时直接指定类型为 `custom`，无需嵌套的 properties 约束：<br><br>`{  \"type\": \"custom\",  \"name\": \"python_runner\",  \"description\": \"接受原生多行 Python 代码并在沙箱中执行，返回 stdout/stderr\"}<br><br>`模型返回的 Tool Call Payload模型输出不再做字符转义，直接流式生成原始文本：<br><br>`{  \"id\": \"call_xyz789\",  \"type\": \"custom\",  \"name\": \"python_runner\",  \"input\": \"import re\\n\\ntext = \\\"Latency: 24ms, Cost: $0.05\\\"\\npattern = r'\\\\d+\\\\.\\\\d+|\\\\d+'\\nmatches = re.findall(pattern, text)\\nprint(f\\\"Extracted numbers: {matches}\\\")\"}<br><br>`*在底层传输或流式输出时，**`input`** 字段承载的就是纯文本块，甚至可以直接以 Markdown 语法块的形式流出，模型不再进行 **`\\\"`** 或 **`\\\\\\\\`** 等繁琐的人工转义*。<br>"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-06",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/9c6ca904-7bc6-4975-87bc-b219f78cf2b1/3fafaa7a-dad8-80ea-b33a-001c6506783f",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad880eab33a001c6506783f&pvs=42#9c6ca9047bc6497587bcb219f78cf2b1",
+      "text_context": "作为 Responses API ",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-80f2-822e-001d449620d6",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T11:18:23.971Z",
+          "by_you": true,
+          "html": "Chat 格式 指的是自 2023 年 GPT-3.5/GPT-4 时代确立的标准接口——Chat Completions API（即 `/v1/chat/completions`）。<br><br>而书中讨论的 Responses API（`/v1/responses`），是大模型厂商（OpenAI、阿里云百炼、Kimi 等）为应对“模型即 Agent”范式全面重构的下一代底层接口。<br><br>它的核心转变在于：将过去以“人机聊天（Messages）”为中心的无状态文本预测，升级为以“Agent 任务执行（Items）”为中心的原生智能体运行环境。<br>"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-07",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/c0c9c63c-a4dc-46c1-8108-a5cbb8e2a9e8/3fafaa7a-dad8-8051-a0a9-001c5bf5cfdb",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad88051a0a9001c5bf5cfdb&pvs=42#c0c9c63ca4dc46c18108a5cbb8e2a9e8",
+      "text_context": "并在关键边界处持久化",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-80fc-b4f9-001d81285fa9",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T11:49:51.635Z",
+          "by_you": true,
+          "html": "落成文档"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-08",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/c0c9c63c-a4dc-46c1-8108-a5cbb8e2a9e8/3fafaa7a-dad8-80db-aab2-001c8fd6b029",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad880dbaab2001c8fd6b029&pvs=42#c0c9c63ca4dc46c18108a5cbb8e2a9e8",
+      "text_context": "节点承担具体能力",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-808e-a70f-001d9a4bef42",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T11:50:27.184Z",
+          "by_you": true,
+          "html": "agent 执行"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-09",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/1891ff16-5874-4573-925e-6146215a7010/3fafaa7a-dad8-8033-80b6-001c8485ea9d",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad8803380b6001c8485ea9d&pvs=42#1891ff1658744573925e6146215a7010",
+      "text_context": "不把全部信息一次性放...录，再按需加载细节。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8044-a608-001deb699849",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T13:41:21.069Z",
+          "by_you": true,
+          "html": "三层检索设计"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-10",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/24340ecb-af5e-4256-a6cb-18404801521d/3fafaa7a-dad8-8069-b66b-001cb2b37cde",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad88069b66b001cb2b37cde&pvs=42#24340ecbaf5e4256a6cb18404801521d",
+      "text_context": "它不应当影响的那批样本",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8060-840a-001d654ed6da",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T13:44:11.611Z",
+          "by_you": true,
+          "html": "回归测试"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-11",
+      "id": "discussion://3fafaa7a-dad8-8177-98d1-e3308c0af393/24340ecb-af5e-4256-a6cb-18404801521d/3fafaa7a-dad8-805c-b2e0-001cbf116bad",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8817798d1e3308c0af393?d=3fafaa7adad8805cb2e0001cbf116bad&pvs=42#24340ecbaf5e4256a6cb18404801521d",
+      "text_context": "它应当改变的那批样本",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fafaa7a-dad8-8007-b602-001d22848504",
+          "author": "远山江浸月",
+          "datetime": "2026-10-15T13:44:30.778Z",
+          "by_you": true,
+          "html": "不可越界"
+        }
+      ]
+    }
+  ]
+}
