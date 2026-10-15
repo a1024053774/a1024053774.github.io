@@ -2452,9 +2452,10 @@ footer.ink-footer {
   margin: 0;
   color: var(--stage-text);
   font-family: var(--latin-font);
-  font-size: clamp(4.4rem, 6vw, 7.2rem);
+  font-size: clamp(1.5rem, 6vw, 7.2rem);
   font-style: italic;
   line-height: 1;
+  white-space: nowrap;
 }
 .ink-footer__sns .list-inline {
   margin: 0;
