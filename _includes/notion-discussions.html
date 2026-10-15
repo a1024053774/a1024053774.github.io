@@ -1,0 +1,52 @@
+{% if page.notion_discussions and page.notion_source %}
+{% assign notion_snapshot = site.data.notion[page.notion_discussions] %}
+<section class="notion-annotations" data-notion-annotations>
+  <div class="notion-annotations-toolbar">
+    <div class="notion-annotations-copy">
+      <span class="notion-annotations-kicker">Notion snapshot</span>
+      <span class="notion-annotations-summary">
+        {{ notion_snapshot.discussion_count }} 条批注 · {{ notion_snapshot.last_edited_at | date: "%Y-%m-%d %H:%M" }} 更新
+      </span>
+    </div>
+    <div class="notion-annotations-actions">
+      <button type="button" class="notion-annotations-toggle" data-notion-discussions-toggle aria-expanded="false" aria-controls="notion-discussions-panel">
+        查看批注
+      </button>
+      <a class="notion-annotations-source" href="{{ page.notion_source }}" target="_blank" rel="noopener">打开 Notion 原文</a>
+    </div>
+  </div>
+
+  <aside id="notion-discussions-panel" class="notion-discussions-panel" data-notion-discussions-panel hidden aria-label="Notion 批注">
+    <div class="notion-discussions-head">
+      <div>
+        <span class="notion-annotations-kicker">Threaded notes</span>
+        <h2>批注与讨论</h2>
+        <p>这是 {{ page.notion_last_edited_at | date: "%Y-%m-%d %H:%M" }} 的静态快照。点击正文中的标记可定位到这里；要继续评论，请打开对应的 Notion 讨论。</p>
+      </div>
+      <button type="button" class="notion-discussions-close" data-notion-discussions-close aria-label="关闭批注">×</button>
+    </div>
+    <div class="notion-discussions-list">
+      {% for discussion in notion_snapshot.discussions %}
+      <article id="{{ discussion.anchor }}" class="notion-discussion-card" data-notion-discussion-card="{{ discussion.anchor }}"{% if discussion.resolved %} data-resolved="true"{% endif %}>
+        <div class="notion-discussion-card-head">
+          <span class="notion-discussion-context">“{{ discussion.text_context }}”</span>
+          {% if discussion.resolved %}<span class="notion-discussion-status">已解决</span>{% endif %}
+        </div>
+        <div class="notion-discussion-comments">
+          {% for comment in discussion.comments %}
+          <div class="notion-discussion-comment">
+            <div class="notion-discussion-comment-meta">
+              <strong>{{ comment.author }}</strong>
+              {% if comment.datetime %}<time datetime="{{ comment.datetime }}">{{ comment.datetime | date: "%Y-%m-%d %H:%M" }}</time>{% endif %}
+            </div>
+            <div class="notion-discussion-comment-body">{{ comment.html }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <a class="notion-discussion-source" href="{{ discussion.source_url | escape }}" target="_blank" rel="noopener">在 Notion 中继续这条讨论 ↗</a>
+      </article>
+      {% endfor %}
+    </div>
+  </aside>
+</section>
+{% endif %}
