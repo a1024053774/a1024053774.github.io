@@ -1,0 +1,13 @@
+slug: java
+title: Java 从零开始
+eyebrow: Java · Course Hub
+description: 从语法、数据类型和控制结构开始，经过数组、类与对象、继承与多态，最后落到一个完整的房屋出租系统。
+phases:
+  - id: phase01
+    label: Phase 01
+    title: Java 基础
+    description: 把语言的基本构件走一遍，建立能继续写下去的骨架。
+  - id: phase02
+    label: Phase 02
+    title: 面向对象进阶
+    description: 从类变量、main 方法和代码块继续深入 Java 的运行方式。

@@ -1,5 +1,6 @@
 # 首页「专栏」区：按标签聚合，文章数取自 site.tag_index（只统计公开文章）
 - tag: Java
+  url: /java/
   title: Java 从零开始
   description: Phase01 八个章节 + Phase02：从转义字符、类与对象，到房屋出租系统实战。
 - tag: 强化学习

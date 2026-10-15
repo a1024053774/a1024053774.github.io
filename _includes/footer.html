@@ -30,6 +30,9 @@
 {% if page.notion_discussions %}
 <script src="{{ "/js/notion-discussions.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 {% endif %}
+{% if page.course == "Java" %}
+<script src="{{ "/js/course-hub.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
+{% endif %}
 <script src="{{ "/js/home-carousel.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 <script src="{{ "/js/motion-reveal.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
 <script src="{{ "/js/tags.js" | prepend: site.baseurl }}?v={{ asset_version }}"></script>
