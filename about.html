@@ -8,7 +8,7 @@ comments_identifier: "LuckyE//about/"
 ---
 
 {% comment %}文案在 _data/about.yml，中英两份共用下面这一套模板{% endcomment %}
-{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "home_sort_key" | reverse %}
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "date" | reverse %}
 {% assign total_posts = site.visible_post_count | default: visible_posts.size %}
 {% assign langs = "zh,en" | split: "," %}
 {% assign gallery = "1:tall,2:wide,3:tall,4:wide" | split: "," %}
