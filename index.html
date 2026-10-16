@@ -5,7 +5,7 @@ quote: "It must be exhausting always rooting for the anti-hero."
 intro: "记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时代的软件工程与安全实践。"
 ---
 
-{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "home_sort_key" | reverse %}
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "date" | reverse %}
 {% assign featured = visible_posts.first %}
 {% assign total_posts = site.visible_post_count | default: visible_posts.size %}
 
@@ -31,7 +31,7 @@ intro: "记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时�
         </div>
         <div class="home-landing__stat">
           <dt>最近更新</dt>
-          <dd>{{ featured.last_modified_at | date: "%Y.%m.%d" }}</dd>
+          <dd>{{ featured.date | date: "%Y.%m.%d" }}</dd>
         </div>
       </dl>
     </div>
@@ -166,7 +166,7 @@ intro: "记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时�
             <div class="home-card__content">
               <div class="home-card__topline">
                 <span>{{ post.tags | first | default: "Article" }}</span>
-                <span>{{ post.last_modified_at | date: "%Y.%m.%d" }}</span>
+                <span>{{ post.date | date: "%Y.%m.%d" }}</span>
               </div>
               <div class="home-card__body">
                 <h3>{{ post.title }}</h3>
@@ -213,7 +213,7 @@ intro: "记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时�
     <div class="home-stage__list-view is-hidden" data-home-list-view>
       {% for post in visible_posts %}
       <a class="home-row" href="{{ post.url | prepend: site.baseurl }}" style="--i: {% if forloop.index0 < 8 %}{{ forloop.index0 }}{% else %}8{% endif %}">
-        <span class="home-row__date">{{ post.last_modified_at | date: "%Y.%m.%d" }}</span>
+        <span class="home-row__date">{{ post.date | date: "%Y.%m.%d" }}</span>
         <span class="home-row__text">
           <span class="home-row__title">{{ post.title }}</span>
           <span class="home-row__sub">{{ post.home_excerpt }}</span>

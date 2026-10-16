@@ -53,6 +53,8 @@ jobs:
           JEKYLL_ENV: production
       - name: Check book navigation and chapter rendering
         run: python3 tests/check_books.py --site _site
+      - name: Check publication order after editing old articles
+        run: python3 tests/check_home_publication.py --report-dir /tmp/publication-order
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
