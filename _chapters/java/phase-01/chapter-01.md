@@ -15,7 +15,7 @@ tags: [Java]
 
 ## 1.Introduction
 
-Java编译:   javac [Test.java](http://Test.java)    
+Java编译:   javac [Test.java](http://Test.java)
 
 乱码javac -encoding UTF-8 Test.java
 
@@ -107,7 +107,7 @@ javadoc -d 路径 标签 文件名
 
 public class PageComment {
 	public static void main(String[] args) {
-		
+
 	}
 }
 ```
@@ -195,10 +195,10 @@ public class HomeWork01 {
 	public static void main(String[] args) {
 		//作业1
 		System.out.println("Hello,world");
-		
+
 		//作业2
 		System.out.println("name\tsex\tpro\taddress\nyrh\tman\thenan\tny");
-	
+
 		//作业3
 		// JDK = JRE + JAVA开发工具
 		// JRE = JVM + 核心类库
