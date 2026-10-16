@@ -45,9 +45,7 @@ $(document).ready(function() {
 jQuery(document).ready(function($) {
     var MQL = 1170;
 
-    //primary navigation slide-in effect
-    if (window.innerWidth <= MQL) return;
-
+    // Register once; the current breakpoint is evaluated on scroll and resize.
     var navbar = document.querySelector('.navbar-custom');
     if (!navbar) return;
 
@@ -62,6 +60,12 @@ jQuery(document).ready(function($) {
     function onScroll() {
         ticking = false;
         var currentTop = window.pageYOffset;
+        if (window.innerWidth <= MQL) {
+            navbar.classList.remove('is-visible', 'is-fixed');
+            if (catalog) catalog.classList.remove('fixed');
+            previousTop = currentTop;
+            return;
+        }
 
         //check if user is scrolling up by mouse or keyboard
         if (currentTop < previousTop) {
@@ -89,5 +93,6 @@ jQuery(document).ready(function($) {
         }
     }, { passive: true });
 
+    window.addEventListener('resize', onScroll);
     onScroll();
 });

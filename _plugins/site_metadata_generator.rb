@@ -32,9 +32,9 @@ module SiteMetadataGenerator
       source_path = File.join(site.source, doc.relative_path)
       return unless File.exist?(source_path)
 
-      modified_at = git_modified_at(site, doc) || File.mtime(source_path).utc
+      modified_at = git_modified_at(site, doc) || File.mtime(source_path)
       doc.data["last_modified_at"] ||= modified_at
-      doc.data["last_modified_at_iso"] ||= modified_at.iso8601
+      doc.data["last_modified_at_iso"] ||= modified_at.getutc.iso8601
       doc.data["home_sort_key"] ||= [doc.data["last_modified_at_iso"], doc.date.iso8601].join("|")
       doc.data["cover_image"] ||= extract_cover_image(doc)
       doc.data["home_excerpt"] ||= extract_excerpt(doc)
@@ -54,7 +54,7 @@ module SiteMetadataGenerator
       ).to_s.strip
       return nil if output.empty?
 
-      Time.iso8601(output).utc
+      Time.iso8601(output)
     rescue ArgumentError, Errno::ENOENT
       nil
     end
