@@ -11,7 +11,7 @@
     <meta property="og:title"
         content="{% if page.title %}{{ page.title }} - {{ site.SEOTitle }}{% else %}{{ site.SEOTitle }}{% endif %}">
     {% case page.layout %}
-    {% when 'post' %}
+    {% when 'post', 'book' %}
     <meta property="og:type" content="article">
     <meta property="og:description" content="{{ page.excerpt | strip_html | truncate:200 }}">
     {% if page.date %}

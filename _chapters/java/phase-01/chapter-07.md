@@ -1,19 +1,15 @@
 ---
-layout:       post
-title:        "Java-Phase01-Chapter07"
-subtitle: 'Super+继承+多态'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-01
+order: 7
+chapter_label: "Chapter 07"
+title: "继承与多态"
+date: 2025-03-09 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
-course: Java
-course_phase: phase01
-course_order: 7
-course_title: "第 7 章 · 继承与多态"
+tags: [Java]
 ---
-
-# Chapter07
 
 ### IDEA快捷键
 
@@ -56,7 +52,7 @@ course_title: "第 7 章 · 继承与多态"
 
 ![Untitled]({{site.baseurl}}/img/in-post/2025-03-09-Chapter07/Untitled%207.png)
 
-# 面向对象三大特征
+## 面向对象三大特征
 
 ## 封装
 
@@ -350,7 +346,7 @@ super代表父类的引用，
 
 ![Untitled]({{site.baseurl}}/img/in-post/2025-03-09-Chapter07/Untitled%2052.png)
 
-# 属性不能重写,属性的值看编译类型
+## 属性不能重写,属性的值看编译类型
 
 instanceOf比较操作符，用于判断对象的运行类型是否为xx类型或xx类型的子类型
 

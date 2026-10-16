@@ -29,6 +29,7 @@ exclude:
     "package.json",
     "README.md",
     "README.zh.md",
+    "tests",
   ]
 anchorjs: true # if you want to customize anchor. check out line:181 of `post.html`
 # If you have timezone issue (e.g. #68) in China, uncomment to use this:
@@ -120,3 +121,9 @@ service-worker: true
 
 # MathJax rendering for layout:page (e.g. post preview)
 page-mathjax: false
+
+# Chapters are nested book documents; only book entries belong to site.posts.
+collections:
+  chapters:
+    output: true
+    permalink: /:path/

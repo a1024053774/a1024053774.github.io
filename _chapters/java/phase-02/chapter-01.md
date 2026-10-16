@@ -1,20 +1,15 @@
 ---
-layout:       post
-title:        "Java-Phase02"
-subtitle: '第二阶段'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-02
+order: 9
+chapter_label: "Chapter 01"
+title: "静态成员、抽象类与接口"
+date: 2025-03-11 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
-course: Java
-course_phase: phase02
-course_order: 9
-course_title: "第二阶段 · 类变量、main 方法与代码块"
+tags: [Java]
 ---
-
-
-# 第二阶段
 
 ### 类变量(静态变量)
 

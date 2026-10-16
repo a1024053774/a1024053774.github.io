@@ -1,0 +1,13 @@
+{% assign chapters = site.chapters | where: "book", page.book | sort: "order" %}
+{% if include.phase %}{% assign chapters = chapters | where: "phase", include.phase %}{% endif %}
+<ol class="book-chapters">
+  {% for chapter in chapters %}
+  <li>
+    <a class="book-chapter-link" href="{{ chapter.url | relative_url }}">
+      <span class="book-chapter-label">{{ chapter.chapter_label }}</span>
+      <span class="book-chapter-title">{{ chapter.title | escape }}</span>
+      <span class="book-chapter-go" aria-hidden="true">↗</span>
+    </a>
+  </li>
+  {% endfor %}
+</ol>

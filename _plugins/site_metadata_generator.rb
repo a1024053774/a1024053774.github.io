@@ -11,8 +11,16 @@ module SiteMetadataGenerator
     EXCERPT_PATTERN = %r{<\/?[^>]*>}.freeze
 
     def generate(site)
-      site.posts.docs.each do |doc|
+      (site.posts.docs + site.collections.fetch("chapters").docs).each do |doc|
         enrich_document(site, doc)
+      end
+
+      site.posts.docs.select { |doc| doc.data["book"] }.each do |doc|
+        chapters = site.collections.fetch("chapters").docs.select { |chapter| chapter.data["book"] == doc.data["book"] }
+        latest = ([doc] + chapters).max_by { |entry| entry.data["last_modified_at_iso"] }
+        doc.data["last_modified_at"] = latest.data["last_modified_at"]
+        doc.data["last_modified_at_iso"] = latest.data["last_modified_at_iso"]
+        doc.data["home_sort_key"] = [latest.data["last_modified_at_iso"], doc.date.iso8601].join("|")
       end
 
       build_tag_index(site)
@@ -30,6 +38,12 @@ module SiteMetadataGenerator
       doc.data["home_sort_key"] ||= [doc.data["last_modified_at_iso"], doc.date.iso8601].join("|")
       doc.data["cover_image"] ||= extract_cover_image(doc)
       doc.data["home_excerpt"] ||= extract_excerpt(doc)
+      if doc.collection.label == "chapters"
+        rendered = site.find_converter_instance(Jekyll::Converters::Markdown).convert(doc.content)
+        plain = rendered.gsub(EXCERPT_PATTERN, " ")
+        # Chinese characters and space-separated words need different reading rates.
+        doc.data["reading_minutes"] = [(plain.scan(/\p{Han}/).size / 400.0 + plain.scan(/[A-Za-z0-9]+/).size / 220.0).ceil, 1].max
+      end
     end
 
     def git_modified_at(site, doc)

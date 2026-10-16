@@ -1,19 +1,15 @@
 ---
-layout:       post
-title:        "Java-Phase01-Chapter04"
-subtitle: '控制结构'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-01
+order: 4
+chapter_label: "Chapter 04"
+title: "控制结构"
+date: 2025-03-06 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
-course: Java
-course_phase: phase01
-course_order: 4
-course_title: "第 4 章 · 控制结构"
+tags: [Java]
 ---
-
-# Chapter04
 
 控制结构
 

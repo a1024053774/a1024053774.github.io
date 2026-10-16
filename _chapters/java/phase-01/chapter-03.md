@@ -1,19 +1,15 @@
 ---
-layout:       post
-title:        "Java-Phase01-Chapter03"
-subtitle: '运算符'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-01
+order: 3
+chapter_label: "Chapter 03"
+title: "运算符"
+date: 2025-03-05 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
-course: Java
-course_phase: phase01
-course_order: 3
-course_title: "第 3 章 · 运算符"
+tags: [Java]
 ---
-
-# Chapter03
 
 ## 算数运算符
 
@@ -244,7 +240,7 @@ public class InPutScanner {
 }
 ```
 
-# 进制
+## 进制
 
 ![Untitled]({{site.baseurl}}/img/in-post/2025-03-05-Chapter03/Untitled%2022.png)
 
@@ -254,7 +250,7 @@ public class InPutScanner {
 
 ![Untitled]({{site.baseurl}}/img/in-post/2025-03-05-Chapter03/image-1702907359899.jpg8891429177260333065.jpg)
 
-# ※原码、反码、补码※
+## ※原码、反码、补码※
 
 1.二进制的最高位是符号位：0表示正数，1表示负数（口诀：0->0 1->-）
 

@@ -21,6 +21,14 @@ layout: default
                 col-md-10 col-md-offset-1
                 post-container">
 
+                {% if page.book %}
+                <nav class="chapter-breadcrumb" aria-label="当前位置">
+                  <a href="{{ site.data.books[page.book].url | relative_url }}">{{ site.data.books[page.book].title }}</a>
+                  {% if page.phase %}<span>{{ page.phase | replace: 'phase-', 'Phase ' }}</span>{% endif %}
+                  <span aria-current="page">{{ page.chapter_label }}</span>
+                </nav>
+                <div class="chapter-directory-mobile">{% include book-navigation.html %}</div>
+                {% endif %}
                 {% include notion-discussions.html %}
 
                 <!-- Multi-Lingual -->
@@ -28,9 +36,12 @@ layout: default
                     {% include multilingual-sel.html %}
                 {% endif %}
 
-				{{ content }}
+				<div class="post-content{% if page.notion_discussions %} notion-content{% endif %}">{{ content }}</div>
 
                 <hr style="visibility: hidden;">
+                {% if page.book %}
+                {% include book-pagination.html %}
+                {% else %}
                 <ul class="pager">
                     {% if page.previous.url %}
                     <li class="previous">
@@ -49,6 +60,7 @@ layout: default
                     </li>
                     {% endif %}
                 </ul>
+                {% endif %}
                 <hr style="visibility: hidden;">
 
                 {% include comments.html %}
@@ -62,6 +74,7 @@ layout: default
                 sidebar-container
                 catalog-container">
                 <div class="side-catalog">
+                    {% if page.book %}{% include book-navigation.html sidebar=true %}{% endif %}
                     <hr class="hidden-sm hidden-xs">
                     <!-- 返回顶部按钮 -->
                 <div id="back-top" class="back-to-top">
@@ -128,7 +141,7 @@ layout: default
           placement: 'right',
           // icon: '#'
         };
-        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+        anchors.add('.post-content h1, .post-content h2, .post-content h3, .post-content h4');
     })
 </script>
 <style>

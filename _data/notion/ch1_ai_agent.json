@@ -41,7 +41,7 @@
           "author": "远山江浸月",
           "datetime": "2026-10-15T10:48:25.638Z",
           "by_you": true,
-          "html": "Claude Code 全面落地 MCP Tool Search / 惰性加载（2026 年 1 月）在工程落地端，Anthropic 针对其开发工具 Claude Code 正式推送了 MCP Tool Search（Lazy Loading）：<br>• 自动阈值触发：当检测到挂载的 MCP 工具描述超过 10,000 Token（或占上下文窗口 10% 以上）时，系统自动切入惰性加载模式，不再全量注入。<br>• 85%\\~95% Token 瘦身：原本冷启动需要消耗 5 万～10 万 Token 的庞大 MCP 环境，初始 Token 占用被压制到 500 Token 左右。"
+          "html": "Claude Code 全面落地 MCP Tool Search / 惰性加载（2026 年 1 月）在工程落地端，Anthropic 针对其开发工具 Claude Code 正式推送了 MCP Tool Search（Lazy Loading）：<br>• 自动阈值触发：当检测到挂载的 MCP 工具描述超过 10,000 Token（或占上下文窗口 10% 以上）时，系统自动切入惰性加载模式，不再全量注入。<br>• 85%~95% Token 瘦身：原本冷启动需要消耗 5 万～10 万 Token 的庞大 MCP 环境，初始 Token 占用被压制到 500 Token 左右。"
         }
       ]
     },
@@ -75,7 +75,7 @@
           "author": "远山江浸月",
           "datetime": "2026-10-15T11:08:28.356Z",
           "by_you": true,
-          "html": "<br>  客户端必须提供完整的 JSON Schema，显式声明输入字段类型：<br><br>`{  \"type\": \"function\",  \"function\": {    \"name\": \"python_interpreter\",    \"description\": \"执行 Python 脚本并返回标准输出\",    \"parameters\": {      \"type\": \"object\",      \"properties\": {        \"code\": {          \"type\": \"string\",          \"description\": \"待执行的完整 Python 代码\"        }      },      \"required\": [\"code\"]    }  }}<br><br>`模型返回的 Tool Call Payload大模型为了保证输出是合法 JSON，必须对代码内部的所有换行、双引号、反斜杠做严格转义：<br><br>`{  \"id\": \"call_abc123\",  \"type\": \"function\",  \"function\": {    \"name\": \"python_interpreter\",    \"arguments\": \"{\\\"code\\\": \\\"import re\\\\n\\\\ntext = \\\\\\\"Latency: 24ms, Cost: $0.05\\\\\\\"\\\\npattern = r'\\\\\\\\d+\\\\\\\\.\\\\\\\\d+|\\\\\\\\d+'\\\\nmatches = re.findall(pattern, text)\\\\nprint(f\\\\\\\"Extracted numbers: {matches}\\\\\\\")\\\"}\"  }}<br>`<br><span underline=\"true\">**核心痛点**</span>：`arguments` 是一个双重序列化的字符串。为了逃逸代码中的 `\"` 和 `\\d`，模型必须生成 `\\\\\\\"` 和 `\\\\\\\\d`。一旦生成数百行长代码，极易因某处转义缺失引发 `json.decoder.JSONDecodeError`，并且额外消耗了大量无意义的转义 Token。"
+          "html": "<br>  客户端必须提供完整的 JSON Schema，显式声明输入字段类型：<br><br><code class=\"comment-code\">{  &quot;type&quot;: &quot;function&quot;,  &quot;function&quot;: {    &quot;name&quot;: &quot;python_interpreter&quot;,    &quot;description&quot;: &quot;执行 Python 脚本并返回标准输出&quot;,    &quot;parameters&quot;: {      &quot;type&quot;: &quot;object&quot;,      &quot;properties&quot;: {        &quot;code&quot;: {          &quot;type&quot;: &quot;string&quot;,          &quot;description&quot;: &quot;待执行的完整 Python 代码&quot;        }      },      &quot;required&quot;: [&quot;code&quot;]    }  }}</code>模型返回的 Tool Call Payload大模型为了保证输出是合法 JSON，必须对代码内部的所有换行、双引号、反斜杠做严格转义：<br><br><code class=\"comment-code\">{  &quot;id&quot;: &quot;call_abc123&quot;,  &quot;type&quot;: &quot;function&quot;,  &quot;function&quot;: {    &quot;name&quot;: &quot;python_interpreter&quot;,    &quot;arguments&quot;: &quot;{\\&quot;code\\&quot;: \\&quot;import re\\\\n\\\\ntext = \\\\\\&quot;Latency: 24ms, Cost: $0.05\\\\\\&quot;\\\\npattern = r&#x27;\\\\\\\\d+\\\\\\\\.\\\\\\\\d+|\\\\\\\\d+&#x27;\\\\nmatches = re.findall(pattern, text)\\\\nprint(f\\\\\\&quot;Extracted numbers: {matches}\\\\\\&quot;)\\&quot;}&quot;  }}</code><br><span underline=\"true\"><strong>核心痛点</strong></span>：<code>arguments</code> 是一个双重序列化的字符串。为了逃逸代码中的 <code>&quot;</code> 和 <code>\\d</code>，模型必须生成 <code>\\\\\\&quot;</code> 和 <code>\\\\\\\\d</code>。一旦生成数百行长代码，极易因某处转义缺失引发 <code>json.decoder.JSONDecodeError</code>，并且额外消耗了大量无意义的转义 Token。"
         }
       ]
     },
@@ -92,7 +92,7 @@
           "author": "远山江浸月",
           "datetime": "2026-10-15T11:10:58.903Z",
           "by_you": true,
-          "html": "自由格式调用直接抛弃了外部 JSON 字段 Schema 限制，允许模型将一段裸文本（Raw Text）作为输入直接投递给目标工具。工具声明（Tool Definition）在声明工具时直接指定类型为 `custom`，无需嵌套的 properties 约束：<br><br>`{  \"type\": \"custom\",  \"name\": \"python_runner\",  \"description\": \"接受原生多行 Python 代码并在沙箱中执行，返回 stdout/stderr\"}<br><br>`模型返回的 Tool Call Payload模型输出不再做字符转义，直接流式生成原始文本：<br><br>`{  \"id\": \"call_xyz789\",  \"type\": \"custom\",  \"name\": \"python_runner\",  \"input\": \"import re\\n\\ntext = \\\"Latency: 24ms, Cost: $0.05\\\"\\npattern = r'\\\\d+\\\\.\\\\d+|\\\\d+'\\nmatches = re.findall(pattern, text)\\nprint(f\\\"Extracted numbers: {matches}\\\")\"}<br><br>`*在底层传输或流式输出时，**`input`** 字段承载的就是纯文本块，甚至可以直接以 Markdown 语法块的形式流出，模型不再进行 **`\\\"`** 或 **`\\\\\\\\`** 等繁琐的人工转义*。<br>"
+          "html": "自由格式调用直接抛弃了外部 JSON 字段 Schema 限制，允许模型将一段裸文本（Raw Text）作为输入直接投递给目标工具。工具声明（Tool Definition）在声明工具时直接指定类型为 <code>custom</code>，无需嵌套的 properties 约束：<br><br><code class=\"comment-code\">{  &quot;type&quot;: &quot;custom&quot;,  &quot;name&quot;: &quot;python_runner&quot;,  &quot;description&quot;: &quot;接受原生多行 Python 代码并在沙箱中执行，返回 stdout/stderr&quot;}</code>模型返回的 Tool Call Payload模型输出不再做字符转义，直接流式生成原始文本：<br><br><code class=\"comment-code\">{  &quot;id&quot;: &quot;call_xyz789&quot;,  &quot;type&quot;: &quot;custom&quot;,  &quot;name&quot;: &quot;python_runner&quot;,  &quot;input&quot;: &quot;import re\\n\\ntext = \\&quot;Latency: 24ms, Cost: $0.05\\&quot;\\npattern = r&#x27;\\\\d+\\\\.\\\\d+|\\\\d+&#x27;\\nmatches = re.findall(pattern, text)\\nprint(f\\&quot;Extracted numbers: {matches}\\&quot;)&quot;}</code><em>在底层传输或流式输出时，<strong><code>input</code></strong> 字段承载的就是纯文本块，甚至可以直接以 Markdown 语法块的形式流出，模型不再进行 <strong><code>\\&quot;</code></strong> 或 <strong><code>\\\\\\\\</code></strong> 等繁琐的人工转义</em>。<br>"
         }
       ]
     },
@@ -109,7 +109,7 @@
           "author": "远山江浸月",
           "datetime": "2026-10-15T11:18:23.971Z",
           "by_you": true,
-          "html": "Chat 格式 指的是自 2023 年 GPT-3.5/GPT-4 时代确立的标准接口——Chat Completions API（即 `/v1/chat/completions`）。<br><br>而书中讨论的 Responses API（`/v1/responses`），是大模型厂商（OpenAI、阿里云百炼、Kimi 等）为应对“模型即 Agent”范式全面重构的下一代底层接口。<br><br>它的核心转变在于：将过去以“人机聊天（Messages）”为中心的无状态文本预测，升级为以“Agent 任务执行（Items）”为中心的原生智能体运行环境。<br>"
+          "html": "Chat 格式 指的是自 2023 年 GPT-3.5/GPT-4 时代确立的标准接口——Chat Completions API（即 <code>/v1/chat/completions</code>）。<br><br>而书中讨论的 Responses API（<code>/v1/responses</code>），是大模型厂商（OpenAI、阿里云百炼、Kimi 等）为应对“模型即 Agent”范式全面重构的下一代底层接口。<br><br>它的核心转变在于：将过去以“人机聊天（Messages）”为中心的无状态文本预测，升级为以“Agent 任务执行（Items）”为中心的原生智能体运行环境。<br>"
         }
       ]
     },

@@ -1,19 +1,15 @@
 ---
-layout:       post
-title:        "Java-Phase01-Chapter06"
-subtitle: '类与对象'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-01
+order: 6
+chapter_label: "Chapter 06"
+title: "类与对象"
+date: 2025-03-08 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
-course: Java
-course_phase: phase01
-course_order: 6
-course_title: "第 6 章 · 类与对象"
+tags: [Java]
 ---
-
-# Chapter06
 
 ### 类与对象
 

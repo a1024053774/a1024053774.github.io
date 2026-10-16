@@ -1,0 +1,18 @@
+{% assign chapters = site.chapters | where: "book", page.book | sort: "order" %}
+<nav class="chapter-pagination" aria-label="章节翻页">
+  {% for chapter in chapters %}
+    {% if chapter.url == page.url %}
+      {% unless forloop.first %}
+        {% assign prev_index = forloop.index0 | minus: 1 %}
+        {% assign prev_chapter = chapters[prev_index] %}
+        <a href="{{ prev_chapter.url | relative_url }}" rel="prev"><span>← 上一章</span><strong>{{ prev_chapter.title | escape }}</strong></a>
+      {% endunless %}
+      <a href="{{ site.data.books[page.book].url | relative_url }}"><span>合集</span><strong>返回目录</strong></a>
+      {% unless forloop.last %}
+        {% assign next_index = forloop.index0 | plus: 1 %}
+        {% assign next_chapter = chapters[next_index] %}
+        <a href="{{ next_chapter.url | relative_url }}" rel="next"><span>下一章 →</span><strong>{{ next_chapter.title | escape }}</strong></a>
+      {% endunless %}
+    {% endif %}
+  {% endfor %}
+</nav>

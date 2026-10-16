@@ -1,0 +1,17 @@
+---
+layout: default
+---
+{% assign book = site.data.books[page.book] %}
+{% assign chapters = site.chapters | where: "book", page.book | sort: "order" %}
+<main class="book-hub">
+  <header class="book-hero ink-container">
+    <span class="book-eyebrow">学习笔记 · {{ chapters.size }} 个章节</span>
+    <h1>{{ page.title | escape }}</h1>
+    <p>{{ book.description }}</p>
+    {% assign first_chapter = chapters.first %}
+    <a class="ink-btn ink-btn--primary" href="{{ first_chapter.url | relative_url }}">开始阅读 <span aria-hidden="true">→</span></a>
+  </header>
+  <div class="ink-container book-content post-container">
+    {{ content }}
+  </div>
+</main>
