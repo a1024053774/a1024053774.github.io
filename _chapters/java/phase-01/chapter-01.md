@@ -1,21 +1,19 @@
 ---
-layout:       post
-title:        "Java-Chapter01"
-subtitle: 'Introduction+转义字符+注释+代码规范+DOS'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-01
+order: 1
+chapter_label: "Chapter 01"
+title: "入门与规范"
+date: 2025-03-03 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
+tags: [Java]
 ---
 
+## Introduction+转义字符+注释+代码规范+DOS
 
-
-# Chapter01
-
-# Introduction+转义字符+注释+代码规范+DOS
-
-# 1.Introduction
+## 1.Introduction
 
 Java编译:   javac [Test.java](http://Test.java)
 
@@ -31,15 +29,16 @@ Java编译:   javac [Test.java](http://Test.java)
 
 - 一个源文件中最多有一个public类，其它类的个数不限，可将main方法写在非public类中，然后运行该类，如下面的 java Tiger或java Dog,这是非public的main方法
 - 源文件包含一个public类，则文件名必须按该类名命名！
+
 - 编译后，每一个类对应一个.class
 
-![Untitled]({{site.baseurl}}/img/in-post/2025-03-02/Untitled.png)
+![Untitled]({{site.baseurl}}/img/in-post/2025-03-03-Chapter01/Untitled.png)
 
 - 公有类名必须与文件名一致
 
-# 2.转义字符+注释+代码规范
+## 2.转义字符+注释+代码规范
 
-# 转义字符
+## 转义字符
 
 ChangeChar
 
@@ -56,9 +55,9 @@ System.out.println("老王教育\r北京");
 
 ### 练习
 
-![Untitled 1]({{site.baseurl}}/img/in-post/2025-03-02/Untitled1.png)
+![Untitled]({{site.baseurl}}/img/in-post/2025-03-03-Chapter01/Untitled%201.png)
 
-![Untitled 2]({{site.baseurl}}/img/in-post/2025-03-02/Untitled2.png)
+![Untitled]({{site.baseurl}}/img/in-post/2025-03-03-Chapter01/Untitled%202.png)
 
 ```java
 //转义字符
@@ -74,7 +73,7 @@ public class ChangeChar {
 }
 ```
 
-# 注释
+## 注释
 
 ```java
 //单行注释
@@ -113,8 +112,6 @@ public class PageComment {
 }
 ```
 
-
-
 | 标签          | 描述                                                   |
 | ------------- | ------------------------------------------------------ |
 | @author       | 标识一个类的作者                                       |
@@ -135,14 +132,14 @@ public class PageComment {
 | {@value}      | 显示常量的值，该常量必须是static属性。                 |
 | @version      | 指定类的版本                                           |
 
-# Java代码规范
+## Java代码规范
 
 - 类、方法的注释，要以javadoc的方式来写
 - 非JavaDoc的注释，往往是给代码的维护者看的
 - tab整体右移，shift+tab整体左移
 - 运算符左右带空格
 
-# 3.DOS
+## 3.DOS
 
 ```powershell
 md d:\\aaa      创建目录
@@ -154,7 +151,7 @@ type
 move 
 ```
 
-![Untitled 3]({{site.baseurl}}/img/in-post/2025-03-02/Untitled3.png)
+![Untitled]({{site.baseurl}}/img/in-post/2025-03-03-Chapter01/Untitled%203.png)
 
 - 查看当前目录有哪些内容
 - 

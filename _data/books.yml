@@ -1,0 +1,15 @@
+java:
+  title: Java 从零开始
+  url: /java/
+  description: 从基本语法到面向对象，把 Java 笔记按阶段和章节整理在一起。
+  phases:
+    - id: phase-01
+      title: Phase 01
+      description: Java 基础 · 8 个章节
+    - id: phase-02
+      title: Phase 02
+      description: 面向对象进阶
+ai-agent:
+  title: 深入理解 AI Agent
+  url: /ai-agent/
+  description: 设计原理与工程实践，按章节持续整理阅读笔记与批注。

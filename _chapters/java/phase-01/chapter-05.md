@@ -1,18 +1,15 @@
 ---
-layout:       post
-title:        "Java-Phase01-Chapter05"
-subtitle: '数组,排序,查找'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-01
+order: 5
+chapter_label: "Chapter 05"
+title: "数组、排序与查找"
+date: 2025-03-07 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
-course: Java
-course_phase: phase01
-course_order: 5
-course_title: "第 5 章 · 数组、排序与查找"
+tags: [Java]
 ---
-# Chapter05
 
 数组 排序 查找
 

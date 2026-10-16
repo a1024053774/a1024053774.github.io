@@ -1,23 +1,19 @@
 ---
-layout:       post
-title:        "Java-Phase01-Chapter02"
-subtitle: '变量+“+”+数据类型+编码+数据类型转换'
-author:       "LuckyE"
+layout: post
+book: java
+phase: phase-01
+order: 2
+chapter_label: "Chapter 02"
+title: "变量与数据类型"
+date: 2025-03-04 12:00:00 -0400
+author: LuckyE
 header-style: text
-catalog:      true
-tags:
-    - Java
-course: Java
-course_phase: phase01
-course_order: 2
-course_title: "第 2 章 · 变量与数据类型"
+tags: [Java]
 ---
 
-# Chapter02
+## 变量+“+”+数据类型+编码+数据类型转换
 
-# 变量+“+”+数据类型+编码+数据类型转换
-
-# 1.变（变化）量（值）
+## 1.变（变化）量（值）
 
 ### 变量=变量名+值+数据类型
 
@@ -30,13 +26,13 @@ course_title: "第 2 章 · 变量与数据类型"
 
 ### 变量先声明，后使用
 
-# 2. +
+## 2. +
 
 1. 当左右两边都是数值型时，则做加法运算
 2. 当左右两边有一方为字符串，则做拼接运算
 3. 从左到右运算
 
-# 3.数据类型
+## 3.数据类型
 
 ![Untitled]({{site.baseurl}}/img/in-post/2025-03-04-Chapter02/Untitled.png)
 
@@ -120,7 +116,7 @@ System.out.println('a' + 10);      //107
 
 java不可以用0或非0的整数代替false或true
 
-# 4.基本数据类型转换
+## 4.基本数据类型转换
 
 ### 自动类型转换
 

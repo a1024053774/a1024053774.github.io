@@ -1,0 +1,25 @@
+{% assign book = site.data.books[page.book] %}
+{% assign chapters = site.chapters | where: "book", page.book | sort: "order" %}
+<details class="chapter-directory"{% if include.sidebar %} open{% endif %}>
+  <summary>全书目录 · {{ book.title }}</summary>
+  <nav aria-label="{{ book.title }}章节目录">
+    {% if book.phases %}
+      {% for phase in book.phases %}
+      <p class="chapter-directory-phase">{{ phase.title }}</p>
+      <ol>
+        {% assign phase_chapters = chapters | where: "phase", phase.id %}
+        {% for chapter in phase_chapters %}
+        <li><a href="{{ chapter.url | relative_url }}"{% if chapter.url == page.url %} aria-current="page"{% endif %}>{{ chapter.chapter_label }} · {{ chapter.title | escape }}</a></li>
+        {% endfor %}
+      </ol>
+      {% endfor %}
+    {% else %}
+      <ol>
+        {% for chapter in chapters %}
+        <li><a href="{{ chapter.url | relative_url }}"{% if chapter.url == page.url %} aria-current="page"{% endif %}>{{ chapter.chapter_label }} · {{ chapter.title | escape }}</a></li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+    <a class="chapter-directory-home" href="{{ book.url | relative_url }}">返回合集目录 →</a>
+  </nav>
+</details>
