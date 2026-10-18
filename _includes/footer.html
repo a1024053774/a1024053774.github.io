@@ -192,7 +192,7 @@
      * Doc: https://github.com/davist11/jQuery-One-Page-Nav
      * Fork by Hux to support padding
      */
-    async("{{ '/js/jquery.nav.js' | prepend: site.baseurl }}", function () {
+    async("{{ '/js/jquery.nav.js' | prepend: site.baseurl }}?v={{ asset_version }}", function () {
         $('.catalog-body').onePageNav({
             currentClass: "active",
             changeHash: !1,

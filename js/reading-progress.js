@@ -66,7 +66,7 @@
             track.addEventListener('click', function (e) {
                 var rect = track.getBoundingClientRect();
                 var r = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
-                window.scrollTo({ top: r * (docEl.scrollHeight - docEl.clientHeight), behavior: 'smooth' });
+                window.scrollTo({ top: r * (docEl.scrollHeight - docEl.clientHeight), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
             });
         }
 

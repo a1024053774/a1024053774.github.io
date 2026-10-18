@@ -8,8 +8,8 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
+                <button type="button" class="navbar-toggle" aria-expanded="false" aria-controls="huxblog_navbar">
+                    <span class="sr-only">导航菜单</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -33,9 +33,9 @@
                         {% endfor %}
                         <!-- 添加深色模式切换按钮 -->
                         <li class="darkmode-toggle">
-                            <a class="nav-pill nav-pill--icon" href="javascript:void(0)" id="darkmode-toggle" title="切换深色/浅色模式" aria-label="切换深色或浅色模式">
-                                <i class="fa fa-moon-o" id="darkmode-icon"></i>
-                            </a>
+                            <button type="button" class="nav-pill nav-pill--icon" id="darkmode-toggle" title="切换深色/浅色模式" aria-label="切换深色或浅色模式">
+                                <i class="fa fa-moon-o" id="darkmode-icon" aria-hidden="true"></i>
+                            </button>
                         </li>
                         <li class="search-icon">
                             <a class="nav-pill nav-pill--icon" href="javascript:void(0)" aria-label="打开搜索">
@@ -54,25 +54,20 @@
         // Drop Bootstarp low-performance Navbar
         // Use customize navbar with high-quality material design animation
         // in high-perf jank-free CSS3 implementation
-        var $body = document.body;
         var $toggle = document.querySelector('.navbar-toggle');
         var $navbar = document.querySelector('#huxblog_navbar');
-        var $collapse = document.querySelector('.navbar-collapse');
 
         var __HuxNav__ = {
             close: function () {
-                $navbar.className = " ";
-                // wait until animation end.
-                setTimeout(function () {
-                    // prevent frequently toggle
-                    if ($navbar.className.indexOf('in') < 0) {
-                        $collapse.style.height = "0px"
-                    }
-                }, 400)
+                if (!$navbar.classList.contains('in')) return;
+                var returnFocus = $navbar.contains(document.activeElement);
+                $navbar.classList.remove('in');
+                $toggle.setAttribute('aria-expanded', 'false');
+                if (returnFocus) $toggle.focus({ preventScroll: true });
             },
             open: function () {
-                $collapse.style.height = "auto"
-                $navbar.className += " in";
+                $navbar.classList.add('in');
+                $toggle.setAttribute('aria-expanded', 'true');
             }
         }
 
@@ -97,8 +92,14 @@
          * Also, we use 'click' instead of 'touchstart' as compromise
          */
         document.addEventListener('click', function (e) {
-            if (e.target == $toggle) return;
-            if (e.target.className == 'icon-bar') return;
+            if ($toggle.contains(e.target)) return;
             __HuxNav__.close();
+        })
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && $navbar.classList.contains('in')) {
+                e.preventDefault();
+                __HuxNav__.close();
+                $toggle.focus({ preventScroll: true });
+            }
         })
     </script>

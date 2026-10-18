@@ -1,6 +1,7 @@
 """Check chapter 2 and its contextual, reciprocal links through published HTML."""
 import argparse
 import json
+import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -20,7 +21,13 @@ def check_site(site):
     chapter_url = '/ai-agent/chapter-02/'
     a2a_url = '/2026/10/11/a2a-multi-agent-design/'
     chapter = document(chapter_url)
+    check('Chinese chapter declares its document language', bool(chapter.all('html')) and chapter.all('html')[0].attrs.get('lang') == 'zh-CN')
     a2a = document(a2a_url)
+    chapter_meta = {n.attrs.get('property'): n.attrs.get('content', '') for n in chapter.all('meta')}
+    a2a_meta = {n.attrs.get('property'): n.attrs.get('content', '') for n in a2a.all('meta')}
+    check('sharing summaries describe the article rather than an empty excerpt', 'KV Cache' in chapter_meta.get('og:description', '') and '任务契约' in a2a_meta.get('og:description', ''))
+    check('first publication metadata preserves the original timezone', a2a_meta.get('article:published_time') == '2026-10-11T09:30:00-04:00')
+    check('canonical sharing URL has one path separator', chapter_meta.get('og:url') == 'https://a1024053774.github.io/ai-agent/chapter-02/')
     bodies = chapter.all(cls='post-content')
     body = bodies[0] if bodies else Element()
     check('chapter 2 is published inside the AI Agent book', bool(bodies) and chapter_url in [a.attrs.get('href') for a in document('/ai-agent/').all(cls='book-chapter-link')])
@@ -35,6 +42,15 @@ def check_site(site):
     check('complete API core loop remains one intact code block', any(c.text().strip() == oracle for c in code))
     check('status XML is code, not escaped prose or executable markup', any(c.text().strip().startswith('<agent_status>') and '</agent_status>' in c.text() for c in code) and not body.all('agent_status'))
     check('all ten source experiments remain readable', all(f'实验 2-{n} ' in body.text() for n in range(1, 11)))
+    prose_after_quotes = ['这一定义最值得注意的不是符号本身', '不使用 KV Cache 时', '实验表明', 'Agent 状态栏技术有一个实用的优点', '当你问“黑猫和白猫各有多少只”时']
+    quoted_paragraphs = [p.text().strip() for q in body.all('blockquote') for p in q.all('p')]
+    check('body explanations stay outside the preceding quoted examples', not any(text.startswith(prefix) for text in quoted_paragraphs for prefix in prose_after_quotes) and all(prefix in body.text() for prefix in prose_after_quotes))
+    experiments = [h for h in body.all() if h.tag in ('h3', 'h4') and re.match(r'实验 2-\d+ ', h.text())]
+    check('ten experiments have independent navigable headings', [h.attrs.get('id') for h in experiments] == [f'experiment-2-{n}' for n in range(1, 11)])
+    experiment_quotes = [q for q in body.all('blockquote') if re.match(r'实验 2-\d+ ', q.text().strip())]
+    check('each experiment has its own block without the reading tip', len(experiment_quotes) == 10)
+    attention_lists = [listing for listing in body.all('ol') if '注意力储存池' in listing.text()]
+    check('four attention patterns remain one continuously numbered list', len(attention_lists) == 1 and len([c for c in attention_lists[0].children if isinstance(c, Element) and c.tag == 'li']) == 4 and '背后的数学原因' in attention_lists[0].all('li')[0].text())
     check('nine questions retain continuous numbering without invented answers', [q.attrs.get('data-question') for q in body.all(cls='study-question')] == [str(i) for i in range(1, 10)] and not body.all(cls='study-answer'))
     check('all twelve Notion discussions and comments remain accessible', len(chapter.all(attr='data-notion-discussion-card')) == 12 and len(chapter.all(cls='notion-discussion-comment')) == 12)
     check('every discussion has a matching body annotation', all(body.all(attr='data-notion-discussion') and any(d.attrs.get('data-notion-discussion') == c.attrs.get('data-notion-discussion-card') for d in body.all(attr='data-notion-discussion')) for c in chapter.all(attr='data-notion-discussion-card')) and len(chapter.all(attr='data-notion-discussion-card')) == 12)
