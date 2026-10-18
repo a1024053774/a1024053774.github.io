@@ -1,0 +1,12 @@
+{
+  "books": [
+    {
+      "hub": "/backend-map/",
+      "chapters": "_chapters/backend-map",
+      "minimumChapters": 4,
+      "comments": false
+    }
+  ],
+  "rules": ["directory", "code", "tables", "theme", "viewport"],
+  "overflowTolerancePx": 1
+}

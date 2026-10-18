@@ -348,8 +348,12 @@ pre.highlight {
 .highlight .hll {
   background: #282c34;
 }
-.highlight .c {
-  color: #5c6370;
+.highlight .c,
+.highlight .cm,
+.highlight .cp,
+.highlight .c1,
+.highlight .cs {
+  color: #929baa;
   font-style: italic;
 }
 .highlight .err {
@@ -374,22 +378,6 @@ pre.highlight {
 }
 .highlight .p {
   color: #abb2bf;
-}
-.highlight .cm {
-  color: #5c6370;
-  font-style: italic;
-}
-.highlight .cp {
-  color: #5c6370;
-  font-style: italic;
-}
-.highlight .c1 {
-  color: #5c6370;
-  font-style: italic;
-}
-.highlight .cs {
-  color: #5c6370;
-  font-style: italic;
 }
 .highlight .ge {
   font-style: italic;
@@ -661,6 +649,10 @@ pre.highlight {
   font-family: "SFMono-Regular", "SF Mono", "JetBrains Mono", "Fira Code", Consolas, monospace;
   background: transparent !important;
   color: inherit !important;
+}
+.code-window pre:focus-visible {
+  outline: 2px solid var(--zhu);
+  outline-offset: -3px;
 }
 .code-window pre code,
 .code-window .highlight,
@@ -4494,6 +4486,10 @@ pre,
 .table-responsive {
   -webkit-overflow-scrolling: touch;
 }
+.table-responsive:focus-visible {
+  outline: 2px solid var(--zhu);
+  outline-offset: -3px;
+}
 pre code {
   display: block;
   width: auto;
@@ -4508,13 +4504,6 @@ samp {
 }
 .postlist-container {
   margin-bottom: 15px;
-}
-.post-container a {
-  color: #337ab7;
-}
-.post-container a:hover,
-.post-container a:focus {
-  color: #0085a1;
 }
 .post-container h1,
 .post-container h2,

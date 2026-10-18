@@ -64,6 +64,8 @@
       '<span class="code-window__language">' + block.getAttribute("data-language") + "</span>";
 
     block.insertBefore(header, block.firstChild);
+
+    window.enhanceReadingScrollRegion(block.querySelector('pre'), block.getAttribute('data-language') + ' 代码');
   }
 
   function initCodeBlocks() {

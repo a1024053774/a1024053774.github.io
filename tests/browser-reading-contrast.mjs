@@ -1,8 +1,11 @@
-// Desktop text-header scenario. W3C contrast minima: 4.5:1, or 3:1 for large text.
+// Text-header reading scenario. W3C contrast minima: 4.5:1, or 3:1 for large text.
 // https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
 export async function measureReadingContrast(tab) {
   return tab.playwright.evaluate(() => {
     const rgba = value => {
+      // color-mix(in srgb, ...) is serialized this way by current WebKit/Chromium.
+      const srgb = value.match(/^color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)(?: \/ ([\d.]+))?\)$/);
+      if (srgb) return [Number(srgb[1]) * 255, Number(srgb[2]) * 255, Number(srgb[3]) * 255, srgb[4] === undefined ? 1 : Number(srgb[4])];
       const match = value.match(/^rgba?\(([^)]+)\)$/);
       if (!match) throw new Error('Unsupported measured color: ' + value);
       const channels = match[1].split(',').map(Number);
@@ -22,13 +25,13 @@ export async function measureReadingContrast(tab) {
       for (const p of parents.reverse()) color = over(rgba(getComputedStyle(p).backgroundColor), color);
       return color;
     };
-    const links = [...document.querySelectorAll('.side-catalog a')].map(a => {
+    const links = [...document.querySelectorAll('.side-catalog a, .chapter-directory-mobile a')].filter(a => !a.closest('details:not([open])') && a.getClientRects().length && getComputedStyle(a).visibility === 'visible').map(a => {
       const style = getComputedStyle(a);
       const ratio = contrast(rgba(style.color), surface(a));
       return { text: a.textContent.trim(), color: style.color, ratio, minimum: 4.5, passed: ratio >= 4.5 };
     });
     const header = document.querySelector('.intro-header.style-text');
-    if (!header || innerWidth < 1200 || !links.length) throw new Error('Use a desktop chapter with a text header and visible side catalog.');
+    if (!header) throw new Error('Use a chapter with a text header.');
     const rect = header.getBoundingClientRect();
     const overlay = getComputedStyle(header, '::before').backgroundImage;
     if (!overlay.startsWith('linear-gradient(rgb')) throw new Error('Unsupported computed text-header overlay: ' + overlay);
@@ -53,6 +56,13 @@ export async function measureReadingContrast(tab) {
       const ratio = Math.min(...samples);
       return { text: node.textContent.trim(), ratio, minimum, passed: ratio >= minimum };
     });
-    return { url: location.href, theme: document.documentElement.getAttribute('data-theme'), links, headers, status: links.every(r => r.passed) && headers.length >= 3 && headers.every(r => r.passed) ? 'PASS' : 'FAIL' };
+    const content = [...document.querySelectorAll('.post-content p, .post-content th, .post-content td, .post-content pre code, .post-content pre span')]
+      .filter(node => [...node.childNodes].some(child => child.nodeType === 3 && child.textContent.trim()))
+      .map(node => {
+        const style = getComputedStyle(node);
+        const ratio = contrast(rgba(style.color), surface(node));
+        return { text: node.textContent.trim().slice(0, 70), color: style.color, ratio, minimum: 4.5, passed: ratio >= 4.5 };
+      });
+    return { url: location.href, theme: document.documentElement.getAttribute('data-theme'), links, headers, content, status: [...links, ...headers, ...content].every(r => r.passed) && headers.length >= 3 && content.length > 0 ? 'PASS' : 'FAIL' };
   });
 }

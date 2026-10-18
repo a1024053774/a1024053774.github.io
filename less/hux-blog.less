@@ -139,6 +139,10 @@ pre,
   // sometimes you should use vendor-feature.
   -webkit-overflow-scrolling: touch;
 }
+.table-responsive:focus-visible {
+  outline: 2px solid var(--zhu);
+  outline-offset: -3px;
+}
 pre code {
   display: block;
   width: auto;
@@ -159,16 +163,6 @@ samp {
 
 // In the post.
 .post-container {
-  a {
-    // display: inline-block;
-    // safari has bugs on word-break on inline elements.
-    color: #337ab7;
-    // different to @brand-primary
-    &:hover,
-    &:focus {
-      color: @brand-primary;
-    }
-  }
   h1,
   h2,
   h3,
