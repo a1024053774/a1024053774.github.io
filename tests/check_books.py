@@ -75,6 +75,7 @@ def check_site(site, chapter):
     hrefs = [c.attrs.get('href') for c in cards]
     check('homepage has exactly one Java book and one AI Agent book', hrefs.count('/java/') == 1 and hrefs.count('/ai-agent/') == 1)
     check('homepage contains no standalone chapters', not any(re.search(r'/2025/03/\d+/(?:Chapter|Phase)', str(h)) or 'AI-Agent-' in str(h) for h in hrefs))
+    check('tag page does not load advertising into its hidden sidebar', not document('/tags/').all('ins', cls='adsbygoogle'))
     java = document('/java/')
     content = java.all(cls='book-content')
     check('Java book has Phase 01 and Phase 02 as level-one headings', bool(content) and [h.text().strip() for h in content[0].all('h1')] == ['Phase 01', 'Phase 02'])

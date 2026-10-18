@@ -1,11 +1,24 @@
 # Site settings
 title: 遠山江浸月のBlog
+lang: zh-CN
+# Preserve the language of the imported English notes.
+defaults:
+  - scope: {path: "_posts/data_rep"}
+    values: {lang: en}
+  - scope: {path: "_posts/hidden"}
+    values: {lang: en}
+  - scope: {path: "_posts/read_sf_lf"}
+    values: {lang: en}
+  - scope: {path: "_posts/read_sf_plf"}
+    values: {lang: en}
+  - scope: {path: "_posts/read_sf_qc"}
+    values: {lang: en}
 SEOTitle: 遠山江浸月的博客 | LuckyE Blog
 header-img: img/Wave.jpg
 email: a1024053774@gmail.com
 description: "这里是 遠山江浸月 的个人博客,The best people in life are free. "
 keyword: "遠山江浸月, LuckyE, 博客, 个人网站, 互联网, Web, JavaScript"
-url: "https://a1024053774.github.io/" # your host, for absolute URL
+url: "https://a1024053774.github.io" # Host without a trailing slash; paths supply their own separator.
 baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 
 # Publish posts or collection documents with a future date.

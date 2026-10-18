@@ -201,10 +201,11 @@
 
 		scrollTo: function(target, callback) {
 			var offset = $(target).offset().top - this.config.padding;
+			var speed = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : this.config.scrollSpeed;
 
-			$('html, body').animate({
+			$('html, body').stop(true).animate({
 				scrollTop: offset
-			}, this.config.scrollSpeed, this.config.easing, callback);
+			}, speed, this.config.easing, callback);
 		},
 
 		unbindInterval: function() {

@@ -1,0 +1,85 @@
+// Run in cua_repl with a tab already on the local chapter 2 page.
+// Source oracle: 13 formulas, 14 fenced samples plus the repaired XML sample,
+// and 12 discussions in the original Notion snapshot.
+export async function checkChapterReadiness(tab) {
+  const cdp = await tab.capabilities.get('cdp');
+  let cursor = (await cdp.readEvents({ methods: ['Fetch.requestPaused'] })).cursor;
+  let held;
+  let report;
+  await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
+  await cdp.send('Fetch.enable', { patterns: [{ urlPattern: '*mathjax@4/tex-chtml.js', resourceType: 'Script', requestStage: 'Request' }] });
+  try {
+    await tab.reload();
+    for (let i = 0; i < 5 && !held; i += 1) {
+      const batch = await cdp.readEvents({ afterSequence: cursor, methods: ['Fetch.requestPaused'], timeoutMs: 5000 });
+      cursor = batch.cursor;
+      held = batch.events.find(e => e.params?.resourceType === 'Script' && e.params?.request?.url.endsWith('/mathjax@4/tex-chtml.js'));
+    }
+    if (!held) throw new Error('The math request was not paused; the delay scenario was not exercised.');
+    await tab.playwright.locator('#darkmode-toggle[aria-label^="切换到"]').waitFor({ state: 'visible', timeoutMs: 5000 });
+    const before = await tab.playwright.evaluate(() => document.documentElement.getAttribute('data-theme'));
+    await tab.playwright.locator('#darkmode-toggle').press(' ');
+    const middle = await tab.playwright.evaluate(() => document.documentElement.getAttribute('data-theme'));
+    await tab.playwright.locator('#darkmode-toggle').press('Enter');
+    report = await tab.playwright.evaluate(() => ({
+      theme: document.documentElement.getAttribute('data-theme'),
+      codeHeaders: document.querySelectorAll('.post-content .code-window__header').length,
+      annotations: document.querySelectorAll('[data-notion-discussion][role="button"]').length
+    }));
+    report.mathHeld = await tab.playwright.evaluate(() => document.querySelectorAll('.post-content mjx-container').length === 0);
+    report.themeRoundTrip = before !== middle && before === report.theme;
+    await tab.playwright.locator('[data-notion-discussion="notion-discussion-12"]').press('Enter');
+    report.discussionOpens = await tab.playwright.evaluate(() => !document.querySelector('#notion-discussions-panel').hidden);
+    await tab.playwright.locator('[data-notion-discussions-close]').press('Escape');
+    report.discussionCloses = await tab.playwright.evaluate(() => document.querySelector('#notion-discussions-panel').hidden && document.activeElement?.getAttribute('data-notion-discussion') === 'notion-discussion-12');
+  } finally {
+    try {
+      if (held) await cdp.send('Fetch.continueRequest', { requestId: held.params.requestId });
+    } finally {
+      await cdp.send('Fetch.enable', { patterns: [] });
+      await cdp.send('Network.setCacheDisabled', { cacheDisabled: false });
+    }
+  }
+  await tab.playwright.locator('.post-content mjx-container').nth(12).waitFor({ state: 'attached', timeoutMs: 45000 });
+  report.math = await tab.playwright.evaluate(() => ({
+    codeHeaders: document.querySelectorAll('.post-content .code-window__header').length,
+    annotations: document.querySelectorAll('[data-notion-discussion][role="button"]').length,
+    formulas: document.querySelectorAll('.post-content mjx-container').length,
+    errors: document.querySelectorAll('mjx-merror').length,
+    currencyProseInMath: [...document.querySelectorAll('.post-content mjx-container')].some(n => /计.*费|就.*省.*了/s.test(n.textContent)),
+    pricesRemainText: ['$0.05', '$180', '$150', '$30'].every(value => document.querySelector('.post-content').textContent.includes(value))
+  }));
+  report.status = report.themeRoundTrip && report.mathHeld && report.codeHeaders === 15 && report.annotations === 12 && report.discussionOpens && report.discussionCloses && report.math.codeHeaders === 15 && report.math.annotations === 12 && report.math.formulas === 13 && report.math.errors === 0 && !report.math.currencyProseInMath && report.math.pricesRemainText ? 'PASS' : 'FAIL';
+  if (report.status !== 'PASS') throw new Error(JSON.stringify(report));
+  return report;
+}
+
+// Run at 390 × 844, at the top of a page with the menu closed.
+export async function checkMenuRoundTrip(tab) {
+  const toggle = tab.playwright.locator('.navbar-toggle');
+  const viewport = await tab.playwright.evaluate(() => ({ width: innerWidth, height: innerHeight }));
+  if (viewport.width !== 390 || viewport.height !== 844) throw new Error('Set the menu test viewport to 390 × 844.');
+  const state = () => tab.playwright.evaluate(() => {
+    const panel = document.querySelector('#huxblog_navbar .navbar-collapse');
+    const style = getComputedStyle(panel);
+    return {
+      expanded: document.querySelector('.navbar-toggle').getAttribute('aria-expanded'),
+      open: document.querySelector('#huxblog_navbar').classList.contains('in'),
+      visible: style.visibility === 'visible' && style.display !== 'none' && panel.getClientRects().length > 0
+    };
+  });
+  const before = await state();
+  await toggle.click();
+  const opened = await state();
+  await toggle.click();
+  const closed = await state();
+  await toggle.press('Enter');
+  const keyboardOpened = await state();
+  await toggle.press('Escape');
+  const escaped = await state();
+  const focusReturned = await tab.playwright.evaluate(() => document.activeElement === document.querySelector('.navbar-toggle'));
+  const report = { viewport, before, opened, closed, keyboardOpened, escaped, focusReturned };
+  report.status = before.expanded === 'false' && !before.open && !before.visible && opened.expanded === 'true' && opened.open && opened.visible && closed.expanded === 'false' && !closed.open && !closed.visible && keyboardOpened.expanded === 'true' && keyboardOpened.open && keyboardOpened.visible && escaped.expanded === 'false' && !escaped.open && !escaped.visible && focusReturned ? 'PASS' : 'FAIL';
+  if (report.status !== 'PASS') throw new Error(JSON.stringify(report));
+  return report;
+}
