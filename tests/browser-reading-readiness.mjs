@@ -42,23 +42,32 @@ export async function checkChapterReadiness(tab) {
   }
   await tab.playwright.locator('.post-content mjx-container').nth(12).waitFor({ state: 'attached', timeoutMs: 45000 });
   report.math = await tab.playwright.evaluate(() => ({
+    codeHeaders: document.querySelectorAll('.post-content .code-window__header').length,
+    annotations: document.querySelectorAll('[data-notion-discussion][role="button"]').length,
     formulas: document.querySelectorAll('.post-content mjx-container').length,
     errors: document.querySelectorAll('mjx-merror').length,
     currencyProseInMath: [...document.querySelectorAll('.post-content mjx-container')].some(n => /计.*费|就.*省.*了/s.test(n.textContent)),
     pricesRemainText: ['$0.05', '$180', '$150', '$30'].every(value => document.querySelector('.post-content').textContent.includes(value))
   }));
-  report.status = report.themeRoundTrip && report.mathHeld && report.codeHeaders === 15 && report.annotations === 12 && report.discussionOpens && report.discussionCloses && report.math.formulas === 13 && report.math.errors === 0 && !report.math.currencyProseInMath && report.math.pricesRemainText ? 'PASS' : 'FAIL';
+  report.status = report.themeRoundTrip && report.mathHeld && report.codeHeaders === 15 && report.annotations === 12 && report.discussionOpens && report.discussionCloses && report.math.codeHeaders === 15 && report.math.annotations === 12 && report.math.formulas === 13 && report.math.errors === 0 && !report.math.currencyProseInMath && report.math.pricesRemainText ? 'PASS' : 'FAIL';
   if (report.status !== 'PASS') throw new Error(JSON.stringify(report));
   return report;
 }
 
-// Run with a narrow viewport, at the top of a page with the menu closed.
+// Run at 390 × 844, at the top of a page with the menu closed.
 export async function checkMenuRoundTrip(tab) {
   const toggle = tab.playwright.locator('.navbar-toggle');
-  const state = () => tab.playwright.evaluate(() => ({
-    expanded: document.querySelector('.navbar-toggle').getAttribute('aria-expanded'),
-    open: document.querySelector('#huxblog_navbar').classList.contains('in')
-  }));
+  const viewport = await tab.playwright.evaluate(() => ({ width: innerWidth, height: innerHeight }));
+  if (viewport.width !== 390 || viewport.height !== 844) throw new Error('Set the menu test viewport to 390 × 844.');
+  const state = () => tab.playwright.evaluate(() => {
+    const panel = document.querySelector('#huxblog_navbar .navbar-collapse');
+    const style = getComputedStyle(panel);
+    return {
+      expanded: document.querySelector('.navbar-toggle').getAttribute('aria-expanded'),
+      open: document.querySelector('#huxblog_navbar').classList.contains('in'),
+      visible: style.visibility === 'visible' && style.display !== 'none' && panel.getClientRects().length > 0
+    };
+  });
   const before = await state();
   await toggle.click();
   const opened = await state();
@@ -69,8 +78,8 @@ export async function checkMenuRoundTrip(tab) {
   await toggle.press('Escape');
   const escaped = await state();
   const focusReturned = await tab.playwright.evaluate(() => document.activeElement === document.querySelector('.navbar-toggle'));
-  const report = { before, opened, closed, keyboardOpened, escaped, focusReturned };
-  report.status = before.expanded === 'false' && !before.open && opened.expanded === 'true' && opened.open && closed.expanded === 'false' && !closed.open && keyboardOpened.open && escaped.expanded === 'false' && !escaped.open && focusReturned ? 'PASS' : 'FAIL';
+  const report = { viewport, before, opened, closed, keyboardOpened, escaped, focusReturned };
+  report.status = before.expanded === 'false' && !before.open && !before.visible && opened.expanded === 'true' && opened.open && opened.visible && closed.expanded === 'false' && !closed.open && !closed.visible && keyboardOpened.expanded === 'true' && keyboardOpened.open && keyboardOpened.visible && escaped.expanded === 'false' && !escaped.open && !escaped.visible && focusReturned ? 'PASS' : 'FAIL';
   if (report.status !== 'PASS') throw new Error(JSON.stringify(report));
   return report;
 }
