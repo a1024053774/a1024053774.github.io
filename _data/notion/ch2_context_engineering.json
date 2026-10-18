@@ -1,0 +1,212 @@
+{
+  "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4",
+  "snapshot_at": "2026-10-18T06:35:21Z",
+  "last_edited_at": "2026-10-18T06:15:01.522Z",
+  "discussion_count": 12,
+  "discussions": [
+    {
+      "anchor": "notion-discussion-01",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/b1ee50c2-da98-400a-ac01-b94d9604780c/3fdfaa7a-dad8-80a8-95cb-001c86bf3eff",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad880a895cb001c86bf3eff&pvs=42#b1ee50c2da98400aac01b94d9604780c",
+      "text_context": "图2-7：注意力热力图的坐标轴与因果掩码",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-808a-b136-001d19f27286",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T03:46:39.950Z",
+          "by_you": true,
+          "html": "<br />• 纵轴（行，从上到下）：代表当前正在计算的 Query Token（即当前正在处理或生成的词，随时间向后推移）。<br />• 横轴（列，从左到右）：代表被查询的历史 Key Token（上下文中的词）。<br />• 右侧的斜切三角空白：源于自回归解码的因果掩码（Causal Mask）。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-02",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/b1ee50c2-da98-400a-ac01-b94d9604780c/3fdfaa7a-dad8-80b2-9b1b-001c2c4dc113",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad880b29b1b001c2c4dc113&pvs=42#b1ee50c2da98400aac01b94d9604780c",
+      "text_context": "图2-7：首 token、近期 token 与中间区域的注意力分布",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-802a-bc95-001d3915ce06",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T03:47:13.610Z",
+          "by_you": true,
+          "html": "<br />• 最左侧贯穿上下的亮黄色细线（第 1 列）：这正是图中最极端的现象。无论序列生成到多长（纵轴推移到多深），序列的第 1 个 Token（Index 0）几乎对每一行都占据了高达 ~0.9 的极大注意力权重。<br />• 右侧斜边边缘的亮色区域（对角线附近）：代表局部注意力（Local / Recent Tokens）。模型在预测下一个词时，会重点关注紧挨着自己的前几个词。<br />• 中间大面积深紫区域：除了首词和紧邻的上下文，中间绝大部分历史词的注意力权重几乎衰减为 0。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-03",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/2bd4824a-791f-4237-b5a1-be985d578bdd/3fdfaa7a-dad8-808a-897b-001c7b143779",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8808a897b001c7b143779&pvs=42#2bd4824a791f4237b5a1be985d578bdd",
+      "text_context": "集中倾倒到第一个 token 上",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-8065-ad8d-001d8aca0f0b",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T03:50:36.173Z",
+          "by_you": true,
+          "html": "为什么倒给“第一个 Token”？——全勤的垃圾桶模型为什么不倒给中间随便某个词，而偏偏锁定第一个词？<br />• 因果掩码的唯一全勤者：<span underline=\"true\"><strong>因为第 1 个 Token 是整个序列中唯一一个对所有后续 Token 永久可见的位置。</strong></span>如果模型选择第 100 个词作为“垃圾桶”，那么<span underline=\"true\"><strong>前 99 个词就无法使用它</strong></span>；只有第 1 个词是所有步骤都能安全访问的全局公共锚点。<br />• 语义脱敏：在预训练中，模型很快学到了这个偷懒策略——将第 1 个 Token 的 Value 向量特征调整为一个相对中性的偏置偏移（Bias），<strong>然后让所有层在不需要检索上下文时，把多余的注意力数值统统倾泻给第 1 个 Token</strong>。<span underline=\"true\"><em>这样既满足了 Softmax 概率和为 1 的数学约束，又不会让无关历史干扰当前输出。</em></span><br />"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-04",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/54b52ab2-5e63-4dd3-8b4a-6b6e5cc88c2e/3fdfaa7a-dad8-803b-ae27-001c5d308d1a",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8803bae27001c5d308d1a&pvs=42#54b52ab25e634dd38b4a6b6e5cc88c2e",
+      "text_context": "在设计上下文时，把最...一项重要的实践原则。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-8058-9900-001da0414be4",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T03:51:06.328Z",
+          "by_you": true,
+          "html": "这个现象带来的重大工程启示<span underline=\"true\"><strong><em>过去</em></strong></span><span underline=\"true\"><em>在做长文本流式对话时，人们通常采用滑动窗口（FIFO）：随着输入变长，把最早的词按顺序挤出缓存（KV Cache）。一旦把最开头的第 1 个 Token 挤出缓存，整个模型的困惑度（Perplexity）会瞬间爆炸，输出直接胡言乱语。原因就在于：模型赖以排泄无用权重的“泄洪口/垃圾桶”被强行抽走了，那 90% 以上的多余权重只能被迫平摊给滑动窗口内的其他正常词，导致注意力严重扭曲。<br /><br /></em></span>因此，StreamingLLM 的解决方案非常优雅：在流式生成中，无论历史滑动了多远，<span underline=\"true\"><strong>永久钉死并保留前 1~4 个 Token 的 KV 缓存（Attention Sink）</strong></span>，后面只保留最近的局域窗口，就能以极小的显存代价实现无上限长度的稳定流式推理。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-05",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/63520529-dbed-4768-a73d-bd4954cb9992/3fdfaa7a-dad8-805e-a4e8-001c512d58e8",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8805ea4e8001c512d58e8&pvs=42#63520529dbed4768a73dbd4954cb9992",
+      "text_context": "工具使用规范：文件操作与网络请求的结构化提示",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-8048-ab38-001dd78396dc",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T05:16:03.860Z",
+          "by_you": true,
+          "html": "这点发现很好。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-06",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/3fdfaa7a-dad8-8020-9fa1-cd3d513dbf34/3fdfaa7a-dad8-80b0-b899-001cc2550c32",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad880b0b899001cc2550c32&pvs=42#3fdfaa7adad880209fa1cd3d513dbf34",
+      "text_context": "Claude Cod...，成为轨迹的一部分。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-8079-b381-001d73c914e5",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T05:28:24.658Z",
+          "by_you": true,
+          "html": "Responses API"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-07",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/52f77aec-e9e4-4c49-b574-48282817bdc2/3fdfaa7a-dad8-802a-85b1-001cc52f604c",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8802a85b1001cc52f604c&pvs=42#52f77aece9e44c49b57448282817bdc2",
+      "text_context": "描述太宽泛（如 “h...能做什么”重要得多。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-80a2-8130-001d5d9d85fd",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T05:37:24.278Z",
+          "by_you": true,
+          "html": "核心规则"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-08",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/9d82d2dc-68f5-4223-969f-24c0609a29e9/3fdfaa7a-dad8-809a-a53e-001c5d5acdc6",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8809aa53e001c5d5acdc6&pvs=42#9d82d2dc68f54223969f24c0609a29e9",
+      "text_context": "图2-14：Agent 状态栏与任务卡的状态管理",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-8090-bf75-001db39d5c38",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T05:54:08.459Z",
+          "by_you": true,
+          "html": "设计的任务卡也是同理：<br />模型不用每次发请求的时候都去重新分析一遍现在的状态，直接看任务卡的状态就能知道当前的 status。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-09",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/468ead59-c202-44b0-b3bd-f2348a3d90e2/3fdfaa7a-dad8-800f-bbf5-001ca8d43e0d",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8800fbbf5001ca8d43e0d&pvs=42#468ead59c20244b0b3bdf2348a3d90e2",
+      "text_context": "Agent 执行复杂...和对任务进展的跟踪。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-80b5-b794-001d1c4d5233",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T05:54:42.068Z",
+          "by_you": true,
+          "html": "非常好。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-10",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/f2698d5b-ea10-43b2-a90c-4c3617de34c9/3fdfaa7a-dad8-803a-a50f-001c0fda0e70",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8803aa50f001c0fda0e70&pvs=42#f2698d5bea1043b2a90c4c3617de34c9",
+      "text_context": "任何“关于这些内容的...原始记录里现算一遍。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-803e-b5fb-001d00014b3b",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T05:56:33.540Z",
+          "by_you": true,
+          "html": "每次请求模型都要重新分析一遍来了解现在的状态。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-11",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/10ba90f6-845b-47c0-94d5-dd988c49c5d4/3fdfaa7a-dad8-8000-858f-001c3641106f",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad88000858f001c3641106f&pvs=42#10ba90f6845b47c094d5dd988c49c5d4",
+      "text_context": "谨慎删除原始上下文。...致准确率断崖式下降。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-8043-9c8b-001d3d7c3210",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T06:05:11.337Z",
+          "by_you": true,
+          "html": "要结合着来。"
+        }
+      ]
+    },
+    {
+      "anchor": "notion-discussion-12",
+      "id": "discussion://3fafaa7a-dad8-8138-93a7-ce9ccc02a3a4/99296168-088c-4d69-91e2-ac186fc59b1d/3fdfaa7a-dad8-805b-a475-001c9776f20f",
+      "source_url": "https://app.notion.com/p/3fafaa7adad8813893a7ce9ccc02a3a4?d=3fdfaa7adad8805ba475001c9776f20f&pvs=42#99296168088c4d6991e2ac186fc59b1d",
+      "text_context": "压缩是在信息已经进入...传给主 Agent。",
+      "resolved": false,
+      "comment_count": 1,
+      "comments": [
+        {
+          "id": "3fdfaa7a-dad8-8021-9959-001d5b889633",
+          "author": "远山江浸月",
+          "datetime": "2026-10-18T06:15:17.561Z",
+          "by_you": true,
+          "html": "正是 a2a 要做的"
+        }
+      ]
+    }
+  ]
+}

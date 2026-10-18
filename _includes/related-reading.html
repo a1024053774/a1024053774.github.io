@@ -1,0 +1,5 @@
+<aside class="reading-connection" aria-label="关联阅读">
+  <p class="reading-connection__title">{{ include.title | escape }}</p>
+  <p class="reading-connection__summary">{{ include.summary | escape }}</p>
+  <a class="reading-connection__link" href="{{ include.url | relative_url }}">{{ include.label | escape }} <span aria-hidden="true">→</span></a>
+</aside>

@@ -79,13 +79,13 @@ def check_site(site, chapter):
     content = java.all(cls='book-content')
     check('Java book has Phase 01 and Phase 02 as level-one headings', bool(content) and [h.text().strip() for h in content[0].all('h1')] == ['Phase 01', 'Phase 02'])
     check('Java book links all nine nested chapters', len(java.all(cls='book-chapter-link')) == 9)
-    check('AI Agent book links its first chapter', len(document('/ai-agent/').all(cls='book-chapter-link')) == 1)
+    check('AI Agent book links both published chapters', len(document('/ai-agent/').all(cls='book-chapter-link')) == 2)
 
     legacy = [f'/2025/03/{day:02d}/{slug}/' for day, slug in [(2, 'Chapter01'), (3, 'Phase01_Chapter01'), (4, 'Phase01_Chapter02'), (5, 'Phase01_Chapter03'), (6, 'Phase01_Chapter04'), (7, 'Phase01_Chapter05'), (8, 'Phase01_Chapter06'), (9, 'Phase01_Chapter07'), (10, 'Phase01_Chapter08'), (11, 'Phase02')]]
     legacy.append('/2026/10/15/AI-Agent-入门/')
     check('original standalone chapter routes are removed', not any((site / path.strip('/') / 'index.html').exists() for path in legacy))
-    expected_paths = [f'/java/phase-01/chapter-{i:02d}/' for i in range(1, 9)] + ['/java/phase-02/chapter-01/', '/ai-agent/chapter-01/']
-    check('all ten nested chapter pages exist', all((site / p.strip('/') / 'index.html').exists() for p in expected_paths))
+    expected_paths = [f'/java/phase-01/chapter-{i:02d}/' for i in range(1, 9)] + ['/java/phase-02/chapter-01/', '/ai-agent/chapter-01/', '/ai-agent/chapter-02/']
+    check('all eleven nested chapter pages exist', all((site / p.strip('/') / 'index.html').exists() for p in expected_paths))
     root = document(chapter)
     bodies = root.all(cls='post-content') or root.all(cls='post-container')
     body = bodies[0] if bodies else Element()
