@@ -13,3 +13,7 @@
   url: /ai-agent/
   title: 深入理解 AI Agent
   description: 设计原理与工程实践，逐章整理阅读笔记和批注。
+- tag: 后端
+  url: /backend-map/
+  title: 后端知识地图
+  description: 从一次请求出发，串起网络、MySQL、Redis 与消息队列，按四章连续阅读。
