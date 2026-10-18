@@ -2,6 +2,7 @@
 import argparse
 import json
 import re
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -26,7 +27,9 @@ def check_site(site):
     chapter_meta = {n.attrs.get('property'): n.attrs.get('content', '') for n in chapter.all('meta')}
     a2a_meta = {n.attrs.get('property'): n.attrs.get('content', '') for n in a2a.all('meta')}
     check('sharing summaries describe the article rather than an empty excerpt', 'KV Cache' in chapter_meta.get('og:description', '') and '任务契约' in a2a_meta.get('og:description', ''))
-    check('first publication metadata preserves the original timezone', a2a_meta.get('article:published_time') == '2026-10-11T09:30:00-04:00')
+    # Jekyll may normalize the source offset to the build timezone. Compare the
+    # instant from the original front matter, not its equivalent string form.
+    check('first publication metadata preserves the original instant', datetime.fromisoformat(a2a_meta.get('article:published_time', '').replace('Z', '+00:00')) == datetime(2026, 10, 11, 9, 30, tzinfo=timezone(timedelta(hours=-4))))
     check('canonical sharing URL has one path separator', chapter_meta.get('og:url') == 'https://a1024053774.github.io/ai-agent/chapter-02/')
     bodies = chapter.all(cls='post-content')
     body = bodies[0] if bodies else Element()

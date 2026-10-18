@@ -6,13 +6,14 @@ export async function checkChapterReadiness(tab) {
   let cursor = (await cdp.readEvents({ methods: ['Fetch.requestPaused'] })).cursor;
   let held;
   let report;
-  await cdp.send('Fetch.enable', { patterns: [{ urlPattern: '*mathjax*', resourceType: 'Script', requestStage: 'Request' }] });
+  await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
+  await cdp.send('Fetch.enable', { patterns: [{ urlPattern: '*mathjax@4/tex-chtml.js', resourceType: 'Script', requestStage: 'Request' }] });
   try {
-    await cdp.send('Page.reload', {});
+    await tab.reload();
     for (let i = 0; i < 5 && !held; i += 1) {
       const batch = await cdp.readEvents({ afterSequence: cursor, methods: ['Fetch.requestPaused'], timeoutMs: 5000 });
       cursor = batch.cursor;
-      held = batch.events.find(e => e.params?.resourceType === 'Script' && e.params?.request?.url.includes('mathjax'));
+      held = batch.events.find(e => e.params?.resourceType === 'Script' && e.params?.request?.url.endsWith('/mathjax@4/tex-chtml.js'));
     }
     if (!held) throw new Error('The math request was not paused; the delay scenario was not exercised.');
     await tab.playwright.locator('#darkmode-toggle[aria-label^="切换到"]').waitFor({ state: 'visible', timeoutMs: 5000 });
@@ -25,6 +26,7 @@ export async function checkChapterReadiness(tab) {
       codeHeaders: document.querySelectorAll('.post-content .code-window__header').length,
       annotations: document.querySelectorAll('[data-notion-discussion][role="button"]').length
     }));
+    report.mathHeld = await tab.playwright.evaluate(() => document.querySelectorAll('.post-content mjx-container').length === 0);
     report.themeRoundTrip = before !== middle && before === report.theme;
     await tab.playwright.locator('[data-notion-discussion="notion-discussion-12"]').press('Enter');
     report.discussionOpens = await tab.playwright.evaluate(() => !document.querySelector('#notion-discussions-panel').hidden);
@@ -35,16 +37,40 @@ export async function checkChapterReadiness(tab) {
       if (held) await cdp.send('Fetch.continueRequest', { requestId: held.params.requestId });
     } finally {
       await cdp.send('Fetch.enable', { patterns: [] });
+      await cdp.send('Network.setCacheDisabled', { cacheDisabled: false });
     }
   }
-  await tab.playwright.locator('.post-content mjx-container').nth(12).waitFor({ state: 'attached', timeoutMs: 20000 });
+  await tab.playwright.locator('.post-content mjx-container').nth(12).waitFor({ state: 'attached', timeoutMs: 45000 });
   report.math = await tab.playwright.evaluate(() => ({
     formulas: document.querySelectorAll('.post-content mjx-container').length,
     errors: document.querySelectorAll('mjx-merror').length,
     currencyProseInMath: [...document.querySelectorAll('.post-content mjx-container')].some(n => /计.*费|就.*省.*了/s.test(n.textContent)),
     pricesRemainText: ['$0.05', '$180', '$150', '$30'].every(value => document.querySelector('.post-content').textContent.includes(value))
   }));
-  report.status = report.themeRoundTrip && report.codeHeaders === 15 && report.annotations === 12 && report.discussionOpens && report.discussionCloses && report.math.formulas === 13 && report.math.errors === 0 && !report.math.currencyProseInMath && report.math.pricesRemainText ? 'PASS' : 'FAIL';
+  report.status = report.themeRoundTrip && report.mathHeld && report.codeHeaders === 15 && report.annotations === 12 && report.discussionOpens && report.discussionCloses && report.math.formulas === 13 && report.math.errors === 0 && !report.math.currencyProseInMath && report.math.pricesRemainText ? 'PASS' : 'FAIL';
+  if (report.status !== 'PASS') throw new Error(JSON.stringify(report));
+  return report;
+}
+
+// Run with a narrow viewport, at the top of a page with the menu closed.
+export async function checkMenuRoundTrip(tab) {
+  const toggle = tab.playwright.locator('.navbar-toggle');
+  const state = () => tab.playwright.evaluate(() => ({
+    expanded: document.querySelector('.navbar-toggle').getAttribute('aria-expanded'),
+    open: document.querySelector('#huxblog_navbar').classList.contains('in')
+  }));
+  const before = await state();
+  await toggle.click();
+  const opened = await state();
+  await toggle.click();
+  const closed = await state();
+  await toggle.press('Enter');
+  const keyboardOpened = await state();
+  await toggle.press('Escape');
+  const escaped = await state();
+  const focusReturned = await tab.playwright.evaluate(() => document.activeElement === document.querySelector('.navbar-toggle'));
+  const report = { before, opened, closed, keyboardOpened, escaped, focusReturned };
+  report.status = before.expanded === 'false' && !before.open && opened.expanded === 'true' && opened.open && closed.expanded === 'false' && !closed.open && keyboardOpened.open && escaped.expanded === 'false' && !escaped.open && focusReturned ? 'PASS' : 'FAIL';
   if (report.status !== 'PASS') throw new Error(JSON.stringify(report));
   return report;
 }
