@@ -66,6 +66,8 @@ python3 tests/check_backend_map.py --site _site --report /tmp/backend-contract.j
 - `theme`：真实按钮切换、实际纸色与文字对比度、展开目录的颜色，以及重载和跨页保存。共享 `browser-reading-contrast.mjs` 计算背景叠色，小字门槛为 4.5，大字为 3。
 - `viewport`：允许缩放，阅读区块位于视口内；代码和表格在自己的区域滚动，不把内容溢出藏在页面外。
 
+`reading-overflow.html` 作为独立输入注入实际章节响应，强制产生超长代码与宽表格；两种横向内容都必须超出容器 100px 以上，桌面左右方向键都必须真正移动内容。这个样例不发布为博客章节，避免当前文章恰好没有桌面溢出时漏掉键盘问题。代码与表格复用 `enhanceReadingScrollRegion(element, label)`，只有区域本身聚焦、确有横向溢出且没有组合键时才处理左右箭头，保留正文选择和其他控件的键盘行为。
+
 ```sh
 npm ci
 npx playwright install --with-deps webkit chromium

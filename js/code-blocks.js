@@ -65,11 +65,7 @@
 
     block.insertBefore(header, block.firstChild);
 
-    // Safari does not make overflow regions keyboard focusable automatically.
-    var pre = block.querySelector('pre');
-    pre.setAttribute('tabindex', '0');
-    pre.setAttribute('role', 'region');
-    pre.setAttribute('aria-label', block.getAttribute('data-language') + ' 代码');
+    window.enhanceReadingScrollRegion(block.querySelector('pre'), block.getAttribute('data-language') + ' 代码');
   }
 
   function initCodeBlocks() {

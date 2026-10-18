@@ -27,10 +27,28 @@
 //  $("img").addClass("img-responsive");
 // });
 
+// Named native scroll regions share keyboard behavior across code and tables.
+window.enhanceReadingScrollRegion = function(element, label) {
+    element.setAttribute('tabindex', '0');
+    element.setAttribute('role', 'region');
+    element.setAttribute('aria-label', label);
+    element.addEventListener('keydown', function(event) {
+        if (event.target !== element || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        var distance = event.key === 'ArrowRight' ? 40 : event.key === 'ArrowLeft' ? -40 : 0;
+        if (!distance || element.scrollWidth <= element.clientWidth) return;
+        var previous = element.scrollLeft;
+        element.scrollLeft += distance;
+        if (element.scrollLeft !== previous) event.preventDefault();
+    });
+};
+
 // responsive tables
 $(document).ready(function() {
     // Keep horizontal table scrolling reachable by keyboard in Safari.
-    $("table").wrap("<div class='table-responsive' tabindex='0' role='region' aria-label='数据表格'></div>");
+    $("table").wrap("<div class='table-responsive'></div>");
+    $(".table-responsive").each(function() {
+        window.enhanceReadingScrollRegion(this, '数据表格');
+    });
     $("table").addClass("table");
 });
 

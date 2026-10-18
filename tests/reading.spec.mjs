@@ -77,6 +77,11 @@ async function scrollRegion(region, keyboard) {
   // Check the full layout range separately. This is not evidence of an iOS swipe.
   await region.evaluate(node => node.scrollTo({ left: node.scrollWidth, behavior: 'instant' }));
   await expect.poll(() => region.evaluate(node => node.scrollWidth - node.clientWidth - node.scrollLeft)).toBeLessThanOrEqual(rules.overflowTolerancePx);
+  if (keyboard) {
+    const end = await region.evaluate(node => node.scrollLeft);
+    await region.press('ArrowLeft');
+    await expect.poll(() => region.evaluate(node => node.scrollLeft)).toBeLessThan(end);
+  }
 }
 
 async function viewport(page) {
@@ -112,6 +117,24 @@ for (const book of rules.books) {
   const urls = chapters.map(chapter => chapter.url);
   expect(new Set(urls).size).toBe(urls.length);
   expect(new Set(chapters.map(chapter => chapter.order)).size).toBe(chapters.length);
+
+  test(`${book.hub} overflow sentinel remains readable`, async ({ page, isMobile }, info) => {
+    const fixture = readFileSync(new URL('./fixtures/reading-overflow.html', import.meta.url), 'utf8');
+    await page.route(`**${urls[0]}`, async route => {
+      const response = await route.fetch();
+      const html = await response.text();
+      const opening = /<div class="post-content[^"]*">/;
+      expect(html).toMatch(opening);
+      await route.fulfill({ response, body: html.replace(opening, match => match + fixture) });
+    });
+    await goto(page, urls[0]);
+    await expect(page.locator('[data-reading-overflow] pre')).toHaveAttribute('role', 'region');
+    for (const region of [page.locator('[data-reading-overflow] pre'), page.locator('[data-reading-overflow] table').locator('..')]) {
+      expect(await region.evaluate(node => node.scrollWidth - node.clientWidth), 'The sentinel must exercise real overflow').toBeGreaterThan(100);
+      await scrollRegion(region, !isMobile);
+    }
+    await info.attach('overflow sentinel', { body: await page.screenshot(), contentType: 'image/png' });
+  });
 
   test(`${book.hub} overview opens every chapter`, async ({ page, isMobile }) => {
     await goto(page, book.hub);
