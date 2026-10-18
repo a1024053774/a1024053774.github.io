@@ -59,6 +59,26 @@ jobs:
         run: python3 tests/check_backend_map.py --site _site
       - name: Check publication order after editing old articles
         run: python3 tests/check_home_publication.py --report-dir /tmp/publication-order
+      - name: Setup Node for reading contracts
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install reading test dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps webkit chromium
+      - name: Check reading rules in WebKit and mobile configurations
+        run: npm run test:reading
+      - name: Save reading evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reading-contract-evidence
+          path: |
+            playwright-report/
+            test-results/reading/
+          retention-days: 7
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3

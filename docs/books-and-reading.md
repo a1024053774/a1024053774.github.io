@@ -45,3 +45,40 @@ python3 tests/check_backend_map.py --site _site --report /tmp/backend-contract.j
 ```
 
 `tests/fixtures/react-loop.txt` 的预期来自 Notion 原始代码块；表格行数和问题数量来自原始内容的逐块清点。该检查在修复前版本上失败，并在 GitHub Actions 中于构建后执行。
+
+# 浏览器阅读规则
+
+`tests/reading.rules.json` 声明要验收的合集和规则。`chapters` 指向章节源目录；测试按文件的 `order` 和显式 `permalink`（缺省沿用本站 `/:path/` 契约）发现章节。以后在这个目录新增章节，会自动进入同一套浏览器检查，无需逐章复制脚本。`minimumChapters` 防止空目录或漏页被当作通过。
+
+```json
+{
+  "books": [{ "hub": "/backend-map/", "chapters": "_chapters/backend-map", "minimumChapters": 4, "comments": false }],
+  "rules": ["directory", "code", "tables", "theme", "viewport"],
+  "overflowTolerancePx": 1
+}
+```
+
+规则使用 Playwright 的真实浏览器页面入口，替代原先需手动绑定标签页的后端专用脚本：
+
+- `directory`：概览逐章打开、完整目录、当前章节、上下章与返回合集，手机使用触摸点击。
+- `code`：每个样本都被增强、正文不被截断、溢出区域可聚焦且能到达最右端；桌面额外检查方向键确实滚动内容。
+- `tables`：表头、列数和单元格可见性，溢出表格的焦点与完整横向范围。
+- `theme`：真实按钮切换、实际纸色与文字对比度、展开目录的颜色，以及重载和跨页保存。共享 `browser-reading-contrast.mjs` 计算背景叠色，小字门槛为 4.5，大字为 3。
+- `viewport`：允许缩放，阅读区块位于视口内；代码和表格在自己的区域滚动，不把内容溢出藏在页面外。
+
+```sh
+npm ci
+npx playwright install --with-deps webkit chromium
+bundle exec jekyll build
+npm run test:reading
+```
+
+默认执行桌面 WebKit、iPhone 13 配置的 WebKit、Pixel 7 配置的 Chromium。PR 和生产构建会运行同一命令，失败会阻止发布。报告保存在 `playwright-report/`，截图、对比度记录和失败轨迹保存在 `test-results/reading/`，Actions 保留证据 7 天；这些目录不会发布到博客。
+
+检查线上版本时先确认本地章节清单与发布提交一致，再执行：
+
+```sh
+READING_BASE_URL=https://a1024053774.github.io npm run test:reading
+```
+
+设备配置模拟与 WebKit 测试不等同于实体 iPhone 或正式版 Safari。手机完整横向范围通过脚本验证，没有据此声称真实手势通过；移动 WebKit 不模拟外接键盘，方向键行为在桌面项目验证。本机 Safari 的人工操作与实体手机结果应分别记录。真实地址栏、安全区、触摸回弹和硬件键盘仍需要对应设备，参见 [Playwright 浏览器说明](https://playwright.dev/docs/browsers)与[设备模拟说明](https://playwright.dev/docs/emulation)。

@@ -29,7 +29,8 @@
 
 // responsive tables
 $(document).ready(function() {
-    $("table").wrap("<div class='table-responsive'></div>");
+    // Keep horizontal table scrolling reachable by keyboard in Safari.
+    $("table").wrap("<div class='table-responsive' tabindex='0' role='region' aria-label='数据表格'></div>");
     $("table").addClass("table");
 });
 
