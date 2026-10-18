@@ -459,6 +459,10 @@ li,
     overflow: hidden;
 }
 
+.intro-header.style-text {
+    background: var(--stage);
+}
+
 .intro-header::before {
     content: "";
     position: absolute;

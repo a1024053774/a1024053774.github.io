@@ -45,21 +45,21 @@
 
 // Container of Sidebar, also Friends
 .sidebar-container {
-  color: @gray-light;
+  color: var(--muted-foreground);
   font-size: 14px;
   h5 {
-    color: @brand-gray;
+    color: var(--foreground);
     padding-bottom: 1em;
     a {
-      color: @brand-gray !important;
+      color: inherit;
       text-decoration: none;
     }
   }
   a {
-    color: @gray-light !important;
+    color: var(--muted-foreground);
     &:hover,
     &:active {
-      color: @brand-primary !important;
+      color: var(--primary);
     }
   }
   .tags {
