@@ -1,0 +1,748 @@
+{
+  "source": "https://app.notion.com/p/3fdfaa7adad880318802d60d5640007a",
+  "snapshot": "2026-10-18T14:08:14.123Z",
+  "editorial_corrections": [
+    "TTL 返回值按 Redis 官方文档改为 -1 与 -2，命令说明移出代码。",
+    "MQ JSON 逐字段说明移出代码；Broker 配置的引导句移出代码；Python 示例修正语言标识。",
+    "Notion 分栏按示例配对后纵向排列；最后的总结句从四级标题改为总结段。",
+    "Kafka 历史回放与 RabbitMQ 队列差异段落移回 Consumer Group 小节。"
+  ],
+  "chapters": [
+    {
+      "number": 1,
+      "headings": [
+        {
+          "level": 2,
+          "text": "1. 计算机网络：请求是怎么发送的？"
+        },
+        {
+          "level": 2,
+          "text": "2. 数据库：商品信息从哪里来？"
+        },
+        {
+          "level": 2,
+          "text": "3. Redis：为什么有了 MySQL 还需要它？"
+        },
+        {
+          "level": 2,
+          "text": "4. 消息队列：为什么不让 Python 一次做完全部工作？"
+        },
+        {
+          "level": 2,
+          "text": "5. 分布式与高并发：一台服务器不够怎么办？"
+        }
+      ],
+      "code": [
+        "GET /products/1001 HTTP/1.1\nHost: shop.example.com\nAccept: application/json",
+        "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n  \"id\": 1001,\n  \"name\": \"无线耳机\",\n  \"price\": 299,\n  \"stock\": 50\n}",
+        "SELECT id, name, price, stock\nFROM products\nWHERE id = 1001;"
+      ],
+      "tables": [],
+      "images": [
+        {
+          "name": "chapter-01-01.png",
+          "width": 1078,
+          "height": 254
+        },
+        {
+          "name": "chapter-01-02.png",
+          "width": 1518,
+          "height": 594
+        },
+        {
+          "name": "chapter-01-03.png",
+          "width": 1532,
+          "height": 884
+        },
+        {
+          "name": "chapter-01-04.png",
+          "width": 1538,
+          "height": 916
+        }
+      ],
+      "title": "从一次用户请求理解整个后端"
+    },
+    {
+      "number": 2,
+      "headings": [
+        {
+          "level": 2,
+          "text": "亲手设计一个 MySQL 数据库"
+        },
+        {
+          "level": 3,
+          "text": "创建商品表"
+        },
+        {
+          "level": 3,
+          "text": "创建订单表"
+        },
+        {
+          "level": 2,
+          "text": "事务：为什么两个人会买到最后一件商品？"
+        },
+        {
+          "level": 3,
+          "text": "1. 先看一个看起来没问题的程序"
+        },
+        {
+          "level": 3,
+          "text": "2. 什么是事务（Transaction）？"
+        },
+        {
+          "level": 3,
+          "text": "3. 事务的 ACID 四大特性"
+        },
+        {
+          "level": 3,
+          "text": "4. 真正解决超卖：原子更新 + 事务"
+        },
+        {
+          "level": 3,
+          "text": "5. 那么锁是什么？"
+        },
+        {
+          "level": 2,
+          "text": "为什么有事务仍然可能超卖？"
+        },
+        {
+          "level": 2,
+          "text": "索引：为什么 MySQL 能快速找到数据？"
+        },
+        {
+          "level": 3,
+          "text": "1. 没有索引会怎么样？"
+        },
+        {
+          "level": 3,
+          "text": "2. 索引像一本书的目录"
+        },
+        {
+          "level": 3,
+          "text": "3. 如何创建索引？"
+        },
+        {
+          "level": 3,
+          "text": "4. 联合索引的最左前缀原则"
+        },
+        {
+          "level": 3,
+          "text": "5. 索引越多越好吗？"
+        },
+        {
+          "level": 3,
+          "text": "6. 如何判断 MySQL 有没有使用索引？"
+        }
+      ],
+      "code": [
+        "CREATE DATABASE IF NOT EXISTS shop\n  CHARACTER SET utf8mb4;\n\nUSE shop;\n\nCREATE TABLE products (\n    id BIGINT PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    category VARCHAR(30) NOT NULL,\n    price DECIMAL(10, 2) NOT NULL,\n    stock INT NOT NULL DEFAULT 0,\n    CHECK (price >= 0),\n    CHECK (stock >= 0)\n) ENGINE=InnoDB;",
+        "CREATE TABLE orders (\n    id BIGINT AUTO_INCREMENT PRIMARY KEY,\n    user_id BIGINT NOT NULL,\n    product_id BIGINT NOT NULL,\n    quantity INT NOT NULL,\n    unit_price DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(20) NOT NULL DEFAULT 'created',\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\n    FOREIGN KEY (product_id) REFERENCES products(id),\n    INDEX idx_orders_user_time (user_id, created_at)\n) ENGINE=InnoDB;",
+        "def buy_product(product_id):\n    stock = get_stock(product_id)\n\n    if stock > 0:\n        create_order(product_id)\n        update_stock(product_id, stock - 1)\n        return \"购买成功\"\n\n    return \"库存不足\"",
+        "UPDATE products\nSET stock = stock - 1\nWHERE id = 101 AND stock >= 1;",
+        "START TRANSACTION;\n\nUPDATE products\nSET stock = stock - 1\nWHERE id = 101 AND stock >= 1;\n\nSELECT ROW_COUNT() AS affected_rows;",
+        "INSERT INTO orders\n(user_id, product_id, quantity, unit_price, status)\nVALUES\n(7, 101, 1, 299.00, 'created');\n\nCOMMIT;",
+        "ROLLBACK;",
+        "START TRANSACTION;\n\nSELECT stock, price\nFROM products\nWHERE id = 101\nFOR UPDATE;",
+        "begin_transaction()\n\nstock = get_stock(101)\n\nif stock > 0:\n    create_order(101)\n    set_stock(101, stock - 1)\n\ncommit()",
+        "SELECT *\nFROM users\nWHERE id = 888888;",
+        "SELECT id, name, price\nFROM products\nWHERE category = '数码'\n  AND price < 400\nORDER BY price ASC;",
+        "CREATE INDEX idx_products_category_price\nON products(category, price);",
+        "SELECT id, product_id, created_at\nFROM orders\nWHERE user_id = 7\nORDER BY created_at DESC\nLIMIT 10;",
+        "SELECT *\nFROM orders\nWHERE created_at >= '2026-10-01';",
+        "EXPLAIN\nSELECT id, product_id, created_at\nFROM orders\nWHERE user_id = 7\nORDER BY created_at DESC\nLIMIT 10;"
+      ],
+      "tables": [
+        [
+          [
+            "特性",
+            "含义",
+            "例子"
+          ],
+          [
+            "A — Atomicity 原子性",
+            "一组操作要么全部提交，要么全部回滚",
+            "不能扣了库存却没生成订单"
+          ],
+          [
+            "C — Consistency 一致性",
+            "事务执行前后要满足数据约束和业务不变量",
+            "不允许负库存、无效外键"
+          ],
+          [
+            "I — Isolation 隔离性",
+            "并发事务之间的相互影响受到隔离规则约束",
+            "避免一个事务错误依赖另一个事务的中间状态"
+          ],
+          [
+            "D — Durability 持久性",
+            "事务成功提交后，数据具备持久保存保证",
+            "提交完成后服务进程崩溃，订单不应因此消失"
+          ]
+        ],
+        [
+          [
+            "user_id",
+            "created_at",
+            "order_id"
+          ],
+          [
+            "7",
+            "10月15日",
+            "1001"
+          ],
+          [
+            "7",
+            "10月16日",
+            "1002"
+          ],
+          [
+            "8",
+            "10月14日",
+            "1003"
+          ],
+          [
+            "9",
+            "10月17日",
+            "1004"
+          ]
+        ],
+        [
+          [
+            "好处",
+            "代价"
+          ],
+          [
+            "加快等值查询",
+            "需要额外存储空间"
+          ],
+          [
+            "加快范围查询",
+            "插入数据时需要维护索引"
+          ],
+          [
+            "某些情况下避免额外排序",
+            "修改、删除数据时可能产生额外开销"
+          ],
+          [
+            "支持唯一性约束",
+            "索引过多会增加维护和优化成本"
+          ]
+        ],
+        [
+          [
+            "字段",
+            "需要看什么"
+          ],
+          [
+            "type",
+            "访问方式，例如 ALL 代表全表扫描，ref 代表使用非唯一索引进行匹配"
+          ],
+          [
+            "key",
+            "实际计划使用哪个索引"
+          ],
+          [
+            "rows",
+            "预计需要检查的行数"
+          ],
+          [
+            "Extra",
+            "其他执行信息，例如是否需要额外排序"
+          ]
+        ]
+      ],
+      "images": [
+        {
+          "name": "chapter-02-01.png",
+          "width": 1528,
+          "height": 446
+        },
+        {
+          "name": "chapter-02-02.png",
+          "width": 1522,
+          "height": 726
+        },
+        {
+          "name": "chapter-02-03.png",
+          "width": 1530,
+          "height": 566
+        },
+        {
+          "name": "chapter-02-04.png",
+          "width": 1522,
+          "height": 302
+        },
+        {
+          "name": "chapter-02-05.png",
+          "width": 1522,
+          "height": 698
+        }
+      ],
+      "title": "MySQL 与数据库原理"
+    },
+    {
+      "number": 3,
+      "headings": [
+        {
+          "level": 2,
+          "text": "为什么需要 Redis？"
+        },
+        {
+          "level": 3,
+          "text": "换一种思路"
+        },
+        {
+          "level": 3,
+          "text": "Redis 为什么快？"
+        },
+        {
+          "level": 2,
+          "text": "Redis 最基础的概念：Key-Value"
+        },
+        {
+          "level": 3,
+          "text": "1. 为什么 Key 要写成 product:101？"
+        },
+        {
+          "level": 3,
+          "text": "2. Redis 有哪些数据类型？"
+        },
+        {
+          "level": 2,
+          "text": "TTL：缓存为什么需要自动过期？"
+        },
+        {
+          "level": 2,
+          "text": "Cache Aside：后端最经典的缓存模式"
+        },
+        {
+          "level": 3,
+          "text": "为什么需要异常处理？"
+        },
+        {
+          "level": 2,
+          "text": "Redis 经典面试问题：缓存三兄弟"
+        },
+        {
+          "level": 3,
+          "text": "1. 缓存穿透（Cache Penetration）"
+        },
+        {
+          "level": 3,
+          "text": "2. 缓存击穿（Cache Breakdown）"
+        },
+        {
+          "level": 3,
+          "text": "3. 缓存雪崩（Cache Avalanche）"
+        },
+        {
+          "level": 3,
+          "text": "三种问题放在一起比较"
+        },
+        {
+          "level": 2,
+          "text": "再往深处思考：Redis 为什么能处理并发计数？"
+        }
+      ],
+      "code": [
+        "SELECT id, name, price, stock\nFROM products\nWHERE id = 101;",
+        "data = {\n    \"product:101\": \"无线耳机\",\n    \"product:102\": \"机械键盘\"\n}\n\nprint(data[\"product:101\"])",
+        "SET product:101 \"无线耳机\"\nGET product:101",
+        "SET article:101:views 100\n\nINCR article:101:views\n\nGET article:101:views",
+        "ZADD posts:ranking 100 post:101\nZADD posts:ranking 250 post:102\nZADD posts:ranking 180 post:103\n\nZREVRANGE posts:ranking 0 2 WITHSCORES",
+        "SET product:101:price 299",
+        "SET product:101:price 299 EX 60",
+        "TTL product:101:price",
+        "import json\n\nimport redis\nimport mysql.connector\n\ncache = redis.Redis(\n    host=\"127.0.0.1\",\n    port=6379,\n    decode_responses=True,\n    socket_connect_timeout=2,\n    socket_timeout=2,\n)\n\n\ndef query_mysql(product_id: int):\n    conn = mysql.connector.connect(\n        host=\"127.0.0.1\",\n        port=3307,\n        user=\"root\",\n        password=\"local_demo_only_123\",\n        database=\"shop\",\n        connection_timeout=3,\n    )\n\n    try:\n        cursor = conn.cursor(dictionary=True)\n        try:\n            cursor.execute(\n                \"\"\"\n                SELECT id, name, price, stock\n                FROM products\n                WHERE id = %s\n                \"\"\",\n                (product_id,),\n            )\n            product = cursor.fetchone()\n        finally:\n            cursor.close()\n    finally:\n        conn.close()\n\n    if product is not None:\n        product[\"price\"] = str(product[\"price\"])\n\n    return product\n\n\ndef get_product(product_id: int):\n    key = f\"product:{product_id}\"\n\n    # 第一步：尝试从 Redis 获取数据\n    try:\n        cached = cache.get(key)\n\n        if cached is not None:\n            print(\"Redis HIT\")\n            return json.loads(cached)\n    except (redis.RedisError, ValueError) as exc:\n        print(\"缓存读取失败：\", exc)\n\n    # 第二步：从 MySQL 读取\n    print(\"查询 MySQL\")\n    product = query_mysql(product_id)\n\n    if product is None:\n        return None\n\n    # 第三步：将数据放进 Redis\n    try:\n        cache.set(\n            key,\n            json.dumps(product, ensure_ascii=False),\n            ex=60,\n        )\n    except redis.RedisError as exc:\n        print(\"缓存写入失败：\", exc)\n\n    return product\n\n\nprint(get_product(101))\nprint(get_product(101))",
+        "import random\n\nttl = 60 + random.randint(0, 30)\n\ncache.set(\n    \"product:101\",\n    \"商品数据\",\n    ex=ttl,\n)",
+        "count = int(cache.get(\"post:101:views\"))\n\ncount += 1\n\ncache.set(\"post:101:views\", count)",
+        "INCR post:101:views"
+      ],
+      "tables": [
+        [
+          [
+            "数据类型",
+            "使用场景",
+            "典型命令"
+          ],
+          [
+            "String",
+            "商品缓存、计数器、Token",
+            "GET、SET"
+          ],
+          [
+            "Hash",
+            "用户信息、对象字段",
+            "HSET、HGET"
+          ],
+          [
+            "List",
+            "简单列表、任务队列",
+            "LPUSH、RPOP"
+          ],
+          [
+            "Set",
+            "去重、标签、集合操作",
+            "SADD、SISMEMBER"
+          ],
+          [
+            "Sorted Set",
+            "排行榜、带分数的排序",
+            "ZADD、ZREVRANGE"
+          ],
+          [
+            "Stream",
+            "消息流、消费组",
+            "XADD、XREADGROUP"
+          ]
+        ],
+        [
+          [
+            "问题",
+            "主要原因",
+            "典型应对"
+          ],
+          [
+            "缓存穿透",
+            "请求的数据根本不存在",
+            "缓存空值、校验、布隆过滤器"
+          ],
+          [
+            "缓存击穿",
+            "单个热点 Key 失效",
+            "请求合并、互斥重建、逻辑过期"
+          ],
+          [
+            "缓存雪崩",
+            "大量 Key 失效或缓存整体故障",
+            "TTL 随机化、高可用、限流降级"
+          ]
+        ]
+      ],
+      "images": [
+        {
+          "name": "chapter-03-01.png",
+          "width": 1524,
+          "height": 264
+        },
+        {
+          "name": "chapter-03-02.png",
+          "width": 1524,
+          "height": 844
+        },
+        {
+          "name": "chapter-03-03.png",
+          "width": 1534,
+          "height": 394
+        },
+        {
+          "name": "chapter-03-04.png",
+          "width": 420,
+          "height": 240
+        },
+        {
+          "name": "chapter-03-05.png",
+          "width": 1502,
+          "height": 508
+        }
+      ],
+      "title": "Redis —— 为什么有了 MySQL，还需要 Redis？"
+    },
+    {
+      "number": 4,
+      "headings": [
+        {
+          "level": 2,
+          "text": "为什么后端需要消息队列？"
+        },
+        {
+          "level": 3,
+          "text": "1. 最直观的实现：同步执行"
+        },
+        {
+          "level": 3,
+          "text": "2. 引入消息队列"
+        },
+        {
+          "level": 3,
+          "text": "3. MQ 的三大作用"
+        },
+        {
+          "level": 2,
+          "text": "削峰填谷是什么意思？"
+        },
+        {
+          "level": 2,
+          "text": "理解 MQ 中的核心角色"
+        },
+        {
+          "level": 3,
+          "text": "消息应该长什么样？"
+        },
+        {
+          "level": 3,
+          "text": "一个需要分清的地方：事件与任务"
+        },
+        {
+          "level": 2,
+          "text": "RabbitMQ 与 Kafka 到底有什么区别？"
+        },
+        {
+          "level": 3,
+          "text": "RabbitMQ：重点理解 Exchange 和 Queue"
+        },
+        {
+          "level": 3,
+          "text": "Kafka：理解 Topic、Partition 和 Offset"
+        },
+        {
+          "level": 3,
+          "text": "Consumer Group：为什么 Kafka 也能分工？"
+        },
+        {
+          "level": 3,
+          "text": "怎么对比？"
+        },
+        {
+          "level": 2,
+          "text": "最重要的部分：如何保证消息可靠性？"
+        },
+        {
+          "level": 3,
+          "text": "生产者：Publisher Confirm"
+        },
+        {
+          "level": 3,
+          "text": "Broker：持久化消息"
+        },
+        {
+          "level": 3,
+          "text": "消费者：ACK 确认"
+        },
+        {
+          "level": 3,
+          "text": "ACK 的时机"
+        },
+        {
+          "level": 2,
+          "text": "为什么消息可能重复？什么是幂等性？"
+        },
+        {
+          "level": 3,
+          "text": "幂等（Idempotency）"
+        },
+        {
+          "level": 3,
+          "text": "如何实现幂等？"
+        },
+        {
+          "level": 2,
+          "text": "进阶：为什么有了消息确认，订单事件还是可能丢失？"
+        },
+        {
+          "level": 3,
+          "text": "Transactional Outbox（事务发件箱）"
+        }
+      ],
+      "code": [
+        "{\n  \"event_id\": \"evt-8b37c2\",\n  \"event_type\": \"order.created\",\n  \"version\": 1,\n  \"order_id\": 1001,\n  \"user_id\": 7,\n  \"occurred_at\": \"2026-10-18T12:00:00Z\"\n}",
+        "channel.basic_publish(\n    exchange=\"\",\n    routing_key=\"order.notify\",\n    body=message,\n)",
+        "# 声明持久化队列\nchannel.queue_declare(\n    queue=\"order.notify\",\n    durable=True #durable=True 用于让队列定义在 Broker 重启后仍能保留。\n)\n\n# 发送持久化消息\nproperties = pika.BasicProperties(\n    delivery_mode=pika.DeliveryMode.Persistent #Persistent 表示希望消息持久化保存。\n)",
+        "channel.basic_ack(\n    delivery_tag=method.delivery_tag\n)",
+        "CREATE TABLE processed_events (\n    consumer_name VARCHAR(50) NOT NULL,\n    event_id VARCHAR(100) NOT NULL,\n    PRIMARY KEY (consumer_name, event_id)\n) ENGINE=InnoDB;",
+        "START TRANSACTION;\n\nINSERT INTO processed_events\n(consumer_name, event_id)\nVALUES ('points', 'evt-1001');\n\nUPDATE users\nSET points = points + 100\nWHERE id = 7;\n\nCOMMIT;",
+        "def create_order():\n    # 1. 创建订单并提交 MySQL 事务\n    save_order_to_mysql()\n\n    # 2. 发布订单事件\n    publish_order_event()\n\n    return \"下单成功\""
+      ],
+      "tables": [
+        [
+          [
+            "业务操作",
+            "假设耗时"
+          ],
+          [
+            "检查并扣减库存",
+            "20 ms"
+          ],
+          [
+            "创建订单",
+            "30 ms"
+          ],
+          [
+            "调用邮件服务发送通知",
+            "500 ms"
+          ],
+          [
+            "更新用户积分",
+            "100 ms"
+          ],
+          [
+            "记录运营统计",
+            "50 ms"
+          ]
+        ],
+        [
+          [
+            "作用",
+            "不使用 MQ",
+            "使用 MQ"
+          ],
+          [
+            "异步处理",
+            "用户等待所有操作完成",
+            "非关键任务后台执行"
+          ],
+          [
+            "解耦",
+            "订单服务直接调用通知、积分等服务",
+            "订单服务发布事件，由订阅者自行处理"
+          ],
+          [
+            "削峰填谷",
+            "突发任务直接冲击下游",
+            "任务进入队列，消费者按处理能力逐步消化"
+          ]
+        ],
+        [
+          [
+            "类型",
+            "作用"
+          ],
+          [
+            "Direct",
+            "根据 Routing Key 精确匹配"
+          ],
+          [
+            "Fanout",
+            "向绑定的所有队列发送副本"
+          ],
+          [
+            "Topic",
+            "根据带通配符的路由模式匹配"
+          ],
+          [
+            "Headers",
+            "根据消息头属性路由"
+          ]
+        ],
+        [
+          [
+            "比较维度",
+            "RabbitMQ",
+            "Kafka"
+          ],
+          [
+            "核心模型",
+            "交换机、队列、消费者",
+            "Topic、Partition、Offset"
+          ],
+          [
+            "典型用途",
+            "异步任务、业务消息路由",
+            "事件流、日志采集、实时数据处理"
+          ],
+          [
+            "消费后",
+            "普通队列消息确认后移除",
+            "事件按保留策略保存"
+          ],
+          [
+            "重放历史",
+            "需要特定设计，普通队列不以此为核心",
+            "原生支持在保留期内重新消费"
+          ],
+          [
+            "多消费者",
+            "同队列竞争、不同队列独立订阅",
+            "Consumer Group 协同消费"
+          ],
+          [
+            "顺序性",
+            "取决于队列、消费者及重投递行为",
+            "单个 Partition 内有序"
+          ]
+        ],
+        [
+          [
+            "语义",
+            "核心含义"
+          ],
+          [
+            "At-most-once",
+            "最多处理一次，允许遗漏"
+          ],
+          [
+            "At-least-once",
+            "至少处理一次，允许重复"
+          ],
+          [
+            "Exactly-once",
+            "在定义好的处理范围内，效果恰好发生一次"
+          ]
+        ]
+      ],
+      "images": [
+        {
+          "name": "chapter-04-01.png",
+          "width": 1524,
+          "height": 700
+        },
+        {
+          "name": "chapter-04-02.png",
+          "width": 1532,
+          "height": 926
+        },
+        {
+          "name": "chapter-04-03.png",
+          "width": 1530,
+          "height": 1292
+        },
+        {
+          "name": "chapter-04-04.png",
+          "width": 1538,
+          "height": 224
+        },
+        {
+          "name": "chapter-04-05.png",
+          "width": 1516,
+          "height": 440
+        },
+        {
+          "name": "chapter-04-06.png",
+          "width": 1534,
+          "height": 636
+        },
+        {
+          "name": "chapter-04-07.png",
+          "width": 1532,
+          "height": 376
+        },
+        {
+          "name": "chapter-04-08.png",
+          "width": 1538,
+          "height": 606
+        },
+        {
+          "name": "chapter-04-09.png",
+          "width": 1530,
+          "height": 462
+        },
+        {
+          "name": "chapter-04-10.png",
+          "width": 1524,
+          "height": 238
+        },
+        {
+          "name": "chapter-04-11.png",
+          "width": 1518,
+          "height": 770
+        }
+      ],
+      "title": "消息队列 MQ — 让后端系统学会异步工作"
+    }
+  ],
+  "overview_image": {
+    "name": "overview.png",
+    "width": 2298,
+    "height": 1228
+  }
+}

@@ -1,4 +1,4 @@
-{% if site.comment_system and site.comment_system.enabled %}
+{% if site.comment_system and site.comment_system.enabled and page.comments != false %}
 {% assign comments_provider = site.comment_system.provider | default: 'auto' %}
 {% assign comments_identifier = page.comments_identifier | default: page.id | default: page.url %}
 {% assign showcase_comments = site.data.comment_showcase.default %}
