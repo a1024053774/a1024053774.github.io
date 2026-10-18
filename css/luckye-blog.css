@@ -32,23 +32,23 @@
   }
 }
 .sidebar-container {
-  color: #bfbfbf;
+  color: var(--muted-foreground);
   font-size: 14px;
 }
 .sidebar-container h5 {
-  color: #a3a3a3;
+  color: var(--foreground);
   padding-bottom: 1em;
 }
 .sidebar-container h5 a {
-  color: #a3a3a3 !important;
+  color: inherit;
   text-decoration: none;
 }
 .sidebar-container a {
-  color: #bfbfbf !important;
+  color: var(--muted-foreground);
 }
 .sidebar-container a:hover,
 .sidebar-container a:active {
-  color: #0085a1 !important;
+  color: var(--primary);
 }
 .sidebar-container .tags a {
   border-color: #bfbfbf;
