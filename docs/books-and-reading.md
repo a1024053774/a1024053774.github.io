@@ -6,7 +6,7 @@
 
 例如 `_chapters/java/phase-01/chapter-01.md` 会生成 `/java/phase-01/chapter-01/`，`_chapters/ai-agent/chapter-01.md` 会生成 `/ai-agent/chapter-01/`。Java 合集正文用 `Phase 01`、`Phase 02` 两个一级标题分组；阶段名称来自 `_data/books.yml`。
 
-以后增加 AI Agent 第二章，只需新增一个章节文件：
+AI Agent 第二章保存在 `_chapters/ai-agent/chapter-02.md`。以后增加章节时沿用同一结构，更新序号、标题与首次发布日期：
 
 ```yaml
 ---
@@ -15,14 +15,16 @@ book: ai-agent
 order: 2
 chapter_label: 第 2 章
 title: 上下文工程
-date: 2026-10-16 10:00:00 -0400
+date: 2026-10-18
 author: LuckyE
 header-style: text
 tags: [AI Agent]
 ---
 ```
 
-合集会自动列出它，章节页也会自动出现上下章链接。合集的最近更新时间会取自身与内部章节的最新修改时间，首页仍只显示一个合集入口。
+合集会自动列出它，章节页也会自动出现上下章链接。合集的最近更新时间会取自身与内部章节的最新修改时间；首页仍只显示一个合集入口，并按合集的首次发布日期排序。
+
+文章之间的关联阅读使用 `_includes/related-reading.html`，参数为 `title`、`summary`、`url` 和 `label`。在正文需要说明关联的位置调用，目标链接可带章节锚点；概述写清两处内容的联系和边界，不把相关概念当成同一机制。第二章与 a2a 的开头、状态栏／任务卡、上下文隔离／独立标准三处已复用此组件。
 
 本次迁移删除了旧 Java 与 AI Agent 独立文章路由，没有保留副本或重定向。第一章的重复 Java 笔记合并为一份；原版中完整的 Javadoc 表格用于修复导出后断裂的表格。图片继续使用原有本地资源路径。
 
@@ -36,6 +38,7 @@ AI Agent 第一章使用普通 Markdown 围栏、表格和独立段落；Notion 
 npm run build:css
 bundle exec jekyll build
 python3 tests/check_books.py --site _site --report /tmp/book-contract.json
+python3 tests/check_context_chapter.py --site _site --report /tmp/context-contract.json
 ```
 
 `tests/fixtures/react-loop.txt` 的预期来自 Notion 原始代码块；表格行数和问题数量来自原始内容的逐块清点。该检查在修复前版本上失败，并在 GitHub Actions 中于构建后执行。

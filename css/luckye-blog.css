@@ -4203,6 +4203,35 @@ html[data-theme="dark"] .notion-content [data-notion-color="gray"] {
 .post-content > :first-child {
   margin-top: 0;
 }
+.post-content .reading-connection {
+  margin: 30px 0;
+  padding: 20px 24px;
+  border-left: 3px solid var(--zhu);
+  background: var(--paper-2);
+}
+.post-content .reading-connection__title {
+  margin: 0 0 10px;
+  color: var(--zhu);
+  font-size: 15px;
+  font-weight: 700;
+}
+.post-content .reading-connection__summary {
+  margin: 0 0 14px;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.85;
+}
+.reading-connection__link {
+  display: inline-block;
+  color: var(--zhu);
+  font-size: 14px;
+  line-height: 1.8;
+  text-underline-offset: 0.2em;
+}
+.reading-connection__link:focus-visible {
+  outline: 2px solid var(--zhu);
+  outline-offset: 4px;
+}
 .post-content .study-question {
   margin: 32px 0;
   padding: 24px;
@@ -4343,6 +4372,9 @@ html[data-theme="dark"] .notion-content [data-notion-color="gray"] {
   }
   .post-content .study-question {
     padding: 18px 14px;
+  }
+  .post-content .reading-connection {
+    padding: 18px 16px;
   }
   .chapter-pagination {
     flex-wrap: wrap;
