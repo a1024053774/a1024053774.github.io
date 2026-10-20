@@ -7,6 +7,13 @@
       "comments": false
     }
   ],
+  "articles": [
+    {
+      "url": "/javascript/",
+      "source": "_posts/2026-10-19-javascript.md",
+      "comments": false
+    }
+  ],
   "rules": ["directory", "code", "tables", "theme", "viewport"],
   "overflowTolerancePx": 1
 }
