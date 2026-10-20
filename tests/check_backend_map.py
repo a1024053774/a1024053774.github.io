@@ -32,7 +32,11 @@ def check_site(site):
     overview = fixture['overview_image']
     check('overview retains the source map', len(map_images) == 1 and map_images[0].attrs.get('src') == '/img/in-post/2026-10-18-backend-map/overview.png' and map_images[0].attrs.get('width') == str(overview['width']) and map_images[0].attrs.get('height') == str(overview['height']) and bool(map_images[0].attrs.get('alt', '').strip()))
     home = document('/')
-    check('homepage series links the backend overview once', [a.attrs.get('href') for a in home.all(cls='home-series__item')].count('/backend-map/') == 1)
+    backend_series = [
+        a for a in home.all(cls='home-series__item')
+        if any(text(h) == '后端与数据库' for h in a.all('h3'))
+    ]
+    check('homepage routes the backend book through its consolidated series', len(backend_series) == 1 and backend_series[0].attrs.get('href') == '/tags/#后端与数据库')
     for cls, attr in [(None, 'data-home-card'), ('home-row', None)]:
         links = [a.attrs.get('href') for a in home.all(cls=cls, attr=attr)]
         check(f'homepage {attr or cls} has one book and no loose chapter', links.count('/backend-map/') == 1 and not any(u in links for u in urls))

@@ -4,6 +4,7 @@ import { join, relative } from 'node:path';
 import { measureReadingContrast } from './browser-reading-contrast.mjs';
 
 const rules = JSON.parse(readFileSync(new URL('./reading.rules.json', import.meta.url)));
+const homeSeries = JSON.parse(readFileSync(new URL('./home_series.rules.json', import.meta.url)));
 const supported = ['directory', 'code', 'tables', 'theme', 'viewport'];
 expect(Object.keys(rules).sort()).toEqual(['articles', 'books', 'overflowTolerancePx', 'rules']);
 expect(rules.rules.length).toBeGreaterThan(0);
@@ -67,6 +68,45 @@ test('configured browser profile matches the measured environment', async ({ pag
     expect(isMobile).toBe(false);
     expect(environment.userAgent).not.toMatch(/iPhone|Android/);
   }
+});
+
+test('homepage series consolidate articles and preserve responsive navigation', async ({ page, isMobile }, info) => {
+  await goto(page, '/');
+  const series = page.locator('.home-series__item');
+  await expect(series).toHaveCount(homeSeries.series.length);
+  expect(await series.evaluateAll(nodes => nodes.map(node => node.getAttribute('data-series-tag')))).toEqual(homeSeries.series.map(item => item.tag));
+
+  const boxes = await series.evaluateAll(nodes => nodes.map(node => {
+    const box = node.getBoundingClientRect();
+    return { x: box.x, y: box.y, width: box.width, height: box.height };
+  }));
+  expect(boxes.every(box => box.width > 0 && box.height > 0)).toBe(true);
+  if (isMobile) {
+    expect(boxes[0].x).toBeCloseTo(boxes[1].x, 0);
+    expect(boxes[2].y).toBeGreaterThan(boxes[1].y);
+  } else {
+    expect(boxes[0].y).toBeCloseTo(boxes[1].y, 0);
+    expect(boxes[1].x).toBeGreaterThan(boxes[0].x);
+    expect(boxes[2].y).toBeGreaterThan(boxes[0].y);
+  }
+
+  const newest = page.locator('[data-home-card]').nth(0);
+  const followed = page.locator('[data-home-card]').nth(1);
+  await expect(newest).toHaveAttribute('href', homeSeries.latest[0].href);
+  await expect(newest.locator('h3')).toHaveText(homeSeries.latest[0].title);
+  await expect(newest.locator('.home-card__topline span').last()).toHaveText(homeSeries.latest[0].published);
+  await expect(followed).toHaveAttribute('href', homeSeries.latest[1].href);
+  await expect(followed.locator('h3')).toHaveText(homeSeries.latest[1].title);
+
+  for (const [index, item] of homeSeries.series.entries()) {
+    await page.goto(`/tags/?series=${index}#` + encodeURIComponent(item.tag));
+    await expect(page.locator(`[data-tag-filter="${item.tag}"]`)).toHaveClass(/is-active/);
+    await expect(page.locator('[data-tag-post]:not(.is-hidden)')).toHaveCount(item.count);
+  }
+
+  await page.goto('/');
+  for (const mode of ['light', 'dark']) await setTheme(page, mode, isMobile);
+  await info.attach('consolidated series', { body: await page.locator('.home-series').screenshot(), contentType: 'image/png' });
 });
 
 async function goto(page, url) {

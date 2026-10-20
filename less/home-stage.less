@@ -447,8 +447,9 @@
 
 .home-series__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid var(--foreground);
+  border-left: 1px solid var(--line);
 }
 
 .home-series__item {
@@ -458,13 +459,10 @@
   min-height: 300px;
   padding: 36px 32px 40px;
   border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   color: var(--foreground);
   text-decoration: none !important;
   transition: background-color 0.5s var(--ease-out);
-
-  &:last-child {
-    border-right: 0;
-  }
 
   &:hover,
   &:focus {
@@ -1144,6 +1142,7 @@
 
   .home-series__grid {
     grid-template-columns: minmax(0, 1fr);
+    border-left: 0;
   }
 
   .home-series__item {

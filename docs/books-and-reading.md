@@ -26,6 +26,10 @@ tags: [AI Agent]
 
 合集会自动列出它，章节页也会自动出现上下章链接。合集的最近更新时间会取自身与内部章节的最新修改时间；首页仍只显示一个合集入口，并按合集的首次发布日期排序。
 
+首页「专栏」采用聚合标签，不再为每篇文章单独复制入口。`_data/home_series.yml` 只声明栏目名称、说明和聚合标签；文章在 front matter 中加入 `AI Agent`、`编程语言` 或 `后端与数据库` 等标签后，会自动进入对应栏目、计数与 `/tags/` 筛选结果。目前四个栏目都至少包含四篇公开内容，独立专题仍可通过普通标签检索，不会为了凑栏目而强行归类。
+
+A2A 文章的首次发布时间已更新为 2026-10-20，源文件也改用该日期；front matter 的 `permalink` 继续保留 `/2026/10/11/a2a-multi-agent-design/`，所以第二章中的双向交叉引用和外部旧链接不需要改写。
+
 文章之间的关联阅读使用 `_includes/related-reading.html`，参数为 `title`、`summary`、`url` 和 `label`。在正文需要说明关联的位置调用，目标链接可带章节锚点；概述写清两处内容的联系和边界，不把相关概念当成同一机制。第二章与 a2a 的开头、状态栏／任务卡、上下文隔离／独立标准三处已复用此组件。
 
 本次迁移删除了旧 Java 与 AI Agent 独立文章路由，没有保留副本或重定向。第一章的重复 Java 笔记合并为一份；原版中完整的 Javadoc 表格用于修复导出后断裂的表格。图片继续使用原有本地资源路径。
@@ -42,6 +46,7 @@ bundle exec jekyll build
 python3 tests/check_books.py --site _site --report /tmp/book-contract.json
 python3 tests/check_context_chapter.py --site _site --report /tmp/context-contract.json
 python3 tests/check_backend_map.py --site _site --report /tmp/backend-contract.json
+python3 tests/check_home_series.py --site _site --report /tmp/home-series.json
 ```
 
 `tests/fixtures/react-loop.txt` 的预期来自 Notion 原始代码块；表格行数和问题数量来自原始内容的逐块清点。该检查在修复前版本上失败，并在 GitHub Actions 中于构建后执行。

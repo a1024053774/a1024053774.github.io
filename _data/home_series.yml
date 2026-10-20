@@ -1,19 +1,14 @@
-# 首页「专栏」区：按标签聚合，文章数取自 site.tag_index（只统计公开文章）
-- tag: Java
-  url: /java/
-  title: Java 从零开始
-  description: Phase 01 基础八章与 Phase 02 进阶笔记，按章节连续阅读。
+# 首页「专栏」区：每个内容归属一个聚合标签，文章数自动取自 site.tag_index。
+# 新文章只要在 front matter 中加入对应标签，就会进入栏目与筛选页，无需复制入口代码。
+- tag: AI Agent
+  title: AI Agent 与智能工程
+  description: 从 Agent 设计、上下文与 Harness，到多 Agent 协作、Skills 工作流和 AI 原生研发。
 - tag: 强化学习
   title: 强化学习：从策略梯度到 RLHF
   description: 经典文献、HuggingFace 课程、王树森笔记，到 PPO / GRPO 的完整数学推导。
-- tag: Python
-  title: Python 数据三件套
-  description: NumPy 数组、Pandas DataFrame 与 Matplotlib 常见图表的基础笔记。
-- tag: AI Agent
-  url: /ai-agent/
-  title: 深入理解 AI Agent
-  description: 设计原理与工程实践，逐章整理阅读笔记和批注。
-- tag: 后端
-  url: /backend-map/
-  title: 后端知识地图
-  description: 从一次请求出发，串起网络、MySQL、Redis 与消息队列，按四章连续阅读。
+- tag: 编程语言
+  title: 编程语言学习路线
+  description: Java 基础与进阶、JavaScript Web 编程，以及 Python 数据分析工具。
+- tag: 后端与数据库
+  title: 后端与数据库
+  description: 从一次请求出发，串起网络、MySQL、Redis、消息队列与项目数据库实践。

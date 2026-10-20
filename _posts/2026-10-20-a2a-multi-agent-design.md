@@ -2,11 +2,13 @@
 layout:       post
 title:        "a2a 设计思路：多 Agent 协作，难的是可信验收"
 subtitle:     "从 Goal 模式的目标错位，到任务契约、权限分离、独立取证和硬性预算"
-date:         2026-10-11 09:30:00 -0400
+date:         2026-10-20 01:45:00 -0400
+permalink:    /2026/10/11/a2a-multi-agent-design/
 author:       "LuckyE"
 header-style: text
 catalog:      true
 tags:
+    - AI Agent
     - AI Engineering
     - Multi-Agent
     - Claude Code

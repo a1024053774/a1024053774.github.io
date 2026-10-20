@@ -9,6 +9,7 @@ header-style: text
 catalog: true
 comments: false
 tags:
+  - 编程语言
   - JavaScript
   - Web
 home_excerpt: "一份覆盖 JavaScript 基础语法、函数、对象与浏览器编程的完整学习笔记。"

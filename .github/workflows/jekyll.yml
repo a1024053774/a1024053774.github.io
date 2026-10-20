@@ -59,6 +59,8 @@ jobs:
         run: python3 tests/check_backend_map.py --site _site
       - name: Check publication order after editing old articles
         run: python3 tests/check_home_publication.py --report-dir /tmp/publication-order
+      - name: Check consolidated homepage series
+        run: python3 tests/check_home_series.py --site _site --report /tmp/home-series.json
       - name: Setup Node for reading contracts
         uses: actions/setup-node@v4
         with:

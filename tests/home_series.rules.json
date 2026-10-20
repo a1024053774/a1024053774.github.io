@@ -1,0 +1,40 @@
+{
+  "series": [
+    {
+      "tag": "AI Agent",
+      "title": "AI Agent 与智能工程",
+      "href": "/tags/#ai-agent",
+      "count": 4
+    },
+    {
+      "tag": "强化学习",
+      "title": "强化学习：从策略梯度到 RLHF",
+      "href": "/tags/#强化学习",
+      "count": 7
+    },
+    {
+      "tag": "编程语言",
+      "title": "编程语言学习路线",
+      "href": "/tags/#编程语言",
+      "count": 5
+    },
+    {
+      "tag": "后端与数据库",
+      "title": "后端与数据库",
+      "href": "/tags/#后端与数据库",
+      "count": 4
+    }
+  ],
+  "latest": [
+    {
+      "href": "/2026/10/11/a2a-multi-agent-design/",
+      "title": "a2a 设计思路：多 Agent 协作，难的是可信验收",
+      "published": "2026.10.20"
+    },
+    {
+      "href": "/ai-agent/",
+      "title": "深入理解 AI Agent",
+      "published": "2026.10.15"
+    }
+  ]
+}

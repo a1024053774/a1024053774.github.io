@@ -7,7 +7,7 @@ subtitle: "从一次请求出发，读懂数据库、缓存与消息队列"
 date: 2026-10-10 10:19:22 -0400
 author: LuckyE
 header-style: text
-tags: [后端, MySQL, Redis, 消息队列]
+tags: [后端与数据库, 后端, MySQL, Redis, 消息队列]
 comments: false
 notion_source: "https://app.notion.com/p/3fdfaa7adad880318802d60d5640007a"
 notion_snapshot_at: "2026-10-18T14:08:14.123Z"
