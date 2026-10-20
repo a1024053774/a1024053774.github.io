@@ -6,7 +6,7 @@ zh:
   title_html: 你好，<br>我是遠山江浸月
   role: USST · 硕士在读
   motto: The best people in life are free.
-  lede: 我是远山江浸月（LuckyE），目前在上海理工大学（USST）读硕士，研究方向是强化学习。热爱计算机科学和软件开发，对 Java 有系统性的学习与研究。这个博客记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时代的软件工程与安全实践。
+  lede: 我是远山江浸月（LuckyE），目前在上海理工大学（USST）读硕士，研究方向是强化学习。热爱计算机科学和软件开发，对 Java 有系统性的学习与研究。这个博客记录编程语言、后端与数据库、强化学习与 RLHF，以及 AI Agent 与软件工程实践。
   cta_read: 读读文章
   cta_mail: 写信给我
   card:
@@ -26,9 +26,9 @@ zh:
   skills_meta: Skills · 三件事
   skills:
     - name: 编程语言
-      tag: Java
-      body: 精通 Java 基础与面向对象编程，从基本语法一路到多态、继承、封装、抽象类等高级特性。
-      chips: [Java, OOP, 多态, 继承]
+      tag: 编程语言
+      body: 以 Java 基础与面向对象为主线，同时整理 JavaScript、NumPy、Pandas 和 Matplotlib 的学习笔记。
+      chips: [Java, JavaScript, Python, 数据分析]
     - name: 数据库技术
       body: 熟悉 SQL 与数据库系统理论，包括关系模型设计、查询优化和数据库安全。
       chips: [SQL, 关系模型, 查询优化]
@@ -38,7 +38,7 @@ zh:
       chips: [项目实战, 审批流, 索引优化]
       posts: [仓储管理系统审批功能文档]
   related: 相关文章
-  tag_more: 全部 Java 笔记
+  tag_more: 全部编程笔记
   learn_title: 怎么学
   learn_meta: Method · 学习与风格
   learn_quote: 把知识点条理化整理，再放进真实项目里验证。
@@ -66,7 +66,7 @@ en:
   title_html: Hi, I'm<br>LuckyE.
   role: USST · Master's student
   motto: The best people in life are free.
-  lede: I'm Yuanshan Jiang Jinyue (LuckyE), a master's student at the University of Shanghai for Science and Technology (USST), researching reinforcement learning. I love computer science and building software, with a systematic grounding in Java. This blog covers Java, Python, databases, reinforcement learning and RLHF, and software engineering and security in the age of AI.
+  lede: I'm Yuanshan Jiang Jinyue (LuckyE), a master's student at the University of Shanghai for Science and Technology (USST), researching reinforcement learning. I love computer science and building software, with a systematic grounding in Java. This blog covers programming languages, backend systems and databases, reinforcement learning and RLHF, and AI-agent-era software engineering.
   cta_read: Read the blog
   cta_mail: Say hello
   card:
@@ -86,9 +86,9 @@ en:
   skills_meta: Skills · Three things
   skills:
     - name: Programming
-      tag: Java
-      body: Proficient in Java fundamentals and object-oriented programming, from basic syntax to polymorphism, inheritance, encapsulation and abstract classes.
-      chips: [Java, OOP, Polymorphism, Inheritance]
+      tag: 编程语言
+      body: Java fundamentals and object-oriented programming, alongside JavaScript, NumPy, Pandas and Matplotlib notes.
+      chips: [Java, JavaScript, Python, Data analysis]
     - name: Databases
       body: Familiar with SQL and database theory, including relational model design, query optimization and database security.
       chips: [SQL, Relational model, Query tuning]
@@ -98,7 +98,7 @@ en:
       chips: [Real project, Approval flow, Indexing]
       posts: [仓储管理系统审批功能文档]
   related: Related posts
-  tag_more: All Java notes
+  tag_more: All programming notes
   learn_title: How I learn
   learn_meta: Method · Learning & style
   learn_quote: Organize what you learn into a structure, then prove it in a real project.

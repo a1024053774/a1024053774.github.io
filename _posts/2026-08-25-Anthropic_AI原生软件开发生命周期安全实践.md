@@ -6,6 +6,7 @@ author:       "LuckyE"
 header-style: text
 catalog:      true
 tags:
+    - AI Agent
     - AI Engineering
     - 软件安全
     - Claude Code

@@ -2,7 +2,7 @@
 layout: default
 description: "「It must be exhausting always rooting for the anti-hero」"
 quote: "It must be exhausting always rooting for the anti-hero."
-intro: "记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时代的软件工程与安全实践。"
+intro: "记录编程语言、后端与数据库、强化学习与 RLHF，以及 AI Agent 时代的软件工程实践。"
 ---
 
 {% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "date" | reverse %}
@@ -99,7 +99,10 @@ intro: "记录 Java、Python、数据库、强化学习与 RLHF，以及 AI 时�
     <div class="home-series__grid">
       {% for series in site.data.home_series %}
       {% assign series_tag = site.tag_index | where: "name", series.tag | first %}
-      <a class="home-series__item" href="{% if series.url %}{{ series.url | prepend: site.baseurl }}{% else %}{{ '/tags/' | prepend: site.baseurl }}#{{ series_tag.slug | default: series.tag }}{% endif %}">
+      <a
+        class="home-series__item"
+        data-series-tag="{{ series.tag | escape }}"
+        href="{% if series.url %}{{ series.url | prepend: site.baseurl }}{% else %}{{ '/tags/' | prepend: site.baseurl }}#{{ series_tag.slug | default: series.tag }}{% endif %}">
         <span class="home-series__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
         <h3>{{ series.title }}</h3>
         <p>{{ series.description }}</p>

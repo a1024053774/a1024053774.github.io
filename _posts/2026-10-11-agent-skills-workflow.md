@@ -7,6 +7,7 @@ author:       "LuckyE"
 header-style: text
 catalog:      true
 tags:
+    - AI Agent
     - AI Engineering
     - Agent Skills
     - 软件工程

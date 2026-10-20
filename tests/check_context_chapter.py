@@ -29,7 +29,7 @@ def check_site(site):
     check('sharing summaries describe the article rather than an empty excerpt', 'KV Cache' in chapter_meta.get('og:description', '') and '任务契约' in a2a_meta.get('og:description', ''))
     # Jekyll may normalize the source offset to the build timezone. Compare the
     # instant from the original front matter, not its equivalent string form.
-    check('first publication metadata preserves the original instant', datetime.fromisoformat(a2a_meta.get('article:published_time', '').replace('Z', '+00:00')) == datetime(2026, 10, 11, 9, 30, tzinfo=timezone(timedelta(hours=-4))))
+    check('updated publication metadata preserves the requested instant', datetime.fromisoformat(a2a_meta.get('article:published_time', '').replace('Z', '+00:00')) == datetime(2026, 10, 20, 1, 45, tzinfo=timezone(timedelta(hours=-4))))
     check('canonical sharing URL has one path separator', chapter_meta.get('og:url') == 'https://a1024053774.github.io/ai-agent/chapter-02/')
     bodies = chapter.all(cls='post-content')
     body = bodies[0] if bodies else Element()
