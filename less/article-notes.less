@@ -1,0 +1,35 @@
+// Reusable callouts for Markdown exported from note-taking tools.
+.post-content .article-note {
+  margin: 30px 0;
+  padding: 18px 20px;
+  border: 1px solid color-mix(in srgb, var(--zhu) 24%, var(--line));
+  border-left: 3px solid var(--zhu);
+  border-radius: 0 14px 14px 0;
+  background: color-mix(in srgb, var(--zhu) 7%, var(--paper-2));
+  color: var(--ink-2);
+}
+
+.post-content .article-note > :first-child {
+  margin-top: 0;
+}
+
+.post-content .article-note > :last-child {
+  margin-bottom: 0;
+}
+
+.post-content .article-note > p:first-child:not(:last-child) {
+  margin-bottom: 12px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.post-content .article-note .code-window {
+  margin: 20px 0;
+}
+
+@media (max-width: 767px) {
+  .post-content .article-note {
+    margin: 24px 0;
+    padding: 16px;
+  }
+}

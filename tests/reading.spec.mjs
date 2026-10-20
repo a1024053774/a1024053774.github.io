@@ -5,13 +5,42 @@ import { measureReadingContrast } from './browser-reading-contrast.mjs';
 
 const rules = JSON.parse(readFileSync(new URL('./reading.rules.json', import.meta.url)));
 const supported = ['directory', 'code', 'tables', 'theme', 'viewport'];
-expect(Object.keys(rules).sort()).toEqual(['books', 'overflowTolerancePx', 'rules']);
+expect(Object.keys(rules).sort()).toEqual(['articles', 'books', 'overflowTolerancePx', 'rules']);
 expect(rules.rules.length).toBeGreaterThan(0);
 for (const name of rules.rules) expect(supported, `Unknown reading rule: ${name}`).toContain(name);
 expect(new Set(rules.rules).size).toBe(rules.rules.length);
 expect(rules.overflowTolerancePx).toBeGreaterThanOrEqual(0);
 expect(rules.overflowTolerancePx).toBeLessThanOrEqual(2);
 expect(rules.books.length).toBeGreaterThan(0);
+expect(Array.isArray(rules.articles)).toBe(true);
+for (const article of rules.articles) expect(Object.keys(article).sort()).toEqual(['comments', 'source', 'url']);
+
+function articleSourceExpectations(file) {
+  const source = readFileSync(file, 'utf8');
+  const body = source.replace(/^---\r?\n[\s\S]*?^---\r?\n/, '');
+  const visibleLines = [];
+  let inFence = false;
+  for (const line of body.split('\n')) {
+    if (line.startsWith('```')) {
+      inFence = !inFence;
+      continue;
+    }
+    if (!inFence) visibleLines.push(line);
+  }
+  expect(inFence, `${file} must close every code fence`).toBe(false);
+  const visibleBody = visibleLines.join('\n');
+  const codeBlocks = body.split('\n').filter(line => line.startsWith('```')).length / 2;
+  const images = (visibleBody.match(/^!\[/gm) || []).length;
+  const notes = (visibleBody.match(/^<aside class="article-note" markdown="1">$/gm) || []).length;
+  expect(codeBlocks, `${file} must contain code samples`).toBeGreaterThan(0);
+  expect(images, `${file} must contain its exported images`).toBeGreaterThan(0);
+  return {
+    codeBlocks,
+    images,
+    notes,
+    headings: [2, 3, 4, 5].map(level => (visibleBody.match(new RegExp(`^#{${level}} `, 'gm')) || []).length)
+  };
+}
 
 test('configured browser profile matches the measured environment', async ({ page, browser, browserName, isMobile }, info) => {
   await goto(page, rules.books[0].hub);
@@ -47,6 +76,7 @@ async function goto(page, url) {
 }
 
 async function setTheme(page, mode, isMobile) {
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   if (await page.locator('html').getAttribute('data-theme') !== mode) {
     const menu = page.locator('.navbar-toggle');
     if (isMobile && await menu.getAttribute('aria-expanded') !== 'true') await menu.tap();
@@ -252,4 +282,83 @@ for (const book of rules.books) {
       await info.attach('reading screenshot', { path: info.outputPath('reading.png'), contentType: 'image/png' });
     });
   }
+}
+
+for (const article of rules.articles) {
+  const expected = articleSourceExpectations(article.source);
+
+  test(`${article.url} article contract`, async ({ page, isMobile }, info) => {
+    test.slow();
+    await goto(page, article.url);
+    const body = page.locator('.post-content');
+    await expect(body).toBeVisible();
+
+    await expect(body.locator('h1')).toHaveCount(0);
+    for (const [offset, level] of [2, 3, 4, 5].entries()) {
+      await expect(body.locator(`h${level}`)).toHaveCount(expected.headings[offset]);
+    }
+
+    const samples = body.locator('pre');
+    await expect(samples).toHaveCount(expected.codeBlocks);
+    await expect(body.locator('.code-window__header')).toHaveCount(expected.codeBlocks);
+    const codeMetrics = await samples.evaluateAll(nodes => nodes.map(node => ({
+      text: node.querySelector('code')?.textContent || '',
+      width: node.clientWidth,
+      content: node.scrollWidth,
+      height: node.clientHeight,
+      verticalContent: node.scrollHeight,
+      clippedByWindow: node.getBoundingClientRect().bottom > node.closest('.code-window').getBoundingClientRect().bottom + 1
+    })));
+    expect(codeMetrics.every(item => item.text.length > 0)).toBe(true);
+    expect(codeMetrics.every(item => item.verticalContent <= item.height + rules.overflowTolerancePx)).toBe(true);
+    expect(codeMetrics.every(item => !item.clippedByWindow)).toBe(true);
+    const overflowing = codeMetrics.map((item, index) => ({ ...item, index })).filter(item => item.content > item.width + rules.overflowTolerancePx);
+    expect(overflowing.length, 'At least one exported code sample must exercise horizontal scrolling').toBeGreaterThan(0);
+
+    const images = body.locator('img');
+    await expect(images).toHaveCount(expected.images);
+    for (const image of await images.all()) {
+      await image.scrollIntoViewIfNeeded();
+      await expect.poll(() => image.evaluate(node => node.complete && node.naturalWidth > 0)).toBe(true);
+    }
+    await expect(body.locator('.article-note')).toHaveCount(expected.notes);
+    expect((await body.locator('.article-note').allTextContents()).every(text => !text.includes('```'))).toBe(true);
+
+    if (!article.comments) await expect(page.locator('[data-comments-root], [data-notion-discussion-card]')).toHaveCount(0);
+    if (rules.rules.includes('viewport')) await viewport(page);
+
+    for (const mode of ['light', 'dark']) {
+      await setTheme(page, mode, isMobile);
+      if (rules.rules.includes('theme')) await test.step(`theme: ${mode} paints and survives reload`, async () => {
+        const painted = await body.evaluate(node => ({
+          text: getComputedStyle(node).color,
+          surface: getComputedStyle(document.body).backgroundColor,
+          scheme: getComputedStyle(document.documentElement).colorScheme
+        }));
+        expect(painted.scheme).toBe(mode);
+        const rgb = painted.surface.match(/[\d.]+/g).slice(0, 3).map(Number);
+        const brightness = rgb.reduce((a, b) => a + b) / 3;
+        if (mode === 'light') expect(brightness).toBeGreaterThan(180);
+        else expect(brightness).toBeLessThan(80);
+        expect(painted.text).not.toBe(painted.surface);
+        await expect.poll(() => page.locator('body').evaluate(node => node.getAnimations({ subtree: true }).filter(a => a.constructor.name === 'CSSTransition' && a.playState === 'running').length)).toBe(0);
+        const contrast = await measureReadingContrast({ playwright: page });
+        await info.attach(`contrast-${mode}`, { body: JSON.stringify(contrast, null, 2), contentType: 'application/json' });
+        expect([...contrast.headers, ...contrast.links, ...contrast.content].filter(item => !item.passed), 'Visible reading text must meet the contrast minimum').toEqual([]);
+        await page.reload();
+        await expect(page.locator('html')).toHaveAttribute('data-theme', mode);
+        await expect(page.locator('#darkmode-toggle')).toHaveAttribute('aria-label', mode === 'dark' ? '切换到浅色模式' : '切换到深色模式');
+      });
+
+      if (rules.rules.includes('code')) await test.step(`code: ${mode}`, async () => {
+        for (const item of [overflowing[0], overflowing.at(-1)]) {
+          await scrollRegion(samples.nth(item.index), !isMobile);
+        }
+      });
+      if (rules.rules.includes('viewport')) await test.step(`viewport: ${mode}`, () => viewport(page));
+    }
+
+    await page.screenshot({ path: info.outputPath('reading.png') });
+    await info.attach('reading screenshot', { path: info.outputPath('reading.png'), contentType: 'image/png' });
+  });
 }

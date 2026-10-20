@@ -48,11 +48,12 @@ python3 tests/check_backend_map.py --site _site --report /tmp/backend-contract.j
 
 # 浏览器阅读规则
 
-`tests/reading.rules.json` 声明要验收的合集和规则。`chapters` 指向章节源目录；测试按文件的 `order` 和显式 `permalink`（缺省沿用本站 `/:path/` 契约）发现章节。以后在这个目录新增章节，会自动进入同一套浏览器检查，无需逐章复制脚本。`minimumChapters` 防止空目录或漏页被当作通过。
+`tests/reading.rules.json` 声明要验收的合集、独立文章和规则。`chapters` 指向章节源目录；测试按文件的 `order` 和显式 `permalink`（缺省沿用本站 `/:path/` 契约）发现章节。以后在这个目录新增章节，会自动进入同一套浏览器检查，无需逐章复制脚本。`minimumChapters` 防止空目录或漏页被当作通过。`articles` 用页面 URL、Markdown 源文件和评论开关登记单页长文；标题、代码块、图片与提示框数量直接从源文件计算，不把源文件或测试自己生成的数字当成预期。
 
 ```json
 {
   "books": [{ "hub": "/backend-map/", "chapters": "_chapters/backend-map", "minimumChapters": 4, "comments": false }],
+  "articles": [{ "url": "/javascript/", "source": "_posts/2026-10-19-javascript.md", "comments": false }],
   "rules": ["directory", "code", "tables", "theme", "viewport"],
   "overflowTolerancePx": 1
 }
@@ -65,6 +66,8 @@ python3 tests/check_backend_map.py --site _site --report /tmp/backend-contract.j
 - `tables`：表头、列数和单元格可见性，溢出表格的焦点与完整横向范围。
 - `theme`：真实按钮切换、实际纸色与文字对比度、展开目录的颜色，以及重载和跨页保存。共享 `browser-reading-contrast.mjs` 计算背景叠色，小字门槛为 4.5，大字为 3。
 - `viewport`：允许缩放，阅读区块位于视口内；代码和表格在自己的区域滚动，不把内容溢出藏在页面外。
+
+独立文章会确认布局标题是页面唯一的一级标题，源文件中的二至五级标题全部出现在正文；每个代码块都完成增强且不被纵向裁切，至少一个样本产生真实横向滚动；图片完成加载；评论关闭时没有讨论组件或批注入口。Notion 等工具导出的提示框使用 `<aside class="article-note" markdown="1">`，共享样式位于 `less/article-notes.less`，内部 Markdown、代码块以及深浅色对比都进入同一组自动检查。
 
 `reading-overflow.html` 作为独立输入注入实际章节响应，强制产生超长代码与宽表格；两种横向内容都必须超出容器 100px 以上，桌面左右方向键都必须真正移动内容。这个样例不发布为博客章节，避免当前文章恰好没有桌面溢出时漏掉键盘问题。代码与表格复用 `enhanceReadingScrollRegion(element, label)`，只有区域本身聚焦、确有横向溢出且没有组合键时才处理左右箭头，保留正文选择和其他控件的键盘行为。
 
