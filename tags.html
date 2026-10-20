@@ -7,14 +7,14 @@ header-img: "img/home-bg-geek.jpg"
 header-mask: 0.25
 ---
 
-{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "home_sort_key" | reverse %}
+{% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" | sort: "date" | reverse %}
 
 <section class="tag-lab" data-tag-lab>
   <div class="tag-lab__intro">
     <div>
       <span class="tag-lab__eyebrow">Browse by topic</span>
       <h2>按主题，找到相关笔记</h2>
-      <p>选择一个标签快速筛选；未选择时，按更新时间展示全部公开文章。</p>
+      <p>选择一个标签快速筛选；未选择时，按发布时间展示全部公开文章。</p>
     </div>
     <div class="tag-lab__stats">
       <strong>{{ site.visible_post_count | default: visible_posts.size }}</strong>
@@ -84,11 +84,10 @@ header-mask: 0.25
       data-title="{{ post.title | escape }}"
       data-excerpt="{{ post.home_excerpt | escape }}"
       data-url="{{ post.url | prepend: site.baseurl }}"
-      data-date="{{ post.last_modified_at | date: '%Y-%m-%d' }}"
-      data-published="{{ post.date | date: '%Y-%m-%d' }}"
+      data-published="{{ post.published_on }}"
       {% if post.cover_image %}data-cover="{{ post.cover_image | prepend: site.baseurl }}"{% endif %}>
       <div class="tag-lab__card-meta">
-        <span>{{ post.last_modified_at | date: "%Y-%m-%d" }}</span>
+        <span>{{ post.published_on }}</span>
         <span>{{ post.tags | first | default: "Article" }}</span>
       </div>
       <a class="tag-lab__card-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>

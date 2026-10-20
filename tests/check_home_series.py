@@ -51,6 +51,26 @@ def check_site(site):
         tag_checks.append(bool(filter_button) and int(count.group(1)) == item['count'] and item['href'] == '/tags/#' + filter_button.attrs.get('id', ''))
     check('series links open matching tag collections with matching counts', all(tag_checks))
 
+    programming_cards = []
+    for card in tags_page.all(cls='tag-lab__card'):
+        tags = (card.attrs.get('data-tags') or '').split('||')
+        if '编程语言' not in tags:
+            continue
+        title_link = card.all(cls='tag-lab__card-title')[0]
+        meta = card.all(cls='tag-lab__card-meta')[0]
+        programming_cards.append({
+            'href': title_link.attrs.get('href'),
+            'published': text(meta.all('span')[0]),
+            'data_published': card.attrs.get('data-published'),
+        })
+    check(
+        'programming tag cards show and order by first publication',
+        programming_cards == [
+            {'href': item['href'], 'published': item['published'], 'data_published': item['published']}
+            for item in contract['tagPublication']
+        ],
+    )
+
     cards = home.all(attr='data-home-card')
     actual_latest = [
         {

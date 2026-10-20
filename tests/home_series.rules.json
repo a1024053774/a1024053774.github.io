@@ -36,5 +36,27 @@
       "title": "深入理解 AI Agent",
       "published": "2026.10.15"
     }
+  ],
+  "tagPublication": [
+    {
+      "href": "/javascript/",
+      "published": "2025-10-19"
+    },
+    {
+      "href": "/2025/06/29/Matplotlib/",
+      "published": "2025-06-29"
+    },
+    {
+      "href": "/2025/06/28/Pandas/",
+      "published": "2025-06-28"
+    },
+    {
+      "href": "/2025/06/27/NumPy/",
+      "published": "2025-06-27"
+    },
+    {
+      "href": "/java/",
+      "published": "2025-03-11"
+    }
   ]
 }

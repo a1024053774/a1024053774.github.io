@@ -32,7 +32,7 @@
         media.style.backgroundImage = cover ? 'url("' + cover.replace(/"/g, "%22") + '")' : "";
       }
       if (meta) {
-        meta.textContent = post.getAttribute("data-date") || "";
+        meta.textContent = post.getAttribute("data-published") || "";
       }
       if (title) {
         title.textContent = post.getAttribute("data-title") || "";
@@ -101,15 +101,6 @@
           visibleCount += 1;
           matchedPosts.push(post);
         }
-      });
-
-      matchedPosts.sort(function (a, b) {
-        var modifiedOrder = (b.getAttribute("data-date") || "").localeCompare(a.getAttribute("data-date") || "");
-        if (modifiedOrder !== 0) {
-          return modifiedOrder;
-        }
-
-        return (b.getAttribute("data-published") || "").localeCompare(a.getAttribute("data-published") || "");
       });
 
       updateFeatured(tag, matchedPosts);
