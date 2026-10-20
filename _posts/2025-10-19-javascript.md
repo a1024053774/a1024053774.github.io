@@ -2,7 +2,7 @@
 layout: post
 title: "JavaScript 入门到进阶"
 subtitle: "从基础语法、函数与标准对象，到面向对象、DOM、jQuery 与 Node.js"
-date: 2026-10-19 20:30:00 -0400
+date: 2025-10-19 20:30:00 -0400
 permalink: /javascript/
 author: LuckyE
 header-style: text

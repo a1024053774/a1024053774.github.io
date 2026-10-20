@@ -53,7 +53,7 @@ python3 tests/check_backend_map.py --site _site --report /tmp/backend-contract.j
 ```json
 {
   "books": [{ "hub": "/backend-map/", "chapters": "_chapters/backend-map", "minimumChapters": 4, "comments": false }],
-  "articles": [{ "url": "/javascript/", "source": "_posts/2026-10-19-javascript.md", "comments": false }],
+  "articles": [{ "url": "/javascript/", "source": "_posts/2025-10-19-javascript.md", "comments": false }],
   "rules": ["directory", "code", "tables", "theme", "viewport"],
   "overflowTolerancePx": 1
 }

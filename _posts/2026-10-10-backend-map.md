@@ -4,7 +4,7 @@ book: backend-map
 permalink: /backend-map/
 title: "后端知识地图"
 subtitle: "从一次请求出发，读懂数据库、缓存与消息队列"
-date: 2026-10-18 10:19:22 -0400
+date: 2026-10-10 10:19:22 -0400
 author: LuckyE
 header-style: text
 tags: [后端, MySQL, Redis, 消息队列]

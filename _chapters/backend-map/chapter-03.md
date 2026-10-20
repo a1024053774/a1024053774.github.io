@@ -5,7 +5,7 @@ order: 3
 chapter_label: 第 3 章
 title: "Redis —— 为什么有了 MySQL，还需要 Redis？"
 subtitle: "数据结构、TTL、Cache Aside 与缓存失效场景"
-date: 2026-10-18 10:20:09 -0400
+date: 2026-10-10 10:20:09 -0400
 author: LuckyE
 header-style: text
 tags: [后端, MySQL, Redis, 消息队列]
