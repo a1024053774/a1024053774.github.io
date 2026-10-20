@@ -5,7 +5,7 @@ order: 1
 chapter_label: 第 1 章
 title: "从一次用户请求理解整个后端"
 subtitle: "从商品详情请求串起网络、数据库、缓存、消息队列与分布式服务"
-date: 2026-10-18 10:19:22 -0400
+date: 2026-10-10 10:19:22 -0400
 author: LuckyE
 header-style: text
 tags: [后端, MySQL, Redis, 消息队列]

@@ -5,7 +5,7 @@ order: 4
 chapter_label: 第 4 章
 title: "消息队列 MQ — 让后端系统学会异步工作"
 subtitle: "从异步处理到消息确认、幂等与事务发件箱"
-date: 2026-10-18 10:20:09 -0400
+date: 2026-10-10 10:20:09 -0400
 author: LuckyE
 header-style: text
 tags: [后端, MySQL, Redis, 消息队列]
