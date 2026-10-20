@@ -35,6 +35,7 @@ module SiteMetadataGenerator
       modified_at = git_modified_at(site, doc) || File.mtime(source_path)
       doc.data["last_modified_at"] ||= modified_at
       doc.data["last_modified_at_iso"] ||= modified_at.getutc.iso8601
+      doc.data["published_on"] ||= publication_date(doc)
       doc.data["home_sort_key"] ||= [doc.data["last_modified_at_iso"], doc.date.iso8601].join("|")
       doc.data["cover_image"] ||= extract_cover_image(doc)
       doc.data["home_excerpt"] ||= extract_excerpt(doc)
@@ -44,6 +45,11 @@ module SiteMetadataGenerator
         # Chinese characters and space-separated words need different reading rates.
         doc.data["reading_minutes"] = [(plain.scan(/\p{Han}/).size / 400.0 + plain.scan(/[A-Za-z0-9]+/).size / 220.0).ceil, 1].max
       end
+    end
+
+    def publication_date(doc)
+      filename = File.basename(doc.relative_path.to_s)
+      filename[/\A(\d{4}-\d{2}-\d{2})(?=-|\.)/, 1] || doc.date.strftime("%Y-%m-%d")
     end
 
     def git_modified_at(site, doc)

@@ -104,6 +104,14 @@ test('homepage series consolidate articles and preserve responsive navigation', 
     await expect(page.locator('[data-tag-post]:not(.is-hidden)')).toHaveCount(item.count);
   }
 
+  await page.goto('/tags/');
+  await page.locator('[data-tag-filter="编程语言"]').click();
+  const programmingCards = page.locator('[data-tag-post]:not(.is-hidden)');
+  expect(await programmingCards.evaluateAll(nodes => nodes.map(node => ({
+    href: node.querySelector('.tag-lab__card-title')?.getAttribute('href'),
+    published: node.querySelector('.tag-lab__card-meta span')?.textContent?.trim(),
+  })))).toEqual(homeSeries.tagPublication);
+
   await page.goto('/');
   for (const mode of ['light', 'dark']) await setTheme(page, mode, isMobile);
   await info.attach('consolidated series', { body: await page.locator('.home-series').screenshot(), contentType: 'image/png' });

@@ -87,7 +87,7 @@
           <span class="comments-thread-pill" data-comments-provider-pill>{{ comments_provider | upcase }}</span>
           <time class="comments-thread-time" {% if page.date %}datetime="{{ page.date | date_to_xmlschema }}"{% endif %}>
             {% if page.date %}
-            {{ page.date | date: "%b %-d, %Y" }}
+            {{ page.published_on | default: page.date | date: "%b %-d, %Y" }}
             {% else %}
             Current page
             {% endif %}
