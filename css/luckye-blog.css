@@ -1773,6 +1773,25 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
   opacity: 1;
   transform: none;
 }
+.home-projects__links {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px 24px;
+}
+.home-projects__links a {
+  color: var(--zhu);
+  font-family: var(--body-font);
+  font-size: 14px;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s var(--ease-out);
+}
+.home-projects__links a:hover,
+.home-projects__links a:focus {
+  color: var(--zhu);
+  text-decoration: none;
+  border-bottom-color: currentColor;
+}
 .home-stage {
   position: relative;
   padding: 112px 0 96px;

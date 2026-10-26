@@ -1,0 +1,17 @@
+# 首页「项目」区：每个项目一张卡片，links 依次列出产品页、演示与仓库。
+- name: Enchanted
+  description: macOS 上的多 agent 工作台：Claude Code、Codex、Antigravity、opencode 以原生终端运行，Enchanted 负责派发、独立审查和门禁集成，每一步都留记录。
+  links:
+    - label: 产品页
+      url: https://a1024053774.github.io/Enchanted/
+    - label: 仓库
+      url: https://github.com/a1024053774/Enchanted
+- name: SiteCraft
+  description: 把公司资料写成它自己的多页官网：上传介绍或价目表、选一种风格，在对话或预览批注里修改；价格、资质等说法必须能在资料里找到原句。
+  links:
+    - label: 产品页
+      url: https://sitecraft.luckye.online
+    - label: 工作台演示
+      url: https://sitecraftapp.luckye.online
+    - label: 仓库
+      url: https://github.com/a1024053774/sitecraft-ai

@@ -520,6 +520,30 @@
   transform: none;
 }
 
+// ---------- 项目：沿用专栏卡片，底部换成外链 ----------
+
+.home-projects__links {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px 24px;
+
+  a {
+    color: var(--zhu);
+    font-family: var(--body-font);
+    font-size: 14px;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s var(--ease-out);
+
+    &:hover,
+    &:focus {
+      color: var(--zhu);
+      text-decoration: none;
+      border-bottom-color: currentColor;
+    }
+  }
+}
+
 // ---------- 最近更新：表冠滚轮 ----------
 
 .home-stage {
