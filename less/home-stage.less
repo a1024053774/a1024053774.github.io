@@ -521,8 +521,15 @@
 }
 
 // ---------- 项目：沿用专栏卡片，底部换成外链 ----------
+// 用独立类名继承专栏样式：tests/check_home_series.py 按 .home-series__item 数专栏，项目卡不能混进去。
 
-.home-projects__links {
+.home-projects:extend(.home-series all) {}
+.home-projects__grid:extend(.home-series__grid all) {}
+.home-projects__item:extend(.home-series__item all) {}
+.home-projects__num:extend(.home-series__num all) {}
+.home-projects__item:hover .home-projects__num:extend(.home-series__item:hover .home-series__num) {}
+
+.home-projects__links:extend(.home-series__foot all) {
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 12px 24px;
@@ -1169,6 +1176,9 @@
     border-left: 0;
   }
 
+  .home-projects__grid:extend(.home-series__grid all) {}
+  .home-projects__item:extend(.home-series__item all) {}
+
   .home-series__item {
     min-height: 0;
     border-right: 0;
@@ -1225,6 +1235,9 @@
   .home-series__item {
     padding: 28px 4px;
   }
+
+  .home-projects:extend(.home-series all) {}
+  .home-projects__item:extend(.home-series__item all) {}
 
   .home-stage {
     padding: 64px 0 64px;

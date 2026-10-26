@@ -116,19 +116,19 @@ intro: "记录编程语言、后端与数据库、强化学习与 RLHF，以及 
   </div>
 </section>
 
-<section class="home-series home-projects" id="projects" data-reveal>
+<section class="home-projects" id="projects" data-reveal>
   <div class="ink-container">
     <div class="home-section-head">
       <h2>项目</h2>
       <span class="home-section-head__meta">PROJECTS · {{ site.data.home_projects | size }}</span>
     </div>
-    <div class="home-series__grid">
+    <div class="home-projects__grid">
       {% for project in site.data.home_projects %}
-      <article class="home-series__item home-projects__item">
-        <span class="home-series__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+      <article class="home-projects__item">
+        <span class="home-projects__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
         <h3>{{ project.name }}</h3>
         <p>{{ project.description }}</p>
-        <span class="home-series__foot home-projects__links">
+        <span class="home-projects__links">
           {% for link in project.links %}
           <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }} <i class="fa fa-external-link" aria-hidden="true"></i></a>
           {% endfor %}
