@@ -27,14 +27,14 @@
   ],
   "latest": [
     {
-      "href": "/2026/10/27/ppo-to-grpo/",
-      "title": "从 PPO 到 GRPO：大模型后训练中的策略优化与偏好对齐",
-      "published": "2026.10.27"
-    },
-    {
       "href": "/2026/10/11/a2a-multi-agent-design/",
       "title": "a2a 设计思路：多 Agent 协作，难的是可信验收",
       "published": "2026.10.20"
+    },
+    {
+      "href": "/ai-agent/",
+      "title": "深入理解 AI Agent",
+      "published": "2026.10.15"
     }
   ],
   "tagPublication": [

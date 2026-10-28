@@ -2,7 +2,7 @@
 layout:       post
 title:        "从 PPO 到 GRPO：大模型后训练中的策略优化与偏好对齐"
 subtitle:     "从 RLHF-PPO 的四模型架构，到 DPO 的隐式奖励推导，再到 GRPO 的组内相对优势与可验证奖励"
-date:         2026-10-27 12:00:00 -0400
+date:         2025-07-05 12:00:00 -0400
 author:       "LuckyE"
 header-style: text
 catalog:      true
