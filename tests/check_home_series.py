@@ -80,7 +80,7 @@ def check_site(site):
         }
         for card in cards[:2]
     ]
-    check('A2A becomes the newest article and the AI Agent book follows it', actual_latest == contract['latest'])
+    check('Super-agent notes become the newest article and A2A follows it', actual_latest == contract['latest'])
     featured = home.all(cls='home-featured__card')
     check('featured article matches the newest card', len(featured) == 1 and featured[0].attrs.get('href') == contract['latest'][0]['href'])
     check('A2A keeps its existing public URL', bool(document('/2026/10/11/a2a-multi-agent-design/').all('h1')))

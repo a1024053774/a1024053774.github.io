@@ -4,7 +4,7 @@
       "tag": "AI Agent",
       "title": "AI Agent 与智能工程",
       "href": "/tags/#ai-agent",
-      "count": 4
+      "count": 5
     },
     {
       "tag": "强化学习",
@@ -27,14 +27,14 @@
   ],
   "latest": [
     {
+      "href": "/2026/11/03/deepseek-super-agent/",
+      "title": "读 DeepSeek 的 Super-agent：分派之后，谁来验收",
+      "published": "2026.11.03"
+    },
+    {
       "href": "/2026/10/11/a2a-multi-agent-design/",
       "title": "a2a 设计思路：多 Agent 协作，难的是可信验收",
       "published": "2026.10.20"
-    },
-    {
-      "href": "/ai-agent/",
-      "title": "深入理解 AI Agent",
-      "published": "2026.10.15"
     }
   ],
   "tagPublication": [
