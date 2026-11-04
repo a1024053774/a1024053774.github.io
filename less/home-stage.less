@@ -551,6 +551,19 @@
   }
 }
 
+// ---------- 置顶：沿用专栏卡片，底部是日期和阅读入口 ----------
+// 同样用独立类名：专栏检查按 .home-series__item 计数，置顶卡不能混进去。
+
+.home-pinned:extend(.home-series all) {}
+.home-pinned__grid:extend(.home-series__grid all) {}
+.home-pinned__item:extend(.home-series__item all) {}
+.home-pinned__num:extend(.home-series__num all) {}
+.home-pinned__item:hover .home-pinned__num:extend(.home-series__item:hover .home-series__num) {}
+.home-pinned__foot:extend(.home-series__foot all) {}
+.home-pinned__go:extend(.home-series__go all) {}
+.home-pinned__item:hover .home-pinned__go:extend(.home-series__item:hover .home-series__go) {}
+.home-pinned__item:focus .home-pinned__go:extend(.home-series__item:focus .home-series__go) {}
+
 // ---------- 最近更新：表冠滚轮 ----------
 
 .home-stage {
@@ -1178,6 +1191,8 @@
 
   .home-projects__grid:extend(.home-series__grid all) {}
   .home-projects__item:extend(.home-series__item all) {}
+  .home-pinned__grid:extend(.home-series__grid all) {}
+  .home-pinned__item:extend(.home-series__item all) {}
 
   .home-series__item {
     min-height: 0;
@@ -1238,6 +1253,8 @@
 
   .home-projects:extend(.home-series all) {}
   .home-projects__item:extend(.home-series__item all) {}
+  .home-pinned:extend(.home-series all) {}
+  .home-pinned__item:extend(.home-series__item all) {}
 
   .home-stage {
     padding: 64px 0 64px;

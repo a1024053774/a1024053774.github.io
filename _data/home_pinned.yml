@@ -1,0 +1,7 @@
+# 首页「置顶」区：按这里的顺序展示。
+# path 是文章源文件的路径，改标题、日期或 permalink 都不影响匹配；
+# 找不到或设为 hidden 的文章会被跳过，一篇都找不到时整个区块不渲染。
+- path: _posts/2026-11-04-claude-code-code-review.md
+- path: _posts/2026-11-04-critical-thinking-with-agents.md
+- path: _posts/2026-11-04-agent-skills-iteration.md
+- path: _posts/2026-10-20-a2a-multi-agent-design.md
