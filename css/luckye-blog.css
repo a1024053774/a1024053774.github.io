@@ -1706,18 +1706,21 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
   transform: translateX(6px);
 }
 .home-series,
-.home-projects {
+.home-projects,
+.home-pinned {
   padding: 112px 0 0;
 }
 .home-series__grid,
-.home-projects__grid {
+.home-projects__grid,
+.home-pinned__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid var(--foreground);
   border-left: 1px solid var(--line);
 }
 .home-series__item,
-.home-projects__item {
+.home-projects__item,
+.home-pinned__item {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1732,25 +1735,30 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
 .home-series__item:hover,
 .home-series__item:focus,
 .home-projects__item:hover,
-.home-projects__item:focus {
+.home-projects__item:focus,
+.home-pinned__item:hover,
+.home-pinned__item:focus {
   color: var(--foreground);
   background: var(--paper-2);
 }
 .home-series__item h3,
-.home-projects__item h3 {
+.home-projects__item h3,
+.home-pinned__item h3 {
   margin: 0;
   font-size: 2.6rem;
   font-weight: 600;
   letter-spacing: 0;
 }
 .home-series__item p,
-.home-projects__item p {
+.home-projects__item p,
+.home-pinned__item p {
   margin: 0;
   color: var(--ink-2);
   font-size: 15px;
 }
 .home-series__num,
-.home-projects__num {
+.home-projects__num,
+.home-pinned__num {
   font-family: var(--latin-font);
   font-size: 64px;
   line-height: 1;
@@ -1759,12 +1767,16 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
 .home-series__item:hover .home-series__num,
 .home-projects__item:hover .home-series__num,
 .home-series__item:hover .home-projects__num,
-.home-projects__item:hover .home-projects__num {
+.home-projects__item:hover .home-projects__num,
+.home-pinned__item:hover .home-series__num,
+.home-series__item:hover .home-pinned__num,
+.home-pinned__item:hover .home-pinned__num {
   transform: translateY(-8px);
   color: var(--zhu);
 }
 .home-series__foot,
-.home-projects__links {
+.home-projects__links,
+.home-pinned__foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1773,7 +1785,8 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
   font-family: var(--mono-font);
   font-size: 13px;
 }
-.home-series__go {
+.home-series__go,
+.home-pinned__go {
   color: var(--zhu);
   font-family: var(--body-font);
   opacity: 0;
@@ -1783,7 +1796,13 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
 .home-series__item:hover .home-series__go,
 .home-series__item:focus .home-series__go,
 .home-projects__item:hover .home-series__go,
-.home-projects__item:focus .home-series__go {
+.home-projects__item:focus .home-series__go,
+.home-pinned__item:hover .home-series__go,
+.home-pinned__item:focus .home-series__go,
+.home-series__item:hover .home-pinned__go,
+.home-series__item:focus .home-pinned__go,
+.home-pinned__item:hover .home-pinned__go,
+.home-pinned__item:focus .home-pinned__go {
   opacity: 1;
   transform: none;
 }
@@ -2339,13 +2358,17 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
   }
   .home-series__grid,
   .home-projects__grid,
-  .home-projects__grid {
+  .home-pinned__grid,
+  .home-projects__grid,
+  .home-pinned__grid {
     grid-template-columns: minmax(0, 1fr);
     border-left: 0;
   }
   .home-series__item,
   .home-projects__item,
-  .home-projects__item {
+  .home-pinned__item,
+  .home-projects__item,
+  .home-pinned__item {
     min-height: 0;
     border-right: 0;
     border-bottom: 1px solid var(--line);
@@ -2382,7 +2405,9 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
   .home-featured,
   .home-series,
   .home-projects,
-  .home-projects {
+  .home-pinned,
+  .home-projects,
+  .home-pinned {
     padding-top: 64px;
   }
   .home-featured__body {
@@ -2390,7 +2415,9 @@ html[data-theme="dark"] .comments-provider-note[data-tone="warning"] {
   }
   .home-series__item,
   .home-projects__item,
-  .home-projects__item {
+  .home-pinned__item,
+  .home-projects__item,
+  .home-pinned__item {
     padding: 28px 4px;
   }
   .home-stage {
