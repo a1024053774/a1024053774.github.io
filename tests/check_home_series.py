@@ -80,9 +80,22 @@ def check_site(site):
         }
         for card in cards[:2]
     ]
-    check('Super-agent notes become the newest article and A2A follows it', actual_latest == contract['latest'])
+    check('the two newest cards follow publication order', actual_latest == contract['latest'])
     featured = home.all(cls='home-featured__card')
     check('featured article matches the newest card', len(featured) == 1 and featured[0].attrs.get('href') == contract['latest'][0]['href'])
+
+    pinned_items = home.all(cls='home-pinned__item')
+    actual_pinned = [
+        {
+            'href': item.attrs.get('href'),
+            'title': text(item.all('h3')[0]) if item.all('h3') else None,
+        }
+        for item in pinned_items
+    ]
+    check('pinned section lists the chosen posts in the chosen order', actual_pinned == contract['pinned'])
+    check('pinned cards are not counted as series', not any(item.attrs.get('data-series-tag') for item in pinned_items))
+    pinned_pages = [document(item['href']) for item in contract['pinned']]
+    check('every pinned link opens a published article', all(page.all('h1') for page in pinned_pages))
     check('A2A keeps its existing public URL', bool(document('/2026/10/11/a2a-multi-agent-design/').all('h1')))
 
     return {
@@ -90,6 +103,7 @@ def check_site(site):
         'checks': results,
         'actual_series': actual_series,
         'actual_latest': actual_latest,
+        'actual_pinned': actual_pinned,
     }
 
 

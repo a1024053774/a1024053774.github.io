@@ -4,7 +4,7 @@
       "tag": "AI Agent",
       "title": "AI Agent 与智能工程",
       "href": "/tags/#ai-agent",
-      "count": 5
+      "count": 8
     },
     {
       "tag": "强化学习",
@@ -25,16 +25,34 @@
       "count": 4
     }
   ],
-  "latest": [
+  "pinned": [
     {
-      "href": "/2026/11/03/deepseek-super-agent/",
-      "title": "读 DeepSeek 的 Super-agent：分派之后，谁来验收",
-      "published": "2026.11.03"
+      "href": "/2026/11/04/claude-code-code-review/",
+      "title": "Claude Code 团队怎么做代码审查：读书笔记与我们的取舍"
+    },
+    {
+      "href": "/2026/11/04/critical-thinking-with-agents/",
+      "title": "当智能体代劳时，如何保持批判性思维：读后笔记与我们的判断"
+    },
+    {
+      "href": "/2026/11/04/agent-skills-iteration/",
+      "title": "一次 Skill 迭代的全过程：从一篇文章到审查与测试护栏改造"
     },
     {
       "href": "/2026/10/11/a2a-multi-agent-design/",
-      "title": "a2a 设计思路：多 Agent 协作，难的是可信验收",
-      "published": "2026.10.20"
+      "title": "a2a 设计思路：多 Agent 协作，难的是可信验收"
+    }
+  ],
+  "latest": [
+    {
+      "href": "/2026/11/04/critical-thinking-with-agents/",
+      "title": "当智能体代劳时，如何保持批判性思维：读后笔记与我们的判断",
+      "published": "2026.11.04"
+    },
+    {
+      "href": "/2026/11/04/agent-skills-iteration/",
+      "title": "一次 Skill 迭代的全过程：从一篇文章到审查与测试护栏改造",
+      "published": "2026.11.04"
     }
   ],
   "tagPublication": [
