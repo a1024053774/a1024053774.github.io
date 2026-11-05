@@ -182,11 +182,25 @@ asd-ste100 仍然只在我点名时运行。
 
 中间还有一个小插曲：推送 guardrails 仓库时 GitHub 连续返回 Internal Server Error，同一时间另一个仓库能推上去。我没有改用强推，查了对象完整性和分支保护后先去做别的，过一会儿再推就成功了。
 
+## 当天补完的两件事
+
+文章发布时，这两件还挂着，当天晚些时候都收尾了。
+
+**含糊措辞的清理。** 按约定，Claude 先列候选、给出改写和正反例，我确认后才改。三处候选和改法：
+
+| 原文 | 问题 | 改成 |
+| --- | --- | --- |
+| "Before the first substantive edit, read enough of the relevant code …" | "读够"没有停止条件，模型要么读得太少就动手，要么为了保险读遍整个仓库 | 改变行为的编辑之前，读到能说出三件事：行为在哪（代码和配置）、谁调用它、哪个测试或检查能显示这次改动。改文案三样都不用，改共享函数三样都要 |
+| "material unknowns before consequential work" | 没说什么工作算数，也没说哪些未知值得写下来 | 方向错了就要重写的工作（新功能、重构、原因不明的 bug；不包括一行修复或一个问题）之前，写下答案会改变计划的未知，比如"这个 API 分不分页""哪个调用方依赖旧的默认值" |
+| "material scope/authorization expansion" | 没划清哪些要问、哪些不用问，模型会两头出错 | 超出请求点名的范围之前要问：另一个仓库、公共接口、schema 或迁移、新依赖 |
+
+第三处放在 "Never break these" 那一节，我只让它留正例，反例（同模块的调用方、新增测试、本地改名都在范围内，不用问）挪到 Working defaults。理由是模型会把这一节里的例子当成穷举清单，例子写得越多，越像一份"只有这些才要问"的白名单。
+
+**Codex hook 的信任。** 我在 Codex 的设置里信任了 SessionStart 和 Stop 两条 hook。设置页顶上有一个"全部信任"按钮，我没点，只信任了这两条：一键放行会把我没核对过的 hook 也一起放进来。之后不带 bypass 参数实跑了一次，仓库里预先放了一个吞掉异常的函数：SessionStart 写下了会话起点，Stop 报出 3 条发现并阻断；续跑时 Codex 调用 design-integrity-review，回报 `INCOMPLETE`，两条发现都写成 "may"，理由是没有真实的调用方能说明这一层该不该处理这个异常。这正是这次新加的规则：没复现的问题不能写成事实。
+
 ## 还没做完的
 
-- **含糊措辞的清理。** AGENTS.md 里 "read enough … for the task's size and risk" 和 "substantive edit" 这类说法，按约定先列候选、说明理由，由我确认后再改。
-- **Codex hook 的信任。** 新挂的 SessionStart 和 Stop hook 要在交互式 Codex 里信任一次，否则在 `codex exec` 里会被静默跳过。
-- **AGENTS.md 变长了。** 从 96 行变成 134 行。我同意"稍微多点没问题"，但这次多出的不只一点，下一轮要看哪些细节可以挪进 skill。
+- **AGENTS.md 变长了。** 从 96 行变成 142 行。我同意"稍微多点没问题"，但这次多出的不只一点，下一轮要看哪些细节可以挪进 skill。
 
 ## 附：这套 Skill 的迭代时间线
 
